@@ -1,0 +1,4 @@
+interface Array__array where {
+{-# IMPORTING _LibArray, Ix #-}
+array :: (Ix.Ix a) => (a, a) -> [(a, b)] -> _LibArray.Array a b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE array :: ((Prelude.Int, Prelude.Int), (Prelude.Int, Prelude.Int)) -> [((Prelude.Int, Prelude.Int), b)] -> _LibArray.Array (Prelude.Int, Prelude.Int) b {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}, (Prelude.Int, Prelude.Int) -> [(Prelude.Int, b)] -> _LibArray.Array Prelude.Int b {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+}

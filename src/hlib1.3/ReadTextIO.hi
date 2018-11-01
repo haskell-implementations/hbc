@@ -1,0 +1,11 @@
+interface ReadTextIO where {
+{-# IMPORTING StdIO, _LibDialogue, _LibIO__process, MonadicIO, _LibIO #-}
+hReady :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hWaitForInput :: Prelude.Int -> _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,1" ST #-};
+hGetChar :: _LibIO.Handle -> _LibIO.IO Prelude.Char   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+getChar :: _LibIO.IO Prelude.Char   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+hLookAhead :: _LibIO.Handle -> _LibIO.IO Prelude.Char   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hGetLine :: _LibIO.Handle -> _LibIO.IO Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+hGetContents :: _LibIO.Handle -> _LibIO.IO Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+readFile :: StdIO.FilePath -> _LibIO.IO Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

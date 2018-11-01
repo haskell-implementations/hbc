@@ -1,0 +1,12 @@
+import odifferenceby: ((*a->(*b->Bool))->((*a->(*b->Bool))->((List *a)->((List *b)->(List *a))))) {# ARITY _ = 4 #}{# STRICTNESS _ = "2&3,F" ST #};
+import ointersectby: ((*a->(*b->Bool))->((*a->(*b->Bool))->((List *a)->((List *b)->(List *a))))) {# ARITY _ = 4 #}{# STRICTNESS _ = "3,F" ST #};
+import ounionby: ((*a->(*a->Bool))->((*a->(*a->Bool))->((List *a)->((List *a)->(List *a))))) {# ARITY _ = 4 #}{# STRICTNESS _ = "2&3,F" ST #};
+import omemby: ((*a->(*b->Bool))->((*b->(*a->Bool))->(*a->((List *b)->Bool)))) {# ARITY _ = 4 #}{# STRICTNESS _ = "3,F" ST #};
+import oremdupby: ((*a->(*a->Bool))->(*b->((List *a)->(List *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,F" ST #};
+import omksetby: ((*a->(*a->Bool))->((*a->(*a->Bool))->((List *a)->(List *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,F" ST #};
+import odifference: ((List *a)->((List *a)->(List *a))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import ointersect: ((List *a)->((List *a)->(List *a))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import ounion: ((List *a)->((List *a)->(List *a))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import omem: (*a->((List *a)->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import oremdup: ((List *a)->(List *a)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import omkset: ((List *a)->(List *a)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};

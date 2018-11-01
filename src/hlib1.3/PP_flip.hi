@@ -1,0 +1,3 @@
+interface PreludeX where {
+flip :: (a -> b -> c) -> b -> a -> c   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

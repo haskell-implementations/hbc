@@ -1,0 +1,10 @@
+interface Maybe where {
+fromJust :: (Prelude.Maybe a) -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isJust :: (Prelude.Maybe a) -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+fromMaybe :: a -> (Prelude.Maybe a) -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+listToMaybe :: [a] -> Prelude.Maybe a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+maybeToList :: (Prelude.Maybe a) -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+catMaybes :: [Prelude.Maybe a] -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+mapMaybe :: (a -> Prelude.Maybe b) -> [a] -> [b]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+unfoldr :: (a -> Prelude.Maybe (b, a)) -> a -> (a, [b])   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

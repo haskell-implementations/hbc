@@ -1,0 +1,3 @@
+interface PreludeX where {
+even :: (Integral a) => a -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

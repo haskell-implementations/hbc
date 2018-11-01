@@ -1,0 +1,18 @@
+interface _ByteVector where {
+
+data _ByteVector;
+
+appendBV :: _ByteVector -> _ByteVector -> _ByteVector {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-};
+compareBV :: _ByteVector -> _ByteVector -> Int {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-};
+indexBV :: _ByteVector -> Int -> Char {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-};
+lengthBV :: _ByteVector -> Int {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-};
+nilBV :: _ByteVector {-# ARITY _ = 0 #-} {-# STRICTNESS _ = "T,F" ST #-};
+packBV :: [Char] -> _ByteVector {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-};
+substrBV :: _ByteVector -> Int -> Int -> _ByteVector {-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1&2,0&1&2" ST #-};
+unpackBV :: _ByteVector -> [Char] {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-};
+cPointerToBV :: _LibDialogue._CPointer -> Int -> _ByteVector {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-};
+instance Eq _ByteVector;
+instance Ord _ByteVector;
+instance Show _ByteVector;
+instance Eval _ByteVector
+}

@@ -1,0 +1,3 @@
+interface PreludeX where {
+($) :: (a -> b) -> a -> b   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

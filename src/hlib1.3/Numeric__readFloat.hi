@@ -1,0 +1,4 @@
+interface Numeric__readFloat where {
+{-# IMPORTING Numeric__readInt, Ratio, Char #-}
+readFloat :: (Prelude.RealFloat a) => Prelude.ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

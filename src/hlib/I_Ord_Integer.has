@@ -1,0 +1,8 @@
+module I_Ord_Integer where
+instance Ord Integer where
+	x <  y = {-:"MM.Ord.Integer.<":-}  x y
+	x <= y = {-:"MM.Ord.Integer.<=":-} x y
+	x >  y = {-:"MM.Ord.Integer.>":-}  x y
+	x >= y = {-:"MM.Ord.Integer.>=":-} x y
+	max x y = if {-:"MM.Ord.Integer.>":-} x y then x else y
+	min x y = if {-:"MM.Ord.Integer.<":-} x y then x else y

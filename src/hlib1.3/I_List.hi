@@ -1,0 +1,6 @@
+interface PreludeX where {
+data [a] = [] | (:) a [a];
+instance (Eq a) => Eq [a] {-# DERIVED #-};
+instance Prelude.Eval [a] {-# DERIVED #-};
+instance (Ord a) => Ord [a] {-# DERIVED #-}
+}

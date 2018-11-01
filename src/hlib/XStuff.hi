@@ -1,0 +1,31 @@
+interface XStuff where {
+import Command(XCommand, XRequest);
+import Event(XEvent, XResponse);
+import ResourceIds(WindowId, XWId(..));
+import Sockets(AEvent, AsyncInput(..), Descriptor, SocketRequest, SocketResponse
+);
+import Xtypes(Display, XDisplay(..));
+data XCommand;
+data XEvent;
+data WindowId;
+type XWId = WindowId;
+data XRequest;
+data XResponse;
+type AsyncInput = (Descriptor, AEvent);
+data SocketRequest;
+data Descriptor;
+data AEvent;
+data SocketResponse;
+data Display;
+type XDisplay = Display;
+instance Text Descriptor;
+instance Text AEvent;
+instance Text SocketRequest;
+instance Text SocketResponse;
+instance Text WindowId;
+instance Text XCommand;
+instance Text XEvent;
+instance Text XRequest;
+instance Text XResponse;
+instance Text Display
+}

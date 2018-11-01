@@ -1,0 +1,10 @@
+g/_2E_/s//./
+g/\([ 	,]\)_/s//\1/
+g/__D__/s//$/g
+g/^_predefs/s//predefs/
+/predefs:/i
+	.globl	_predefs
+_predefs:
+.
+w
+q

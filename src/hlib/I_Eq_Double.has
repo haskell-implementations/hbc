@@ -1,0 +1,4 @@
+module I_Eq_Double where
+instance  Eq Double where
+    	x == y 	= {-:"MM.Eq.Double.==":-} x y
+    	x /= y 	= {-:"MM.Eq.Double./=":-} x y

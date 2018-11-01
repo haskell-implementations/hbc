@@ -1,0 +1,71 @@
+#! /bin/tcsh -f
+
+if ($?LMLDIR) then
+	set lib = $LMLDIR/bin
+else
+	set lib = /usr/local/lib/lmlc/bin
+endif
+
+set BUILDSHLIB = $lib/buildshlib
+
+set noglob
+set flags = ( )
+set mods = ( )
+set hargs = ( )
+while ($#argv)
+  set arg = $1
+  switch ( $arg )
+    case -retry:
+      set retry
+      breaksw
+    case -mkso:
+      set shared
+      set flags = ($flags -fno-zap-redex -fcaf-call)
+      breaksw
+    case -*:
+      set hargs = ($hargs $arg)
+      breaksw
+    default:
+      if ( $arg:h == $arg:t ) then
+        set dir=.
+      else
+        set dir=$arg:h
+      endif
+      if ( -r $dir/Flags ) then
+        set f=( `grep "^${arg}:" $dir/Flags` )
+	if ("$f" == "" && $arg == $arg:r.hs ) then
+		set f=( `grep "^\*:" $dir/Flags` )
+	endif
+        set flags= ( $flags $f[2-] )
+      endif
+      set mods = ($mods $arg)
+      set hargs = ($hargs $arg)
+  endsw
+  shift
+end
+
+while(1)
+  echo hbc $flags $hargs
+  hbc $flags $hargs 
+  if (! $status) then
+    if( $?shared) then
+      set mod = $mods[1]:r
+      echo $BUILDSHLIB \"\" $mod.so $mod.o
+      $BUILDSHLIB "" $mod.so $mod.o
+    endif
+    exit
+  else if ($?retry) then
+    echo -n "(A)bort (R)etry (I)gnore? "
+    set ans = `csh -cf 'echo $<'` < /dev/tty
+    unset noglob
+    switch ($ans)
+       case [Aa]*: 
+	  exit 1
+       case [Ii]*: 
+	  exit 0
+       default:
+    endsw
+  else
+    exit 1
+  endif
+end

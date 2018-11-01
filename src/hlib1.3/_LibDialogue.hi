@@ -1,0 +1,51 @@
+interface _LibDialogue where {
+{-# IMPORTING _ByteVector, _XStuff #-}
+data Command.XCommand;
+data Event.XEvent;
+type ResourceIds.XWId = ResourceIds.WindowId;
+data ResourceIds.WindowId;
+data Command.XRequest;
+data Event.XResponse;
+type Sockets.AsyncInput = (Sockets.Descriptor, Sockets.AEvent);
+data Sockets.AEvent;
+data Sockets.SocketRequest;
+data Sockets.Descriptor;
+data Sockets.SocketResponse;
+type Xtypes.XDisplay = Xtypes.Display;
+data Xtypes.Display;
+data _Request = ReadFile Prelude.String | WriteFile Prelude.String Prelude.String | AppendFile Prelude.String Prelude.String | ReadBinFile Prelude.String | WriteBinFile Prelude.String () | AppendBinFile Prelude.String () | DeleteFile Prelude.String | StatusFile Prelude.String | ReadChan Prelude.String | AppendChan Prelude.String Prelude.String | ReadBinChan Prelude.String | AppendBinChan Prelude.String () | StatusChan Prelude.String | Echo Prelude.Bool | GetArgs | GetEnv Prelude.String | SetEnv Prelude.String Prelude.String | ReadChannels [Prelude.String] | ReadBinChannels [Prelude.String] | CreateProcess _Dialogue | CreateDirectory Prelude.String Prelude.String | OpenFile Prelude.String Prelude.Bool | OpenBinFile Prelude.String Prelude.Bool | CloseFile Prelude._File | ReadVal Prelude._File | ReadBinVal Prelude._File | WriteVal Prelude._File Prelude.Char | WriteBinVal Prelude._File () | Sleep Prelude.Double | ChangeDirectory Prelude.String | GetTime | DeleteDirectory Prelude.String | System Prelude.String | ReadDirectory Prelude.String | XCommand (Xtypes.XDisplay, ResourceIds.XWId, Command.XCommand) | GetAsyncInput | GetCpuTime | GetProgName | GetLocalTime | SigAction Prelude.Int SigAct | Exit Prelude.Int | ReadFileScattered Prelude.String [Prelude.Int] | Select [Sockets.Descriptor] | SocketRequest Sockets.SocketRequest | XRequest (Xtypes.XDisplay, ResourceIds.XWId, Command.XRequest) | ReadFileFast Prelude.String | RenameFile Prelude.String Prelude.String | GetCurrentDirectory | H_OpenFile Prelude.String Prelude.Int | H_Close Prelude._File | H_FileSize Prelude._File | H_IsEOF Prelude._File | H_SetBuffering Prelude._File Prelude.Int | H_GetBuffering Prelude._File | H_Flush Prelude._File | H_Seek Prelude._File Prelude.Int Prelude.Int | H_GetFlags Prelude._File | H_GetChar Prelude._File | H_UnGetChar Prelude._File Prelude.Int | H_PutChar Prelude._File Prelude.Int | H_PutString Prelude._File Prelude.String | H_GetFile Prelude._File | H_Select ([Prelude._File], [Prelude._File], [Prelude.Double]) | H_CCall _CPointer [_CUnion] _CUnion | __RunAnswer __Answer | H_GetTimeZone Prelude.Double | H_GetErrno | H_GetPermissions Prelude.String | H_Chmod Prelude.String Prelude.Int;
+data __Answer = __Answer ?a;
+data _CUnion = _CUInt Prelude.Int | _CUDouble Prelude.Double | _CUString Prelude.String | _CUPointer _CPointer | _CUByteVector _ByteVector._ByteVector;
+newtype _CPointer = _CPointer Prelude.Int;
+data SigAct = SAIgnore | SADefault | SACatch (Prelude.String -> _Dialogue);
+data _Response = Success | Str Prelude.String | Bn () | Failure D_IOError | Tag [(Prelude.String, Prelude.Char)] | BinTag [(Prelude.String, ())] | StrList [Prelude.String] | Fil Prelude._File | Dbl Prelude.Double | AsyncInput Sockets.AsyncInput | SocketResponse Sockets.SocketResponse | XResponse Event.XResponse | IntResp Prelude.Int | SelectResp [([Prelude._File], [Prelude._File], [Prelude.Double])] | SigActResp SigAct | CCallResp _CUnion | GetTimeZoneResp Prelude.Bool Prelude.String Prelude.Int;
+data D_IOError = WriteError Prelude.String | ReadError Prelude.String | SearchError Prelude.String | FormatError Prelude.String | OtherError Prelude.String;
+type _Dialogue = [_Response] -> [_Request];
+instance Prelude.Eq _CUnion {-# DERIVED #-};
+instance Prelude.Eq _CPointer {-# DERIVED #-};
+instance Prelude.Eval _Request {-# DERIVED #-};
+instance Prelude.Eval __Answer {-# DERIVED #-};
+instance Prelude.Eval _CUnion {-# DERIVED #-};
+instance Prelude.Eval _CPointer {-# DERIVED #-};
+instance Prelude.Eval SigAct {-# DERIVED #-};
+instance Prelude.Eval _Response {-# DERIVED #-};
+instance Prelude.Eval D_IOError {-# DERIVED #-};
+instance Prelude.Show Command.XCommand {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Command.XRequest {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Event.XEvent {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Event.XResponse {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Prelude._File {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Prelude.Show ResourceIds.WindowId {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Sockets.AEvent {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Sockets.Descriptor {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Sockets.SocketRequest {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Sockets.SocketResponse {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Xtypes.Display {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show _Request {-# DERIVED #-};
+instance Prelude.Show __Answer {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Prelude.Show _CUnion {-# DERIVED #-};
+instance Prelude.Show _CPointer {-# DERIVED #-};
+instance Prelude.Show SigAct {-# DERIVED #-};
+instance Prelude.Show _Response {-# DERIVED #-};
+instance Prelude.Show D_IOError {-# DERIVED #-}
+}

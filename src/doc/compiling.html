@@ -1,0 +1,415 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Compiler flags</title>
+</head>
+
+<body>
+<h1>Compiler flags</h1>
+
+<h3>Ordinary flags</h3>
+<ul>
+  <li>-c<br>
+      Separate compilation flag.  Will produce a ``.o'' file
+      only, without linking.
+  <li>-D<var>name</var><br>
+      Define a symbol (this flag is sent to the
+      preprocessor).
+  <li>-I<var>name</var><br>
+      Search for include files in <var>name</var> (this flag is sent
+      to the preprocessor).
+  <li>-static<br>
+      Link the resulting program statically.
+  <li>-o <var>name</var><br>
+      Name the executable file <var>name</var>.
+  <li>-noflags<br>
+      Generate a binary that does not decode any flags.
+  <li>-S<br>
+      Produce an assembly file only.  This file has suffix ``.s''.
+  <li>-T<br>
+      Produce code to enable runtime tracing.  For further information look a the
+      section on runtime flags.
+  <li>-O<br>
+      Optimize the program for speed at the cost of longer compilation time and a bigger object file.
+      See further below.
+  <li>-p<br>
+      Enable profiling with prof.
+  <li>-pg<br>
+      Enable profiling with gprof.  The information from gprof is difficult
+      to interpret since the order in which functions are called with lazy evaluation
+      is rather strange.
+  <li>-ph<br>
+      Enable heap profiling.  For further information look at the section on
+      runtime flags.
+  <li>-i<var>path</var><br>
+      Prepend path to the include path.  If <var>path</var> is empty the include path is emptied.
+      A leading ``%'' in a path component will insert the value of the ``HBCDIR'' environment variable.
+  <li>-cpp<br>
+  <li>-M<br>
+      Enable preprocessing by the C preprocessor for Haskell.
+  <li>-lmlx<br>
+      Compile a program using the fudgets library.
+      A shorthand for the flags ``-u LMLX -i%/lmlx'' and the arguments ``-lX11 -lXext'' to the linker.
+  <li>-showheap<br>
+      Link the program with the heap display code, use the ``-xc'' flag
+      when running the program.
+  <li>-noflags<br>
+      Link the program so that with built-in flag decoding inhibited.
+  <li>-u <var>sym</var><br>
+  <li>-l<var>lib</var><br>
+  <li>-s<br>
+      Sent to the linker.
+  <li>-v<br>
+      Make the front end verbose.
+</ul>
+<p>
+Compiler flags can also be given on the first line of a file
+using the <tt>COMPILERFLAGS</tt> pragma.
+
+<h3>Code generator related flags</h3>
+
+The following subset of the flags that may be of interest to the user.
+<ul>
+  <li>-fauto-specialize<br>
+      Do automatic specialization of functions within a module.
+      An overloaded function is specialized to whatever particular types it is used at.
+  <li>-fconctype<br>
+      Compile conctypes.
+  <li>-fno-eta-expand<br>
+      Do not do the reverse eta-reduction to saturate applications.
+  <li>-fno-evalupdunw<br>
+      Do not use runtime system code to return the value of a variable.
+  <li>-fpat-bin-update<br>
+  <li>-fpbu<br>
+      Use a space leak avoiding compilation of pattern bindings.
+  <li>-fshow-top-types<br>
+      Print the type of all top level definitions in a module, regardless if they are
+      exported or not.  This output can be used with the shell script addsign to merge
+      it into the source.  All of this is performed by the command
+      ``<tt>hbcaddsign </tt><var>file</var>''.
+      This flag can be combined with ``-f-no-Num-overload'' to remove numeric overloading
+      from a program.
+  <li>-fno-zap-redex<br>
+      Do not overwrite the top application node when entering a function.
+      This gives somewhat faster, but leakier, programs.
+  <li>-finst-with-c-t<br>
+      Follow the Haskell rule for how instance declarations are
+      exported.
+  <li>-flocal-quant<br>
+      Allow locally quantified type variables in data type
+      declarations.
+  <li>-fno-syn-expand<br>
+      Do not expand type synonyms as aggressively in the interface files.
+</ul>
+
+
+<h3>CPU specific flags</h3>
+<ul>
+  <li>-mfar-jump<br>
+      Emit code that can do far jumps on the SPARC.  This may be necessary for code
+      that is to be used in the interactive system since normal jumps can only
+      jump 8 Mbytes.  
+  <li>-mi486<br>
+      Emit code which is (just slightly) better for 486 than 386.
+  <li>-msparc8<br>
+      Use the smul/sdiv instructions available on SPARC-8.
+  <li>-msolaris<br>
+      Adapt code generator to Solaris conventions.
+  <li>-mlinux<br>
+      Adapt code generator to Linux conventions.
+  <li>-mPOWER<br>
+      Use the POWER version of the PPC instruction set.
+  <li>-mPowerPC<br>
+      Use the PowerPC version of the PPC instruction set.
+</ul>
+
+
+<h3>Optimization</h3>
+When the ``-O'' flag is used the following flags are in effect:
+<tt>
+-fauto-specialize,
+-ffail-strict,
+-ffast-gc-check,
+-fno-pre-tuple-sel,
+-fstrict-call,</tt> and
+<tt>-ftest-eval</tt>.
+<p>
+If the program is linked with the ``-O'' flag it will also use the memory
+more aggresively (at the expense of a small working set).
+
+<h2>Error messages</h2>
+<h3>Syntax analyser messages</h3>
+NOT YET WRITTEN!!!
+
+
+<h3>Compiler messages</h3>
+<b>This section is incomplete.</b>
+
+<ul>
+<li>[1] Varying number of args to <var>id</var><br><br>
+	All lhs for a function binding must have the same number of patterns.
+
+<li>[2] Different function names at <var>id</var><br>
+	LML
+
+<li>[3] Bad function: <var>id</var><br>
+	Should not happen
+
+<li>[4] Bad identifier in pedantic mode: <var>id</var><br>
+	Haskell restricts the use of the first character in identifiers.
+
+<li>[5] Bad identifiers in pedantic mode: <var>id</var>...<br>
+	see [4]
+
+<li>[6] Illegal module name: <var>id</var><br>
+	User-defined module names mut not begin with Prelude
+
+<li>[7] Bad deriving for: <var>id</var>...<br>
+	Appendix D The requested instances could not be derived
+
+<li>[8] Redefinition of imported entity: <var>id</var>...<br>
+	? The module redefines something imported.
+
+<li>[9] Circular class structure <br>
+	The superclass relation must not be cyclic
+
+<li>[10] Extra definitions in class <br>
+	Only defaults for methods may be declared in a class
+
+<li>[11] Type variable not in all methods for class <br>
+	All method types must mention the class variable
+
+<li>[12] Constrained variable in class <br>
+	No method type must constrain the class variable
+
+<li>[13] Malformed class declaration<br>
+	Should not happen
+
+<li>[14] Instance declaration contains extra bindings: <var>id</var>...<br>
+	An instance declaration may only bind the class methods
+
+<li>[16] Unknown class in instance declaration <br>
+	The instance declaration is invalid because the class id is not a class
+
+<li>[17] Multiple type variables in instance declaration <br>
+	4.3.2 (Pedantic only) The instance declaration must have at most one type variable
+
+<li>[18] Bad identifiers in pedantic mode: <var>id</var>...<br>
+	see [4]
+
+<li>[19] Circular type synonyms.<br>
+	Mutually recursive type synonyms not allowed
+
+<li>[20] Unknown id among <var>id</var>...<br>
+	A type signature non-existing binding
+
+<li>[21] Multiple definition in binding: <var>id</var>...<br>
+	Multiply declared identifiers
+
+<li>[22] Undefined type <var>id</var><br>
+	The id is not a type
+
+<li>[23] Bad type arity <br>
+	A type constructor was used with the wrong number of arguments
+
+<li>[24] Bad type synonym arity <br>
+	A type synonym was used with the wrong number of arguments
+
+<li>[25] Undefined class <var>id</var><br>
+	Undefined class in context
+
+<li>[26] Not a class <var>id</var><br>
+	Non-class in context
+
+<li>[27] Unbound type var(s) <var>tid</var><br>
+	Data type definition contains type vars that are not in the lhs
+
+<li>[28] Duplicate type var(s) in <br>
+	Non-linear lhs in a data type definition
+
+<li>[29] Non-classes in deriving: <var>id</var>...<br>
+	Non-class in deriving
+
+<li>[30] Synonym has bad type var: <br>
+	Synonym has non-linear lhs or unbound var in rhs
+
+<li>[31] Bad synonym definition: <br>
+	Rhs in synonym is not a type
+
+<li>[32] Bad type var<br>
+	LML, conctype
+
+<li>[33] Undefined identifier <var>id</var><br>
+	Undefined identifier in expression
+
+<li>[34] Bad conditional pattern (overlap?) near<br>
+	? 
+
+<li>[35] Constructor with too many arguments: <br>
+	(Really a type error)
+
+<li>[36] Constructor with too few arguments in pattern: <br>
+	Constructor applications in patterns have to be saturated
+
+<li>[37] Pattern binding does not bind any variables: <br>
+	Not really an error, but unlikely to be correct
+
+<li>[38] Bad defaults: <br>
+	Only numeric classes are allowed as defaults
+
+<li>[39] More than one default<br>
+	A module must contain at most one default
+
+<li>[40] Bad restriction: <br>
+	see [83]
+
+<li>[41] Bad synonym: <br>
+	see [83]
+
+<li>[42] Bad instance: <br>
+	see [83]
+
+<li>[43] Bad type def: <br>
+	see [83]
+
+<li>[44] Multiple signatures in <br>
+	It is illegal to give more than one type signature for one variable.
+
+<li>[45] Id(s) <var>id</var>... not in scope for signature <br>
+	It is illegal to give a type signature for a variable bound in an outer scope.
+
+<li>[46] Identifiers without original names in interface files: <var>id</var>...<br>
+
+<li>[47] Module does not import: <var>id</var>...<br>
+
+<li>[48] Multiply defined: <var>id</var>...<br>
+
+<li>[49] Multiple visible names: <var>id</var>...<br>
+
+<li>[50] Not a type <var>id</var><br>
+
+<li>[51] Exported constructors for <br>
+
+<li>[52] Exported methods for <br>
+
+<li>[53] Export id <var>id</var> not defined<br>
+
+<li>[54] Impossible to resolve ambiguously overloaded tyvar(s) in class(es) <br>
+
+<li>[55] Ambiguously overloaded tyvar(s) in class(es) <br>
+
+<li>[56] Not an instance <br>
+
+<li>[57] Ambiguous instances for <br>
+
+<li>[58] Type restriction context not compatible with deduced: <br>
+
+<li>[59] Bad restriction <br>
+
+<li>[61] occurence<br>
+
+<li>[62] Bad overloading in exports: <br>
+
+<li>[63] Cannot unify types (occurence)<br>
+
+<li>[64] Cannot unify types (occurence)<br>
+
+<li>[65] Cannot unify types:<br>
+	Cannot happen(?)
+
+<li>[66] unify1 <br>
+
+<li>[67] unify1 <br>
+	Cannot happen(?)
+
+<li>[68] unify arity<br>
+	Cannot happen(?)
+
+<li>[70] Later pattern completely overlapped<br>
+
+<li>[71] Mismatching constructor type<br>
+
+<li>[72] Variable <var>id</var> leftmost in pattern<br>
+
+<li>[73] Duplicate id in pattern<br>
+
+<li>[74] Bad pattern<br>
+
+<li>[75] No instance for superclass <br>
+
+<li>[76] Instance context does not imply class context <br>
+
+<li>[77] Too many superclass instances <br>
+
+<li>[78] Bad type variables in class declaration: <br>
+
+<li>[79] Type or class must be in this module: <br>
+
+<li>[80] Bad type variables in instance declaration: <br>
+
+<li>[81] Type synonym in instance declaration: <br>
+
+<li>[83] context not implied <br>
+
+<li>[84] Unused type var in context: <br>
+	The context c must only contain type variables referenced in t.
+
+<li>[85] Export id <var>id</var> not defined<br>
+	LML
+
+<li>[86] Bad export specifiers for <var>id</var>...<br>
+
+<li>[87] Duplicates in export list <var>id</var>...<br>
+
+<li>[88] Module <var>id</var> should export <var>id</var>...<br>
+
+<li>[89] Bad import specifiers for <var>id</var>...<br>
+
+<li>[90] Multiple instance declarations <var>inst</var>...<br>
+
+<li>[91] Bad renaming: <var>id</var> to <var>id</var>...<br>
+	The renaming would violate the namespace structure.
+
+<li>[93] Existential type escapes: <var>type</var><br>
+	An existential type must not escape the scope of its introducing variable.
+
+<li>[94] Existential types not allowed<br>
+	LML Show functions can only be made for non-existential types.
+
+<li>[95] Illegal value specialized: <var>id</var><br>
+<li>[96] Illegal instance specialized: <var>inst</var><br>
+<li>[97] Not a record constructor: <var>id</var><br>
+<li>[98] Extra/duplicate fields: <var>id</var> ...<br>
+<li>[99] Unknown field identifier: <var>id</var><br>
+<li>[100] No updateable constructors: <var>expr</var>
+<li>[101] Duplicate fields: <var>id</var> ...<br>
+<li>[102] No instance <var>inst</var><br>
+<li>[103] Kind error (<var>kind</var> vs. <var>kind</var>) among definition of: <var>id</var> ...<br>
+<li>[104] Kind error (<var>kind</var> vs. <var>kind</var>) in: <var>type</var><br>
+<li>[105] Kind error (<var>kind</var> vs. <var>kind</var>) in signature: <var>id</var> ...<br>
+<li>[106] Empty record update<br>
+<li>[107] Name clash for imported module names<br>
+<li>[108] Uninitialized strict field: <var>id</var><br>
+<li>[109] Type definition '<var>type</var>' should have Eval context <var>ctx</var><br>
+<li>[110] Explicit Eval instances not allowed<br>
+<li>[111] Bad fields in record update: <var>id</var> ...<br>
+<li>[112] h.o. unify <var>type</var> <var>type</var><br>
+</ul>
+
+<h3>Linker messages</h3>
+The linker may complain about undefined symbols.  Usually this means
+that that you have forgotten to include some files during linking.  It
+is usually possible to figure out the names of the functions by
+looking at the symbols the linker complains about.
+<p>
+
+If any of the symbols ``_USE_none'', ``_USE_heap'', or ``_USE_time'' are
+undefined it means that you have tried to mix files compiled with
+different profiling options.
+<p>
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Sat Jul 27 18:46:29 MET DST 1996
+<!-- hhmts end -->
+</body> </html>

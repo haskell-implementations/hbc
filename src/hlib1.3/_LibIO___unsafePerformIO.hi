@@ -1,0 +1,4 @@
+interface _LibIO___unsafePerformIO where {
+{-# IMPORTING _LibIO__mkErrMsg, _LibDialogue, _LibIO #-}
+_unsafePerformIO :: (_LibIO.IO a) -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

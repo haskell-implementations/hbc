@@ -1,0 +1,3 @@
+import msfunstart: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Id->(Int->(#5 (List Mcode) (List *a) (List *b) (List *c) Int)))))) {# ARITY _ = 5 #}{# STRICTNESS _ = "T,T" ST #};
+import mfunend: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(Int->((List Gcode)->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List *a) (List Wuseinfo) (List Wuseinfo) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "T,T" ST #};
+import mfunstart: ((#3 (List String) (List (#3 Int Int Int)) *a)->(Int->((List Gcode)->((Option *b)->(Id->(Int->(#5 (List Mcode) (List *c) (List *d) (List *e) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "0,0" ST #};

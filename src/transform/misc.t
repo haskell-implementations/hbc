@@ -1,0 +1,14 @@
+import countarrows: (Ttype->Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import gids: (Texpr->(List Id)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import Useq: ((List (*a->(*b # *a)))->(*a->((List *b) # *a))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0,F" ST #};
+import epart: ((*a # *b)->*b) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import ppart: ((*a # *b)->*a) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import isC: (Texpr->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import isI: (Texpr->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import leftmostid: (Texpr->Id) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import dollar: Texpr {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import argl: (Texpr->(List Texpr)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import prlist: ((*a->(List Char))->((List *a)->(List Char))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import splitl: (Int->((List *a)->((List *a) # (List *a)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0,F" ST #};
+import getids: (Texpr->(List Id)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import leftmost: (Texpr->Texpr) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};

@@ -1,0 +1,15 @@
+interface Numeric__formatRealFloat where {
+{-# IMPORTING Array, Char #-}
+formatRealFloat :: (Prelude.RealFloat a) => FFFormat -> (Prelude.Maybe Prelude.Int) -> a -> Prelude.String   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+roundTo :: Prelude.Int -> Prelude.Int -> [Prelude.Int] -> (Prelude.Int, [Prelude.Int])   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-};
+floatToDigits :: (Prelude.RealFloat a) => Prelude.Integer -> a -> ([Prelude.Int], Prelude.Int)   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+minExpt :: Prelude.Int   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+maxExpt :: Prelude.Int   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+expt :: Prelude.Integer -> Prelude.Int -> Prelude.Integer   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-};
+expts :: _LibArray.Array Prelude.Int Prelude.Integer   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+data FFFormat = FFExponent | FFFixed | FFGeneric;
+instance Prelude.Eq FFFormat {-# DERIVED #-};
+instance Prelude.Eval FFFormat {-# DERIVED #-};
+instance Prelude.Ord FFFormat {-# DERIVED #-};
+instance Prelude.Show FFFormat {-# DERIVED #-}
+}

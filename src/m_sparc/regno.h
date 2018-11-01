@@ -1,0 +1,9 @@
+#define r24 24
+#define r27 27
+#define r28 28
+#define r29 29
+#define r30 30
+#define r31 31
+#define r23 23
+#define r11 11
+#define r2 2

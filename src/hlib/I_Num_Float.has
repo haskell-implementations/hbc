@@ -1,0 +1,11 @@
+module I_Num_Float where
+instance Num Float where
+	x + y = {-:"MM.Num.Float.+":-} x y
+	x - y = {-:"MM.Num.Float.-":-} x y
+	x * y = {-:"MM.Num.Float.*":-} x y
+	negate x = {-:"MM.Num.Float.negate":-} x
+	abs x = if {-:"MM.Ord.Float.<":-} x 0.0 then {-:"MM.Num.Float.negate":-} x else x
+	signum x = if {-:"MM.Ord.Float.<":-} x 0.0 then {-:"MM.Num.Float.negate":- 1.0 else if {-:"MM.Ord.Float.>":-} x 0.0 then 1.0 else 0.0
+        fromInt x = {-:"MM.Num.Float.fromInt":-} x
+	fromInteger x = encodeFloat x 0
+	{-:"PfromInteger":-} x = case x{-# NOEVAL #-} of { (_,_,d) -> {-:"PDouble2Float":-} d }

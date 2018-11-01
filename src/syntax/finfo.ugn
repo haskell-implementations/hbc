@@ -1,0 +1,8 @@
+%{
+#include "include.h"
+%}
+type finfot;
+	nofinfo	: < >;
+	finfo	: < fi1: id; fi2: id; fi3: int; >;
+	hfinfo  : < pfinline: list /*really tree*/; pfstrict: id; pfentry: list /* of strings */; pfarity: int; pffrsize: int; pfinsts: list /* of ttype */; pfevaled: int; >;
+end;

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Basic types</title>
+</head>
+
+<body>
+<h1>Basic types</h1>
+
+Tuples are only supported up to a bounded size (currently 30).
+<hr>
+The normal instances (Eq, Ord, Read, Show, Ix) for tuples are only available
+up to size 5.
+<hr>
+The class <tt>Num</tt> has a method <tt>fromInt</tt> to convert
+from an <tt>Int</tt> to the type.
+<hr>
+The class <tt>Integral</tt> has the new method <tt>toInt</tt> to
+convert from the type to an <tt>Int</tt>.
+<hr>
+The class <tt>Show</tt> has the new method <tt>showsType</tt> which
+is similar to <tt>shows</tt>, but shows the type instead.  The default
+method for <tt>showsPrec</tt> shows the type enclosed in ``<tt><< >></tt>''.
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Sun Nov 10 20:25:16 MET 1996
+<!-- hhmts end -->
+</body> </html>

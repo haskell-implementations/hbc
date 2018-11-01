@@ -1,0 +1,24 @@
+module IOMutVar(MutableVar, newVar, readVar, writeVar, sameVar) where
+import LMLunsafe
+
+#define seq {-:"Pseq":-}
+
+newtype MutableVar a = MVar (Ref a)
+
+newVar   :: a -> IO (MutableVar a)
+readVar  :: MutableVar a -> IO a
+writeVar :: MutableVar a -> a -> IO ()
+sameVar  :: MutableVar a -> MutableVar a -> Bool
+
+newVar x = 
+	return (MVar ({-:"Pref":-} x))
+readVar (MVar r) =
+	-- We must force the deref to happen before the return.
+	let v = {-:"Pderef":-} r
+	in  seq v (return v)
+writeVar (MVar r) x =
+	case {-:"Passign":-} r x of
+	() -> return ()
+sameVar (MVar x) (MVar y) =
+        {-:"Peqref":-} x y
+

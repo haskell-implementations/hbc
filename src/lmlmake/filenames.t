@@ -1,0 +1,11 @@
+import joinPath: ((List Char)->((List Char)->(List Char))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0,F" ST #};
+import splitPath: ((List Char)->((List Char) # (List Char))) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,T" ST #};
+import dirName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import isAbsolute: ((List Char)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import isInterfaceFileName: ((List Char)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import isSourceFileName: ((List Char)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import litSourceFileName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import executableFileName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import interfaceFileName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import sourceFileName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import objectFileName: ((List Char)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};

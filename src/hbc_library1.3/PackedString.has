@@ -1,0 +1,167 @@
+module PackedString(PackedString,
+	packString, unpackPS,
+	append,(++),break,concat,cons,drop,dropWhile,
+	elem,filter,foldl,foldr,fromList,head,(!!),
+	length,lines,map,nil,null,
+	reverse,span,splitAt,substr,tail,take,
+	takeWhile,toList,unlines,unwords,words,
+	hPut, hGetContents,
+	Handle	-- silly, but avoids lots of closure problems.
+	) where
+
+import _ByteVector
+import IO
+import Char(isSpace)
+
+newtype PackedString = P _ByteVector
+
+instance Eq PackedString where
+    P p1 == P p2 = compareBV p1 p2 == 0
+    P p1 /= P p2 = compareBV p1 p2 /= 0
+
+instance Ord PackedString where
+    P p1 <  P p2 = compareBV p1 p2 <  0
+    P p1 <= P p2 = compareBV p1 p2 <= 0
+    P p1 >  P p2 = compareBV p1 p2 >  0
+    P p1 >= P p2 = compareBV p1 p2 >= 0
+
+instance Show PackedString where
+    showsPrec p (P ps) = showsPrec p (unpackBV ps)
+    showsType _ = showString "PackedString"
+
+instance Read PackedString where
+    readsPrec l s = [(P (packBV x), y) | (x, y) <- readsPrec l s]
+
+-- appendBV p1 p2
+-- appends two strings
+append, (++) :: PackedString -> PackedString -> PackedString
+append (P p1) (P p2) = P (appendBV p1 p2)
+P p1 ++ P p2 = P (appendBV p1 p2)
+
+break :: (Char -> Bool) -> PackedString -> (PackedString, PackedString)
+break f p = span (not . f) p
+
+-- XXX very slow
+concat :: [PackedString] -> PackedString
+concat ps = P (concat' ps)
+concat' [] = nilBV
+concat' (P p:ps) = appendBV p (concat' ps)
+
+cons :: Char -> PackedString -> PackedString
+cons c (P p) = P (appendBV (packBV [c]) p)
+
+drop :: Int -> PackedString -> PackedString
+drop i (P p) = let l = lengthBV p in P (substrBV p (i `min` l) l)
+
+dropWhile :: (Char -> Bool) -> PackedString -> PackedString
+dropWhile f (P p) = P (dw 0 (lengthBV p))
+	where dw :: Int -> Int -> _ByteVector
+	      dw n l =
+		if n < l then
+		    if f (indexBV p n) then dw (n+1) l else substrBV p n l
+		else
+		    nilBV
+
+elem :: Char -> PackedString -> Bool
+elem c (P p) = elemi 0 (lengthBV p)
+  where elemi :: Int -> Int -> Bool
+	elemi n l = n <= l && indexBV p n == c || elemi (n+1) l
+
+filter :: (Char -> Bool) -> PackedString -> PackedString
+filter p (P s) = (P . packBV . Prelude.filter p . unpackBV) s
+
+foldl :: (a -> Char -> a) -> a -> PackedString -> a
+foldl f z (P p) = (Prelude.foldl f z . unpackBV) p
+
+foldr :: (Char -> a -> a) -> a -> PackedString -> a
+foldr f z (P p) = (Prelude.foldr f z . unpackBV) p
+
+head :: PackedString -> Char
+head (P p) = indexBV p 0
+
+-- index p i
+-- returns the character at position i (0 based)
+P p !! i = indexBV p i
+
+-- length p
+-- returns the length of a packed string
+length (P p) = lengthBV p
+
+lines :: PackedString -> [PackedString]
+lines s =
+	if null s then []
+	else let (l, s') = break (== '\n') s
+             in  l : if null s' then [] else lines (tail s')
+
+map :: (Char -> Char) -> PackedString -> PackedString
+map f (P p) = (P . packBV . Prelude.map f . unpackBV) p
+
+-- nil
+-- is the empty string
+nil = P nilBV
+
+null :: PackedString -> Bool
+null (P p) = lengthBV p == 0
+
+-- converts a list of characters to a packed string
+--
+packString cs = P (packBV cs)
+fromList cs = P (packBV cs)
+
+reverse :: PackedString -> PackedString
+reverse (P p) = (P . packBV . Prelude.reverse . unpackBV) p
+
+span :: (Char -> Bool) -> PackedString -> (PackedString, PackedString)
+span f (P p) = sp 0 (lengthBV p)
+	where sp :: Int -> Int -> (PackedString, PackedString)
+	      sp n l =
+		if n < l then
+		    if f (indexBV p n) then sp (n+1) l else (P (substrBV p 0 n), P (substrBV p n l))
+		else
+		    (P p, P nilBV)
+
+splitAt :: Int -> PackedString -> (PackedString, PackedString)
+splitAt i p = (take i p, drop i p)
+
+-- substr p l h
+-- picks out characters l (inclusive) through h (exclusive)
+-- making a string of length h - l.  substr p 0 (length p)
+-- is the identity.  substr p n n gives is empty.
+substr :: PackedString -> Int -> Int -> PackedString
+substr (P p) l h = P (substrBV p l h)
+
+tail :: PackedString -> PackedString
+tail (P p) = P (substrBV p 1 (lengthBV p))
+
+take :: Int -> PackedString -> PackedString
+take i (P p) = P (substrBV p 0 (i `min` lengthBV p))
+
+takeWhile :: (Char -> Bool) -> PackedString -> PackedString
+takeWhile f (P p) = tw 0 (lengthBV p)
+	where tw :: Int -> Int -> PackedString
+	      tw n l =
+		if n < l then
+		    if f (indexBV p n) then tw (n+1) l else P (substrBV p 0 n)
+		else
+		    P p
+
+unlines :: [PackedString] -> PackedString
+unlines = P . packBV . Prelude.unlines . Prelude.map toList
+
+unpackPS, toList :: PackedString -> String
+unpackPS (P p) = unpackBV p
+toList (P p) = unpackBV p
+
+unwords :: [PackedString] -> PackedString
+unwords = P . packBV . Prelude.unwords . Prelude.map toList
+
+words :: PackedString -> [PackedString]
+words s =
+	let s' = dropWhile isSpace s
+	in  if null s' then [] else let (w, s'') = break isSpace s' in w : words s''
+
+-- Improve this!  XXX
+hPut :: Handle -> PackedString -> IO ()
+hPut h (P p) = hPutStr h (unpackBV p)
+
+hGetContents h = IO.hGetContents h >>= return . fromList

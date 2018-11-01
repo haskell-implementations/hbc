@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Ord Float {-# STRICTNESS (<) = "0&1,0&1" ST #-} {-# STRICTNESS (<=) = "0&1,0&1" ST #-} {-# STRICTNESS (>=) = "0&1,0&1" ST #-} {-# STRICTNESS (>) = "0&1,0&1" ST #-} {-# STRICTNESS max = "0&1,0&1" ST #-} {-# STRICTNESS min = "0&1,0&1" ST #-} {-# STRICTNESS compare = "0&1,0&1" ST #-}
+}

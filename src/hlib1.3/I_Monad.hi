@@ -1,0 +1,10 @@
+interface PreludeX where {
+instance Functor Maybe {-# STRICTNESS map = "1,1" ST #-};
+instance Functor [] {-# STRICTNESS map = "1,F" ST #-};
+instance Monad Maybe {-# STRICTNESS (>>=) = "0,F" ST #-} {-# STRICTNESS (>>) = "T,F" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance Monad [] {-# STRICTNESS (>>=) = "0,F" ST #-} {-# STRICTNESS (>>) = "T,F" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance MonadPlus Maybe {-# STRICTNESS (++) = "0,0&1" ST #-};
+instance MonadPlus [] {-# STRICTNESS (++) = "0,F" ST #-};
+instance MonadZero Maybe {-# STRICTNESS zero = "T,T" ST #-};
+instance MonadZero [] {-# STRICTNESS zero = "T,T" ST #-}
+}

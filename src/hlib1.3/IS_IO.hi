@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance (Show a) => Show (_LibIO.IO a) {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

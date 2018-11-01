@@ -1,0 +1,5 @@
+interface PreludeX where {
+class Eval a where {
+
+    }
+}

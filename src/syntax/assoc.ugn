@@ -1,0 +1,9 @@
+%{
+#include "include.h"
+%}
+type assoc;
+	leftassoc : <>;
+	rightassoc : <>;
+	nonassoc : <>;
+	bothassoc : <>;
+end;

@@ -1,0 +1,4 @@
+for d in $*
+do
+	if [ ! -d $d ] ; then mkdir $d; fi
+done

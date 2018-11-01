@@ -1,0 +1,5 @@
+interface _XI_Command where {
+{-# IMPORTING _XStuff #-}
+instance Show Command.XCommand {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Show Command.XRequest {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

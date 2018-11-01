@@ -1,0 +1,635 @@
+interface Prelude where
+
+infixr 9  .
+infixl 9  !!
+infixr 8  ^, ^^, **
+infixl 7  *, /, `quot`, `div`, `rem`, `mod`
+infixl 6  +  --, -
+infix  5  \\
+infixr 5  ++, :
+infix  4  ==, /=, <, <=, >=, >
+infix  4  `elem`, `notElem`
+infixr 3  &&
+infixr 2  ||
+infixl 1  >>, >>=
+infixr 0  $, `seq`
+
+class  Eq a  where
+    (==), (/=)		:: a -> a -> Bool
+
+class  (Eq a) => Ord a  where
+    (<), (<=), (>=), (>):: a -> a -> Bool
+    max, min		:: a -> a -> a
+    compare		:: a -> a -> Ordering
+
+class  (Eq a, Eval a, Show a) => Num a  where
+    (+), (-), (*)	:: a -> a -> a
+    negate		:: a -> a
+    abs, signum		:: a -> a
+    fromInteger		:: Integer -> a
+    fromInt		:: Int -> a			-- Haskell B.
+    {-:"PfromInteger":-} :: (Integer, Int, Double) -> a
+
+class  (Num a, Ord a) => Real a	where
+    toRational		::  a -> Ratio.Rational
+
+class  (Enum a, Real a) => Integral a  where
+    quot, rem, div, mod	:: a -> a -> a
+    quotRem, divMod	:: a -> a -> (a,a)
+    toInteger		:: a -> Integer
+    toInt		:: a -> Int			-- Haskell B.
+
+class  (Num a) => Fractional a  where
+    (/)			:: a -> a -> a
+    recip		:: a -> a
+    fromRational	:: Ratio.Rational -> a
+    {-:"PfromRational":-} :: (Ratio.Rational, Double) -> a
+
+class  (Fractional a) => Floating a  where
+    pi			:: a
+    exp, log, sqrt	:: a -> a
+    (**), logBase	:: a -> a -> a
+    sin, cos, tan	:: a -> a
+    asin, acos, atan	:: a -> a
+    sinh, cosh, tanh	:: a -> a
+    asinh, acosh, atanh :: a -> a
+
+class  (Fractional a, Real a) => RealFrac a  where
+    properFraction	:: (Integral b) => a -> (b,a)
+    truncate, round	:: (Integral b) => a -> b
+    ceiling, floor	:: (Integral b) => a -> b
+
+class  (Floating a, RealFrac a) => RealFloat a  where
+    floatRadix		:: a -> Integer
+    floatDigits		:: a -> Int
+    floatRange		:: a -> (Int,Int)
+    decodeFloat		:: a -> (Integer,Int)
+    encodeFloat		:: Integer -> Int -> a
+    exponent		:: a -> Int
+    significand		:: a -> a
+    scaleFloat		:: Int -> a -> a
+    isNaN, isInfinite, isDenormalized, isNegativeZero, isIEEE
+			:: a -> Bool
+
+-- Ix(Ix(..))
+class  (Ord a) => Ix.Ix a  where
+    range		:: (a,a) -> [a]
+    index		:: (a,a) -> a -> Int
+    inRange		:: (a,a) -> a -> Bool
+
+class  Enum a  where
+    toEnum		:: Int -> a
+    fromEnum		:: a -> Int
+    enumFrom		:: a -> [a]		-- [n..]
+    enumFromThen	:: a -> a -> [a]	-- [n,n'..]
+    enumFromTo		:: a -> a -> [a]	-- [n..m]
+    enumFromThenTo	:: a -> a -> a -> [a]	-- [n,n'..m]
+
+class  Bounded a where
+    minBound, maxBound	:: a
+
+type ReadS a = String -> [(a, String)]
+type ShowS = String -> String
+
+class  Show a  where
+    showsPrec :: Int -> a -> ShowS
+    showList  :: [a] -> ShowS
+    showsType :: a -> ShowS
+
+class  Read a  where
+    readsPrec :: Int -> ReadS a
+    readList  :: ReadS [a]
+
+class  (Functor :: (* -> *) -> *) f where
+    map :: (a -> b) -> (f a -> f b)
+
+class  (Monad :: (* -> *) -> *) m where
+    (>>=)	:: m a -> (a -> m b) -> m b
+    (>>)	:: m a -> m b -> m b
+    return	:: a -> m a
+
+class  (Monad m) => (MonadZero :: (* -> *) -> *) m where
+    zero	:: m a
+
+class (MonadZero m) => (MonadPlus :: (* -> *) -> *) m where
+    (++) :: m a -> m a -> m a
+
+class  Eval a
+
+-- Types
+
+data  Void
+
+data  () = ()
+
+data  Bool = False | True
+
+data  [] a = [] | a : [a]
+
+data  (->) a b
+
+data  Char {-# FLAT 256 #-}
+data  Int {-# FLAT 10000 #-}
+data  Integer
+data  Float
+data  Double
+-- Tuples are in PreludeTuple (built in to the compiler)
+--data (a,b) = (a,b) 		deriving (Eq, Ord, Ix, Show, Read, Bounded)
+
+data  _File
+
+type  String = [Char]
+
+data  (Integral a) => Ratio.Ratio a
+--instance Eval (Ratio.Ratio a)
+
+type  Ratio.Rational = Ratio.Ratio Integer
+
+data  Maybe a  =  Nothing | Just a
+
+data  Either a b  =  Left a | Right b
+
+data  Ordering = LT | EQ | GT
+
+type  StdIO.FilePath = String
+
+data  _LibDialogue._CPointer
+
+data  _ByteVector._ByteVector
+
+---
+-- These definitions are here only to make them accessible to
+-- the interactive system.
+data _LibDialogue._Response
+data _LibDialogue._Request
+_LibIO__ioToDialogue._ioToDialogue :: _LibIO.IO a -> [_LibDialogue._Response] -> [_LibDialogue._Request]
+_LibIO___unsafePerformIO._unsafePerformIO :: _LibIO.IO a -> a
+
+---------
+
+-- Stuff in the runtime system (or libraries) with unreachable names.
+
+{-:"Pfail":-}		:: String -> a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"Pcno":-}		:: a -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Pord":-}		:: a -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ptag":-}		:: Int -> a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Peqi":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Plti":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Plei":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Prange":-}		:: (a,a) -> [a]			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Pindex":-}		:: (a,a) -> a -> Int		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PinRange":-}	:: (a,a) -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PenumFT":-}		:: a -> a -> [a]		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PenumFTT":-}	:: a -> a -> a -> [a]		{-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1&2,F" ST #-}
+{-:"PenumFTTU":-}	:: a -> a -> a -> a -> [a]	{-# ARITY _ = 4 #-} {-# STRICTNESS _ = "0&1&(2|3),F" ST #-}
+{-:"Pnever":-}		:: a				{-# ARITY _ = 0 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"Pshowt":-}		:: a				{-# ARITY _ = 0 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"P_ord":-}		:: Char -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"P_chr":-}		:: Int -> Char			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"Pseq":-}		:: b -> a -> a			{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "T,F" ST #-}
+
+{-:"Pgeneq":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenne":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgengt":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenge":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenlt":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenle":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+
+{-:"PIntegerAdd":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerSub":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerMul":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerDiv":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerMod":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerDivMod":-}	:: Integer -> Integer -> (Integer,Integer)	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerNeg":-}	:: Integer -> Integer		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"PInt2Integer":-}	:: Int -> Integer		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"PInteger2Int":-}	:: Integer -> Int		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"Prindex":-}         :: a -> Int -> b		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Prindexu":-}        :: a -> Int -> b		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+
+{-:"PDouble2Float":-}   :: Double -> Float		{-# ARITY _  = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PFloat2Double":-}   :: Float -> Double		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PfloorDouble2Int":-}:: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PfloorFloat2Int":-} :: Float -> Int			{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PceilingDouble2Int":-} :: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PceilingFloat2Int":-}  :: Float -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"ProundDouble2Int":-}:: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"ProundFloat2Int":-} :: Float -> Int			{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"PintArray":-} :: (Int,Int) -> [(Int, b)] -> Array Int b
+{-:"PintIndex":-} :: Array Int a -> Int -> a
+
+{-:"Ps2_1":-}		:: (a, b)->a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps2_2":-}		:: (a, b)->b			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_1":-}		:: (a, b, c)->a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_2":-}		:: (a, b, c)->b			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_3":-}		:: (a, b, c)->c			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_1":-}		:: (a, b, c, d)->a		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_2":-}		:: (a, b, c, d)->b		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_3":-}		:: (a, b, c, d)->c		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_4":-}		:: (a, b, c, d)->d		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_1":-}		:: (a, b, c, d, e)->a		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_2":-}		:: (a, b, c, d, e)->b		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_3":-}		:: (a, b, c, d, e)->c		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_4":-}		:: (a, b, c, d, e)->d		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_5":-}		:: (a, b, c, d, e)->e		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_1":-}		:: (a, b, c, d, e, f)->a	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_2":-}		:: (a, b, c, d, e, f)->b	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_3":-}		:: (a, b, c, d, e, f)->c	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_4":-}		:: (a, b, c, d, e, f)->d	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_5":-}		:: (a, b, c, d, e, f)->e	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_6":-}		:: (a, b, c, d, e, f)->f	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"VV_Eq_a":-}		:: a
+{-:"VV_Ord_a":-}	:: a
+accumulate :: (Monad b) => [b a] -> b [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+applyM :: (Monad c) => (a -> c b) -> (c a) -> c b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+asTypeOf :: a -> a -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-}
+
+atan2 :: (RealFloat a) => a -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE atan2 :: Float -> Float -> Float {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}, Double -> Double -> Double {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-} #-}
+
+(.) :: (a -> b) -> (c -> a) -> c -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+const :: a -> b -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-}
+
+curry :: ((a, b) -> c) -> a -> b -> c   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+($) :: (a -> b) -> a -> b   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+either :: (a -> b) -> (c -> b) -> (Either a c) -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+error :: String -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+even :: (Integral a) => a -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+fromIntegral :: (Integral a, Num b) => a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+fromRealFrac :: (RealFrac a, Fractional b) => a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE fromRealFrac :: Double -> Float {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}, Float -> Double {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-} #-}
+
+(^^) :: (Fractional a, Integral b) => a -> b -> a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE (^^) :: Double -> Int -> Double {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Float -> Int -> Float {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+flip :: (a -> b -> c) -> b -> a -> c   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+fst :: (a, b) -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+gcd :: (Integral a) => a -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE gcd :: Integer -> Integer -> Integer {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}, Int -> Int -> Int {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+
+guard :: (MonadZero a) => Bool -> a ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+id :: a -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+
+(&&) :: Bool -> Bool -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0&1" ST #-}
+
+lcm :: (Integral a) => a -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE lcm :: Integer -> Integer -> Integer {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Int -> Int -> Int {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+(||) :: Bool -> Bool -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0&1" ST #-}
+
+mapM :: (Monad c) => (a -> c b) -> [a] -> c [b]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+mapM_ :: (Monad c) => (a -> c b) -> [a] -> c ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+maybe :: a -> (b -> a) -> (Maybe b) -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+(^) :: (Num a, Integral b) => a -> b -> a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE (^) :: Float -> Int -> Float {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Double -> Int -> Double {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Integer -> Int -> Integer {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Int -> Int -> Int {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+not :: Bool -> Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+
+odd :: (Integral a) => a -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+otherwise :: Bool   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-}
+
+pred :: (Enum a) => a -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+seq :: (Eval a) => a -> b -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1&2,F" ST #-}
+
+sequence :: (Monad b) => [b a] -> b ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+snd :: (a, b) -> b   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+strict :: (Eval a) => (a -> b) -> a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+subtract :: (Num a) => a -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+succ :: (Enum a) => a -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+uncurry :: (a -> b -> c) -> (a, b) -> c   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+undefined :: a   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+_undefined :: String -> Int -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+until :: (a -> Bool) -> (a -> a) -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+all :: (a -> Bool) -> [a] -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+and :: [Bool] -> Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+any :: (a -> Bool) -> [a] -> Bool   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+break :: (a -> Bool) -> [a] -> ([a], [a])   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+concat :: (MonadPlus b) => [b a] -> b a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE concat :: [[b]] -> [b] {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+
+concatMap :: (a -> [b]) -> [a] -> [b]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+cycle :: [a] -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+drop :: Int -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+
+dropWhile :: (a -> Bool) -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+elem :: (Eq a) => a -> [a] -> Bool   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}{-# SPECIALIZE elem :: String -> [String] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Char -> [Char] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Int -> [Int] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+filter :: (MonadZero b) => (a -> Bool) -> (b a) -> b a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE filter :: (b -> Bool) -> [b] -> [b] {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+foldl :: (a -> b -> a) -> a -> [b] -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+foldl1 :: (a -> a -> a) -> [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+foldr :: (a -> b -> b) -> b -> [a] -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+foldr1 :: (a -> a -> a) -> [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+head :: [a] -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+init :: [a] -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+iterate :: (a -> a) -> a -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+last :: [a] -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+length :: [a] -> Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+lines :: String -> [String]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+lookup :: (Eq a) => a -> [(a, b)] -> Maybe b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+maximum :: (Ord a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+minimum :: (Ord a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+notElem :: (Eq a) => a -> [a] -> Bool   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}{-# SPECIALIZE notElem :: String -> [String] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Char -> [Char] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Int -> [Int] -> Bool {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+
+null :: [a] -> Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+
+or :: [Bool] -> Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+product :: (Num a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE product :: [Float] -> Float {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Double] -> Double {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Integer] -> Integer {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Int] -> Int {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+
+repeat :: a -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+replicate :: Int -> a -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+reverse :: [a] -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+scanl :: (a -> b -> a) -> a -> [b] -> [a]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+scanl1 :: (a -> a -> a) -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+scanr :: (a -> b -> b) -> b -> [a] -> [b]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+
+scanr1 :: (a -> a -> a) -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+span :: (a -> Bool) -> [a] -> ([a], [a])   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+splitAt :: Int -> [a] -> ([a], [a])   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+(!!) :: [a] -> Int -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+
+sum :: (Num a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE sum :: [Float] -> Float {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Double] -> Double {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Integer] -> Integer {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Int] -> Int {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+
+tail :: [a] -> [a]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+take :: Int -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+takeWhile :: (a -> Bool) -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+unlines :: [String] -> String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+unwords :: [String] -> String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+unzip :: [(a, b)] -> ([a], [b])   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+unzip3 :: [(a, b, c)] -> ([a], [b], [c])   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+
+words :: String -> [String]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+zip :: [a] -> [b] -> [(a, b)]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "1,F" ST #-}
+
+
+lex :: ReadS String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+read :: (Read a) => String -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+readParen :: Bool -> (ReadS a) -> ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+_mapFst :: (a -> b) -> [(a, c)] -> [(b, c)]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+_readRec :: [(String, String -> [(a -> a, String)])] -> a -> String -> ReadS a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "3,F" ST #-}
+
+reads :: (Read a) => ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+show :: (Show a) => a -> String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE show :: Int -> String {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-} #-}
+
+showChar :: Char -> ShowS   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-}
+
+showParen :: Bool -> ShowS -> ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+showString :: String -> ShowS   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+showType :: (Show a) => a -> String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+
+shows :: (Show a) => a -> ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE shows :: Int -> String -> String {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-} #-}
+
+
+data _LibIO.IO a
+type StdIO.FilePath = String
+WriteTextIO.putChar :: Char -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+WriteTextIO.putStr :: [Char] -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+WriteTextIO.putStrLn :: String -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+WriteTextIO.print :: (Show a) => a -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+ReadTextIO.getChar :: _LibIO.IO Char   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+getLine :: _LibIO.IO String   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+getContents :: _LibIO.IO String   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+IO.interact :: ([Char] -> [Char]) -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+ReadTextIO.readFile :: [Char] -> _LibIO.IO [Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+WriteTextIO.writeFile :: [Char] -> [Char] -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+WriteTextIO.appendFile :: [Char] -> [Char] -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+readIO :: (Read a) => String -> _LibIO.IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+readLn :: (Read a) => _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+_LibIO__fail.fail :: _LibIO.IOError -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-}
+MonadicIO.userError :: String -> _LibIO.IOError   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-}
+MonadicIO.catch :: (_LibIO.IO a) -> (_LibIO.IOError -> _LibIO.IO a) -> _LibIO.IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-}
+data _LibIO.IOError
+
+instance Eq _LibIO.IOError {-# DERIVED #-}
+instance Eval (_LibIO.IO a) {-# DERIVED #-}
+instance Eval _LibIO.IOError {-# DERIVED #-}
+instance Functor _LibIO.IO {-# STRICTNESS map = "T,F" ST #-}
+instance Monad _LibIO.IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-}
+instance (Show a) => Show (_LibIO.IO a) {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show _LibIO.IOError {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Bounded Bool {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+instance Bounded Char {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+instance Bounded Int {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+instance Bounded Ordering {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+instance Eval (a -> b)
+instance Eval Char
+instance Eval Double
+instance Eval Float
+instance Eval Int
+instance Eval Integer
+instance Eval _File
+instance Enum Integer {-# STRICTNESS toEnum = "0,F" ST #-} {-# STRICTNESS fromEnum = "0,F" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "0&1,F" ST #-} {-# STRICTNESS enumFromThenTo = "0&1&2,F" ST #-}
+instance (Eq a, Eq b) => Eq (Either a b) {-# DERIVED #-}
+instance Eval (Either a b) {-# DERIVED #-}
+instance (Ord a, Ord b) => Ord (Either a b) {-# DERIVED #-}
+instance (Read a, Read b) => Read (Either a b) {-# DERIVED #-}
+instance (Show a, Show b) => Show (Either a b) {-# DERIVED #-}
+instance Enum Bool {-# STRICTNESS toEnum = "0,F" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "0,0" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "0,0&1" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+instance Enum Char {-# STRICTNESS toEnum = "0,0" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "0,F" ST #-} {-# STRICTNESS enumFromThen = "0&1,F" ST #-} {-# STRICTNESS enumFromTo = "0&1,F" ST #-} {-# STRICTNESS enumFromThenTo = "0&1&2,F" ST #-}
+instance Enum Double {-# STRICTNESS toEnum = "0,0" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+instance Enum Float {-# STRICTNESS toEnum = "0,0" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+instance Enum Int {-# STRICTNESS toEnum = "0,0" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "0,F" ST #-} {-# STRICTNESS enumFromThen = "0&1,F" ST #-} {-# STRICTNESS enumFromTo = "0&1,F" ST #-} {-# STRICTNESS enumFromThenTo = "0&1&2,F" ST #-}
+instance Eq Bool {-# STRICTNESS (==) = "0,0&1" ST #-} {-# STRICTNESS (/=) = "0,0&1" ST #-}
+instance Eq Char {-# STRICTNESS (==) = "0&1,0&1" ST #-} {-# STRICTNESS (/=) = "0&1,0&1" ST #-}
+instance Eq Double {-# STRICTNESS (==) = "0&1,0&1" ST #-} {-# STRICTNESS (/=) = "0&1,0&1" ST #-}
+instance Eq Float {-# STRICTNESS (==) = "0&1,0&1" ST #-} {-# STRICTNESS (/=) = "0&1,0&1" ST #-}
+instance Eq Int {-# STRICTNESS (==) = "0&1,0&1" ST #-} {-# STRICTNESS (/=) = "0&1,0&1" ST #-}
+instance Eq Integer {-# STRICTNESS (==) = "0&1,F" ST #-} {-# STRICTNESS (/=) = "0&1,F" ST #-}
+instance Floating Double {-# STRICTNESS pi = "T,T" ST #-} {-# STRICTNESS exp = "0,F" ST #-} {-# STRICTNESS log = "0,F" ST #-} {-# STRICTNESS sqrt = "0,F" ST #-} {-# STRICTNESS (**) = "T,F" ST #-} {-# STRICTNESS logBase = "T,F" ST #-} {-# STRICTNESS sin = "0,F" ST #-} {-# STRICTNESS cos = "0,F" ST #-} {-# STRICTNESS tan = "0,F" ST #-} {-# STRICTNESS asin = "0,F" ST #-} {-# STRICTNESS acos = "0,F" ST #-} {-# STRICTNESS atan = "0,F" ST #-} {-# STRICTNESS sinh = "0,F" ST #-} {-# STRICTNESS cosh = "0,F" ST #-} {-# STRICTNESS tanh = "0,F" ST #-} {-# STRICTNESS asinh = "0,F" ST #-} {-# STRICTNESS acosh = "0,F" ST #-} {-# STRICTNESS atanh = "0,F" ST #-}
+instance Floating Float {-# STRICTNESS pi = "T,T" ST #-} {-# STRICTNESS exp = "0,F" ST #-} {-# STRICTNESS log = "0,F" ST #-} {-# STRICTNESS sqrt = "0,F" ST #-} {-# STRICTNESS (**) = "T,F" ST #-} {-# STRICTNESS logBase = "T,F" ST #-} {-# STRICTNESS sin = "0,F" ST #-} {-# STRICTNESS cos = "0,F" ST #-} {-# STRICTNESS tan = "0,F" ST #-} {-# STRICTNESS asin = "0,F" ST #-} {-# STRICTNESS acos = "0,F" ST #-} {-# STRICTNESS atan = "0,F" ST #-} {-# STRICTNESS sinh = "0,F" ST #-} {-# STRICTNESS cosh = "0,F" ST #-} {-# STRICTNESS tanh = "0,F" ST #-} {-# STRICTNESS asinh = "0,F" ST #-} {-# STRICTNESS acosh = "0,F" ST #-} {-# STRICTNESS atanh = "0,F" ST #-}
+instance Fractional Double {-# STRICTNESS (/) = "0&1,F" ST #-} {-# STRICTNESS recip = "T,F" ST #-} {-# STRICTNESS fromRational = "T,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "0,F" ST #-}
+instance Fractional Float {-# STRICTNESS (/) = "0&1,F" ST #-} {-# STRICTNESS recip = "T,F" ST #-} {-# STRICTNESS fromRational = "T,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "0,F" ST #-}
+instance Integral Int {-# STRICTNESS quot = "0&1,F" ST #-} {-# STRICTNESS rem = "0&1,F" ST #-} {-# STRICTNESS div = "0&1,F" ST #-} {-# STRICTNESS mod = "0&1,F" ST #-} {-# STRICTNESS quotRem = "T,T" ST #-} {-# STRICTNESS divMod = "T,T" ST #-} {-# STRICTNESS toInteger = "0,F" ST #-} {-# STRICTNESS toInt = "0,0" ST #-}
+instance Integral Integer {-# STRICTNESS quot = "0&1,F" ST #-} {-# STRICTNESS rem = "0&1,F" ST #-} {-# STRICTNESS div = "T,F" ST #-} {-# STRICTNESS mod = "T,F" ST #-} {-# STRICTNESS quotRem = "0&1,F" ST #-} {-# STRICTNESS divMod = "T,F" ST #-} {-# STRICTNESS toInteger = "0,0" ST #-} {-# STRICTNESS toInt = "0,F" ST #-}
+instance (Ix.Ix a, Ix.Ix b) => Ix.Ix (a, b) {-# DERIVED #-}
+instance Ix.Ix (Int, Int) {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0&1,F" ST #-} {-# STRICTNESS inRange = "0&1,F" ST #-}
+instance (Ix.Ix a, Ix.Ix b) => Ix.Ix (a, b) {-# DERIVED #-}
+instance Ix.Ix (Int, Int) {-# STRICTNESS range = "T,F" ST #-} {-# STRICTNESS index = "T,F" ST #-} {-# STRICTNESS inRange = "T,F" ST #-}
+instance (Bounded a, Bounded b) => Bounded (a, b) {-# DERIVED #-}
+instance (Eq a, Eq b) => Eq (a, b) {-# DERIVED #-}
+instance Eval (a, b) {-# DERIVED #-}
+instance (Ord a, Ord b) => Ord (a, b) {-# DERIVED #-}
+instance (Read a, Read b) => Read (a, b) {-# DERIVED #-}
+instance (Show a, Show b) => Show (a, b) {-# DERIVED #-}
+instance (Eq a) => Eq [a] {-# DERIVED #-}
+instance Eval [a] {-# DERIVED #-}
+instance (Ord a) => Ord [a] {-# DERIVED #-}
+instance (Eq a) => Eq (Maybe a) {-# DERIVED #-}
+instance Eval (Maybe a) {-# DERIVED #-}
+instance (Ord a) => Ord (Maybe a) {-# DERIVED #-}
+instance (Read a) => Read (Maybe a) {-# DERIVED #-}
+instance (Show a) => Show (Maybe a) {-# DERIVED #-}
+instance Functor Maybe {-# STRICTNESS map = "1,1" ST #-}
+instance Functor [] {-# STRICTNESS map = "1,F" ST #-}
+instance Monad Maybe {-# STRICTNESS (>>=) = "0,F" ST #-} {-# STRICTNESS (>>) = "T,F" ST #-} {-# STRICTNESS return = "T,T" ST #-}
+instance Monad [] {-# STRICTNESS (>>=) = "0,F" ST #-} {-# STRICTNESS (>>) = "T,F" ST #-} {-# STRICTNESS return = "T,T" ST #-}
+instance MonadPlus Maybe {-# STRICTNESS (++) = "0,0&1" ST #-}
+instance MonadPlus [] {-# STRICTNESS (++) = "0,F" ST #-}
+instance MonadZero Maybe {-# STRICTNESS zero = "T,T" ST #-}
+instance MonadZero [] {-# STRICTNESS zero = "T,T" ST #-}
+instance Num Double {-# STRICTNESS (+) = "0&1,0&1" ST #-} {-# STRICTNESS (-) = "0&1,0&1" ST #-} {-# STRICTNESS (*) = "0&1,0&1" ST #-} {-# STRICTNESS negate = "0,0" ST #-} {-# STRICTNESS abs = "0,0" ST #-} {-# STRICTNESS signum = "0,0" ST #-} {-# STRICTNESS fromInteger = "0,F" ST #-} {-# STRICTNESS fromInt = "0,0" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-}
+instance Num Float {-# STRICTNESS (+) = "0&1,0&1" ST #-} {-# STRICTNESS (-) = "0&1,0&1" ST #-} {-# STRICTNESS (*) = "0&1,0&1" ST #-} {-# STRICTNESS negate = "0,0" ST #-} {-# STRICTNESS abs = "0,0" ST #-} {-# STRICTNESS signum = "0,0" ST #-} {-# STRICTNESS fromInteger = "0,F" ST #-} {-# STRICTNESS fromInt = "0,0" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-}
+instance Num Int {-# STRICTNESS (+) = "0&1,0&1" ST #-} {-# STRICTNESS (-) = "0&1,0&1" ST #-} {-# STRICTNESS (*) = "0&1,0&1" ST #-} {-# STRICTNESS negate = "0,0" ST #-} {-# STRICTNESS abs = "0,0" ST #-} {-# STRICTNESS signum = "0,0" ST #-} {-# STRICTNESS fromInteger = "0,F" ST #-} {-# STRICTNESS fromInt = "0,0" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-}
+instance Num Integer {-# STRICTNESS (+) = "0&1,F" ST #-} {-# STRICTNESS (-) = "0&1,F" ST #-} {-# STRICTNESS (*) = "0&1,F" ST #-} {-# STRICTNESS negate = "0,F" ST #-} {-# STRICTNESS abs = "0,F" ST #-} {-# STRICTNESS signum = "0,F" ST #-} {-# STRICTNESS fromInteger = "0,0" ST #-} {-# STRICTNESS fromInt = "0,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-}
+instance Ord Bool {-# STRICTNESS (<) = "0,0&1" ST #-} {-# STRICTNESS (<=) = "0,0&1" ST #-} {-# STRICTNESS (>=) = "0,0&1" ST #-} {-# STRICTNESS (>) = "0,0&1" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "0,0&1" ST #-}
+instance Ord Char {-# STRICTNESS (<) = "0&1,0&1" ST #-} {-# STRICTNESS (<=) = "0&1,0&1" ST #-} {-# STRICTNESS (>=) = "0&1,0&1" ST #-} {-# STRICTNESS (>) = "0&1,0&1" ST #-} {-# STRICTNESS max = "0&1,0&1" ST #-} {-# STRICTNESS min = "0&1,0&1" ST #-} {-# STRICTNESS compare = "0&1,0&1" ST #-}
+instance Ord Double {-# STRICTNESS (<) = "0&1,0&1" ST #-} {-# STRICTNESS (<=) = "0&1,0&1" ST #-} {-# STRICTNESS (>=) = "0&1,0&1" ST #-} {-# STRICTNESS (>) = "0&1,0&1" ST #-} {-# STRICTNESS max = "0&1,0&1" ST #-} {-# STRICTNESS min = "0&1,0&1" ST #-} {-# STRICTNESS compare = "0&1,0&1" ST #-}
+instance Ord Float {-# STRICTNESS (<) = "0&1,0&1" ST #-} {-# STRICTNESS (<=) = "0&1,0&1" ST #-} {-# STRICTNESS (>=) = "0&1,0&1" ST #-} {-# STRICTNESS (>) = "0&1,0&1" ST #-} {-# STRICTNESS max = "0&1,0&1" ST #-} {-# STRICTNESS min = "0&1,0&1" ST #-} {-# STRICTNESS compare = "0&1,0&1" ST #-}
+instance Ord Int {-# STRICTNESS (<) = "0&1,0&1" ST #-} {-# STRICTNESS (<=) = "0&1,0&1" ST #-} {-# STRICTNESS (>=) = "0&1,0&1" ST #-} {-# STRICTNESS (>) = "0&1,0&1" ST #-} {-# STRICTNESS max = "0&1,0&1" ST #-} {-# STRICTNESS min = "0&1,0&1" ST #-} {-# STRICTNESS compare = "0&1,0&1" ST #-}
+instance Ord Integer {-# STRICTNESS (<) = "0&1,F" ST #-} {-# STRICTNESS (<=) = "0&1,F" ST #-} {-# STRICTNESS (>=) = "0&1,F" ST #-} {-# STRICTNESS (>) = "0&1,F" ST #-} {-# STRICTNESS max = "0&1,F" ST #-} {-# STRICTNESS min = "0&1,F" ST #-} {-# STRICTNESS compare = "0&1,F" ST #-}
+instance Ix.Ix Ordering {-# DERIVED #-}
+instance Enum Ordering {-# DERIVED #-}
+instance Eq Ordering {-# DERIVED #-}
+instance Eval Ordering {-# DERIVED #-}
+instance Ord Ordering {-# DERIVED #-}
+instance Read Ordering {-# DERIVED #-}
+instance Show Ordering {-# DERIVED #-}
+instance (Bounded a, Bounded b) => Bounded (a, b) {-# DERIVED #-}
+instance (Eq a, Eq b) => Eq (a, b) {-# DERIVED #-}
+instance Eval (a, b) {-# DERIVED #-}
+instance (Ord a, Ord b) => Ord (a, b) {-# DERIVED #-}
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c) => Ix.Ix (a, b, c) {-# DERIVED #-}
+instance (Bounded a, Bounded b, Bounded c) => Bounded (a, b, c) {-# DERIVED #-}
+instance (Eq a, Eq b, Eq c) => Eq (a, b, c) {-# DERIVED #-}
+instance Eval (a, b, c) {-# DERIVED #-}
+instance (Ord a, Ord b, Ord c) => Ord (a, b, c) {-# DERIVED #-}
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c, Ix.Ix d) => Ix.Ix (a, b, c, d) {-# DERIVED #-}
+instance (Bounded a, Bounded b, Bounded c, Bounded d) => Bounded (a, b, c, d) {-# DERIVED #-}
+instance (Eq a, Eq b, Eq c, Eq d) => Eq (a, b, c, d) {-# DERIVED #-}
+instance Eval (a, b, c, d) {-# DERIVED #-}
+instance (Ord a, Ord b, Ord c, Ord d) => Ord (a, b, c, d) {-# DERIVED #-}
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c, Ix.Ix d, Ix.Ix e) => Ix.Ix (a, b, c, d, e) {-# DERIVED #-}
+instance (Bounded a, Bounded b, Bounded c, Bounded d, Bounded e) => Bounded (a, b, c, d, e) {-# DERIVED #-}
+instance (Eq a, Eq b, Eq c, Eq d, Eq e) => Eq (a, b, c, d, e) {-# DERIVED #-}
+instance Eval (a, b, c, d, e) {-# DERIVED #-}
+instance (Ord a, Ord b, Ord c, Ord d, Ord e) => Ord (a, b, c, d, e) {-# DERIVED #-}
+instance RealFloat Double {-# STRICTNESS floatRadix = "T,T" ST #-} {-# STRICTNESS floatDigits = "T,T" ST #-} {-# STRICTNESS floatRange = "T,T" ST #-} {-# STRICTNESS decodeFloat = "0,F" ST #-} {-# STRICTNESS encodeFloat = "0&1,F" ST #-} {-# STRICTNESS exponent = "T,F" ST #-} {-# STRICTNESS significand = "T,F" ST #-} {-# STRICTNESS scaleFloat = "T,F" ST #-} {-# STRICTNESS isNaN = "0,F" ST #-} {-# STRICTNESS isInfinite = "0,F" ST #-} {-# STRICTNESS isDenormalized = "0,F" ST #-} {-# STRICTNESS isNegativeZero = "0,F" ST #-} {-# STRICTNESS isIEEE = "T,T" ST #-}
+instance RealFloat Float {-# STRICTNESS floatRadix = "T,T" ST #-} {-# STRICTNESS floatDigits = "T,T" ST #-} {-# STRICTNESS floatRange = "T,T" ST #-} {-# STRICTNESS decodeFloat = "0,F" ST #-} {-# STRICTNESS encodeFloat = "0&1,F" ST #-} {-# STRICTNESS exponent = "T,F" ST #-} {-# STRICTNESS significand = "T,F" ST #-} {-# STRICTNESS scaleFloat = "T,F" ST #-} {-# STRICTNESS isNaN = "0,F" ST #-} {-# STRICTNESS isInfinite = "0,F" ST #-} {-# STRICTNESS isDenormalized = "0,F" ST #-} {-# STRICTNESS isNegativeZero = "0,F" ST #-} {-# STRICTNESS isIEEE = "T,T" ST #-}
+instance RealFrac Double {-# STRICTNESS properFraction = "T,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-}
+instance RealFrac Float {-# STRICTNESS properFraction = "T,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-}
+instance Real Integer {-# STRICTNESS toRational = "T,F" ST #-}
+instance Real Double {-# STRICTNESS toRational = "T,F" ST #-}
+instance Real Float {-# STRICTNESS toRational = "T,F" ST #-}
+instance Real Int {-# STRICTNESS toRational = "T,F" ST #-}
+instance Ix.Ix () {-# DERIVED #-}
+instance Bounded () {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+instance Enum () {-# DERIVED #-}
+instance Eq () {-# DERIVED #-}
+instance Eval () {-# DERIVED #-}
+instance Ord () {-# DERIVED #-}
+instance Eval Void {-# DERIVED #-}
+instance Show Bool {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show Char {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,T" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a) => Show (_LibIO.IO a) {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show Int {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show Integer {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a) => Show [a] {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,T" ST #-}
+instance (Show a, Show b) => Show (a, b) {-# STRICTNESS showsPrec = "3,3" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a, Show b, Show c) => Show (a, b, c) {-# STRICTNESS showsPrec = "4,4" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a, Show b, Show c, Show d) => Show (a, b, c, d) {-# STRICTNESS showsPrec = "5,5" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a, Show b, Show c, Show d, Show e) => Show (a, b, c, d, e) {-# STRICTNESS showsPrec = "6,6" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show () {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance (Show a, Show b) => Show (a -> b) {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,T" ST #-}
+instance Show Double {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Show Float {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+instance Eval Bool {-# DERIVED #-}
+instance Read Bool {-# DERIVED #-}
+instance Read Char {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance Read Int {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance Read Integer {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Read a) => Read [a] {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Read a, Read b) => Read (a, b) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Read a, Read b, Read c) => Read (a, b, c) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Read a, Read b, Read c, Read d) => Read (a, b, c, d) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Read a, Read b, Read c, Read d, Read e) => Read (a, b, c, d, e) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance Read () {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance Read Double {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance Read Float {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Integral a) => Enum (Ratio.Ratio a) {-# STRICTNESS toEnum = "T,F" ST #-} {-# STRICTNESS fromEnum = "T,F" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+instance (Integral a) => Enum (Ratio.Ratio a) {-# STRICTNESS toEnum = "T,F" ST #-} {-# STRICTNESS fromEnum = "T,F" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+instance (Integral a) => Eq (Ratio.Ratio a) {-# STRICTNESS (==) = "1&2,F" ST #-} {-# STRICTNESS (/=) = "1&2,F" ST #-}
+instance (Integral a) => Eq (Ratio.Ratio a) {-# STRICTNESS (==) = "T,F" ST #-} {-# STRICTNESS (/=) = "T,F" ST #-}
+instance (Integral a) => Eval (Ratio.Ratio a) {-# DERIVED #-}
+instance (Integral a) => Fractional (Ratio.Ratio a) {-# STRICTNESS (/) = "1&2,F" ST #-} {-# STRICTNESS recip = "1,F" ST #-} {-# STRICTNESS fromRational = "1,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "1,F" ST #-}
+instance (Integral a) => Fractional (Ratio.Ratio a) {-# STRICTNESS (/) = "T,F" ST #-} {-# STRICTNESS recip = "T,F" ST #-} {-# STRICTNESS fromRational = "T,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "T,F" ST #-}
+instance (Integral a) => Num (Ratio.Ratio a) {-# STRICTNESS (+) = "1&2,F" ST #-} {-# STRICTNESS (-) = "1&2,F" ST #-} {-# STRICTNESS (*) = "1&2,F" ST #-} {-# STRICTNESS negate = "1,F" ST #-} {-# STRICTNESS abs = "1,F" ST #-} {-# STRICTNESS signum = "1,F" ST #-} {-# STRICTNESS fromInteger = "T,F" ST #-} {-# STRICTNESS fromInt = "T,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "1,F" ST #-}
+instance (Integral a) => Num (Ratio.Ratio a) {-# STRICTNESS (+) = "T,F" ST #-} {-# STRICTNESS (-) = "T,F" ST #-} {-# STRICTNESS (*) = "T,F" ST #-} {-# STRICTNESS negate = "T,F" ST #-} {-# STRICTNESS abs = "T,F" ST #-} {-# STRICTNESS signum = "T,F" ST #-} {-# STRICTNESS fromInteger = "T,F" ST #-} {-# STRICTNESS fromInt = "T,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "T,F" ST #-}
+instance (Integral a) => Ord (Ratio.Ratio a) {-# STRICTNESS (<) = "1&2,F" ST #-} {-# STRICTNESS (<=) = "1&2,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-}
+instance (Integral a) => Ord (Ratio.Ratio a) {-# STRICTNESS (<) = "T,F" ST #-} {-# STRICTNESS (<=) = "T,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-}
+instance (Integral a, Read a) => Read (Ratio.Ratio a) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+instance (Integral a) => Real (Ratio.Ratio a) {-# STRICTNESS toRational = "1,F" ST #-}
+instance (Integral a) => Real (Ratio.Ratio a) {-# STRICTNESS toRational = "1,F" ST #-}
+instance (Integral a) => RealFrac (Ratio.Ratio a) {-# STRICTNESS properFraction = "2,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-}
+instance (Integral a) => RealFrac (Ratio.Ratio a) {-# STRICTNESS properFraction = "2,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-}
+instance (Integral a) => Show (Ratio.Ratio a) {-# STRICTNESS showsPrec = "1&2,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}

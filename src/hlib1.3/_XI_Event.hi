@@ -1,0 +1,5 @@
+interface _XI_Event where {
+{-# IMPORTING _XStuff #-}
+instance Show Event.XEvent {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Show Event.XResponse {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

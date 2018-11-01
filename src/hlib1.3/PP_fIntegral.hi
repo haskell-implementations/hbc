@@ -1,0 +1,3 @@
+interface PreludeX where {
+fromIntegral :: (Integral a, Num b) => a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

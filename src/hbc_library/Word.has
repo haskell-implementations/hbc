@@ -1,0 +1,129 @@
+module Word(Word, Short, Byte, wordToShorts, wordToBytes, bytesToString, Bits(..),
+	    wordToInt, shortToInt, byteToInt) where
+
+import LMLbitops
+#define AND {-:"Pand":-}
+#define OR  {-:"Por":-}
+#define XOR {-:"Pxor":-}
+#define COMPL {-:"Pcompl":-}
+#define LSH {-:"Plsh":-}
+#define RSH {-:"Prsh":-}
+
+infixl 8 `bitLsh`, `bitRsh`
+infixl 7 `bitAnd`
+infixl 6 `bitXor`
+infixl 5 `bitOr`
+
+class Bits a where
+	bitAnd, bitOr, bitXor :: a -> a -> a
+	bitCompl :: a -> a
+	bitRsh, bitLsh :: a -> Int -> a
+	bitSwap :: a -> a
+	bit0 :: a
+	bitSize :: a -> Int
+
+data Word = Word Int {-# STRICT #-} deriving (Eq, Ord)
+
+instance Bits Word where
+	bitAnd (Word x) (Word y) = Word (AND x y)
+	bitOr  (Word x) (Word y) = Word (OR  x y)
+	bitXor (Word x) (Word y) = Word (XOR x y)
+	bitCompl (Word x)        = Word (COMPL x)
+	bitLsh (Word x) y        = Word (LSH x y)
+	bitRsh (Word x) y        = Word (RSH x y)
+        bitSwap (Word x)         = Word (OR (LSH x 16) (AND (RSH x 16) 65535))
+	bit0                     = Word 1
+	bitSize (Word _)	 = 32
+
+instance Num Word where
+	Word x + Word y = Word (x+y)
+	Word x - Word y = Word (x-y)
+	Word x * Word y = Word (x*y)
+	negate (Word x) = Word (negate x)
+	fromInteger x   = Word (fromInteger x)
+	fromInt x       = Word x
+
+instance Text Word where
+	showsPrec _ (Word w) =
+		let i = toInteger w + (if w < 0 then 2*(toInteger maxInt + 1) else 0)
+		in  showString (conv 8 i)
+	showsType _ = showString "Word"
+
+conv :: Int -> Integer -> String
+conv 0 _ = ""
+conv n i = conv (n-1) q ++ ["0123456789ABCDEF"!!r] where (q, r) = quotRem i 16
+
+data Short = Short Int {-# STRICT #-} deriving (Eq, Ord)
+#define SHORTMASK(x) (AND (x) 65535)
+
+instance Bits Short where
+	bitAnd (Short x) (Short y) = Short (AND x y)
+	bitOr  (Short x) (Short y) = Short (OR  x y)
+	bitXor (Short x) (Short y) = Short (XOR x y)
+	bitCompl (Short x)         = Short (SHORTMASK (COMPL x))
+	bitLsh (Short x) y         = Short (SHORTMASK (LSH x y))
+	bitRsh (Short x) y         = Short (RSH x y)
+        bitSwap (Short x)          = Short (SHORTMASK(OR (LSH x 8) (AND (RSH x 8) 255)))
+	bit0                       = Short 1
+	bitSize (Short _)	   = 16
+
+instance Num Short where
+	Short x + Short y = Short (SHORTMASK(x+y))
+	Short x - Short y = Short (SHORTMASK(x-y))
+	Short x * Short y = Short (SHORTMASK(x*y))
+	negate (Short x)  = Short (SHORTMASK(negate x))
+	fromInteger x     = Short (SHORTMASK(fromInteger x))
+	fromInt x         = Short (SHORTMASK(x))
+
+instance Text Short where
+	showsPrec _ (Short w) =
+		let i = toInteger w
+		in  showString (conv 4 i)
+	showsType _ = showString "Short"
+
+data Byte = Byte Int {-# STRICT #-} deriving (Eq, Ord)
+#define BYTEMASK(x) (AND (x) 255)
+
+instance Bits Byte where
+	bitAnd (Byte x) (Byte y) = Byte (AND x y)
+	bitOr  (Byte x) (Byte y) = Byte (OR  x y)
+	bitXor (Byte x) (Byte y) = Byte (XOR x y)
+	bitCompl (Byte x)        = Byte (BYTEMASK (COMPL x))
+	bitLsh (Byte x) y        = Byte (BYTEMASK (LSH x y))
+	bitRsh (Byte x) y        = Byte (RSH x y)
+        bitSwap (Byte x)         = Byte (BYTEMASK(OR (LSH x 4) (AND (RSH x 8) 15)))
+	bit0                     = Byte 1
+	bitSize (Byte _)	 = 8
+
+instance Num Byte where
+	Byte x + Byte y = Byte (BYTEMASK(x+y))
+	Byte x - Byte y = Byte (BYTEMASK(x-y))
+	Byte x * Byte y = Byte (BYTEMASK(x*y))
+	negate (Byte x) = Byte (BYTEMASK(negate x))
+	fromInteger x   = Byte (BYTEMASK(fromInteger x))
+	fromInt x       = Byte (BYTEMASK(x))
+
+instance Text Byte where
+	showsPrec _ (Byte w) =
+		let i = toInteger w
+		in  showString (conv 2 i)
+	showsType _ = showString "Byte"
+
+wordToShorts (Word w) = [Short (SHORTMASK(RSH w 16)), Short (SHORTMASK(w))]
+wordToBytes  (Word w) = [Byte  (BYTEMASK(RSH  w 24)), Byte  (BYTEMASK(RSH  w 16)), Byte (BYTEMASK(RSH  w 8)), Byte (BYTEMASK(w))]
+
+bytesToString :: [Byte] -> String
+bytesToString bs = map (\(Byte b) -> chr b) bs
+
+stringToBytes :: String -> [Byte]
+stringToBytes cs = map (\c -> Byte (BYTEMASK(ord c))) cs
+
+wordToInt :: Word -> Int
+wordToInt (Word w) = w
+
+shortToInt :: Short -> Int
+shortToInt (Short w) = w
+
+byteToInt :: Byte -> Int
+byteToInt (Byte w) = w
+

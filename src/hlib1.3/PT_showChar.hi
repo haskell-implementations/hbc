@@ -1,0 +1,3 @@
+interface PreludeX where {
+showChar :: Char -> ShowS   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

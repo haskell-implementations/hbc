@@ -1,0 +1,34 @@
+interface Ratio where {
+{-# IMPORTING Ratio__approxRational #-}
+infixl 7 %;
+data (Prelude.Integral a) => Ratio a;
+type Rational = Ratio Prelude.Integer;
+(%) :: (Prelude.Integral a) => a -> a -> Ratio a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+numerator :: (Prelude.Integral a) => (Ratio a) -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,1" ST #-};
+denominator :: (Prelude.Integral a) => (Ratio a) -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,1" ST #-};
+Ratio__approxRational.approxRational :: (Prelude.RealFrac a) => a -> a -> Rational   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Enum (Ratio a) {-# STRICTNESS toEnum = "T,F" ST #-} {-# STRICTNESS fromEnum = "T,F" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-};
+instance Prelude.Enum (Ratio Prelude.Integer) {-# STRICTNESS toEnum = "T,F" ST #-} {-# STRICTNESS fromEnum = "T,F" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Enum (Ratio a) {-# STRICTNESS Prelude.toEnum = "T,F" ST #-} {-# STRICTNESS Prelude.fromEnum = "T,F" ST #-} {-# STRICTNESS Prelude.enumFrom = "T,F" ST #-} {-# STRICTNESS Prelude.enumFromThen = "T,F" ST #-} {-# STRICTNESS Prelude.enumFromTo = "T,F" ST #-} {-# STRICTNESS Prelude.enumFromThenTo = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Eq (Ratio a) {-# STRICTNESS (==) = "1&2,F" ST #-} {-# STRICTNESS (/=) = "1&2,F" ST #-};
+instance Prelude.Eq (Ratio Prelude.Integer) {-# STRICTNESS (==) = "0&1,F" ST #-} {-# STRICTNESS (/=) = "0&1,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Eq (Ratio a) {-# STRICTNESS (Prelude.==) = "T,F" ST #-} {-# STRICTNESS (Prelude./=) = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Eval (Ratio a) {-# DERIVED #-};
+instance (Prelude.Integral a) => Prelude.Fractional (Ratio a) {-# STRICTNESS (/) = "1&2,F" ST #-} {-# STRICTNESS recip = "1,F" ST #-} {-# STRICTNESS fromRational = "1,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "1,F" ST #-};
+instance Prelude.Fractional (Ratio Prelude.Integer) {-# STRICTNESS (/) = "0&1,F" ST #-} {-# STRICTNESS recip = "0,F" ST #-} {-# STRICTNESS fromRational = "0,0" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "0,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Fractional (Ratio a) {-# STRICTNESS (Prelude./) = "T,F" ST #-} {-# STRICTNESS Prelude.recip = "T,F" ST #-} {-# STRICTNESS Prelude.fromRational = "T,F" ST #-} {-# STRICTNESS {-:"PPrelude.fromRational":-} = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Num (Ratio a) {-# STRICTNESS (+) = "1&2,F" ST #-} {-# STRICTNESS (-) = "1&2,F" ST #-} {-# STRICTNESS (*) = "1&2,F" ST #-} {-# STRICTNESS negate = "1,F" ST #-} {-# STRICTNESS abs = "1,F" ST #-} {-# STRICTNESS signum = "1,F" ST #-} {-# STRICTNESS fromInteger = "T,F" ST #-} {-# STRICTNESS fromInt = "T,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "1,F" ST #-};
+instance Prelude.Num (Ratio Prelude.Integer) {-# STRICTNESS (+) = "0&1,F" ST #-} {-# STRICTNESS (-) = "0&1,F" ST #-} {-# STRICTNESS (*) = "0&1,F" ST #-} {-# STRICTNESS negate = "0,F" ST #-} {-# STRICTNESS abs = "0,F" ST #-} {-# STRICTNESS signum = "0,F" ST #-} {-# STRICTNESS fromInteger = "T,0" ST #-} {-# STRICTNESS fromInt = "T,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Num (Ratio a) {-# STRICTNESS (Prelude.+) = "T,F" ST #-} {-# STRICTNESS (Prelude.-) = "T,F" ST #-} {-# STRICTNESS (Prelude.*) = "T,F" ST #-} {-# STRICTNESS Prelude.negate = "T,F" ST #-} {-# STRICTNESS Prelude.abs = "T,F" ST #-} {-# STRICTNESS Prelude.signum = "T,F" ST #-} {-# STRICTNESS Prelude.fromInteger = "T,F" ST #-} {-# STRICTNESS Prelude.fromInt = "T,F" ST #-} {-# STRICTNESS {-:"PPrelude.fromInteger":-} = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Ord (Ratio a) {-# STRICTNESS (<) = "1&2,F" ST #-} {-# STRICTNESS (<=) = "1&2,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-};
+instance Prelude.Ord (Ratio Prelude.Integer) {-# STRICTNESS (<) = "0&1,F" ST #-} {-# STRICTNESS (<=) = "0&1,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Ord (Ratio a) {-# STRICTNESS (Prelude.<) = "T,F" ST #-} {-# STRICTNESS (Prelude.<=) = "T,F" ST #-} {-# STRICTNESS (Prelude.>=) = "T,F" ST #-} {-# STRICTNESS (Prelude.>) = "T,F" ST #-} {-# STRICTNESS Prelude.max = "T,F" ST #-} {-# STRICTNESS Prelude.min = "T,F" ST #-} {-# STRICTNESS Prelude.compare = "T,F" ST #-};
+instance (Prelude.Integral a, Prelude.Read a) => Prelude.Read (Ratio a) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Real (Ratio a) {-# STRICTNESS toRational = "1,F" ST #-};
+instance Prelude.Real (Ratio Prelude.Integer) {-# STRICTNESS toRational = "0,0" ST #-};
+instance (Prelude.Integral a) => Prelude.Real (Ratio a) {-# STRICTNESS toRational = "1,F" ST #-};
+instance (Prelude.Integral a) => Prelude.RealFrac (Ratio a) {-# STRICTNESS properFraction = "2,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-};
+instance Prelude.RealFrac (Ratio Prelude.Integer) {-# STRICTNESS properFraction = "1,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.RealFrac (Ratio a) {-# STRICTNESS properFraction = "2,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-};
+instance (Prelude.Integral a) => Prelude.Show (Ratio a) {-# STRICTNESS showsPrec = "1&2,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

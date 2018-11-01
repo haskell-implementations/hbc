@@ -1,0 +1,13 @@
+import ReallyLoadShareLib: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import number: (Int->((List *a)->(List (Int # *a)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import mappair: ((*a->*b)->((*c->*d)->((*a # *c)->(*b # *d)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,2" ST #};
+import ifail: ((List Char)->*a) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import ibuildsuper: (Renv->(Renv->((List (Id # (List (Id # (List Int))))) # (List String)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import ibuildinsts: ((List (Id # (List (Id # (List Int)))))->(Renv->(Renv->((#3 (List (Id # (List (Id # IDecl)))) (List (Id # (List (Id # IDecl)))) (List (Id # (List (Id # (List Int)))))) # (List (List Char)))))) {# ARITY _ = 3 #}{# STRICTNESS _ = "T,F" ST #};
+import iprtt: (Ttype->(Bool->(List Char))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0,F" ST #};
+import typeof: (Id->Ttype) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import interactivename: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import mkmodb: (Binding->Texpr) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import cmodule: (State->(Texpr->(OK (List Char) (Renv # State)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import cbind: (State->(Binding->(OK (List Char) (#3 Renv State (List (Id # Cexpr)))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import cexpr: (State->(Texpr->(OK (List Char) Cexpr))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};

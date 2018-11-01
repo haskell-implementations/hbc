@@ -1,0 +1,11 @@
+import seteq: ((*a->(*a->Bool))->((List *a)->((List *a)->Bool))) {# ARITY _ = 3 #}{# STRICTNESS _ = "1,F" ST #};
+import hascycleeq: ((*a->(*b->Bool))->((List (*b # (List *a)))->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import mkseteq: ((*a->(*a->Bool))->((List *a)->(List *a))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import anysameeq: ((*a->(*a->Bool))->((List *a)->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import allsameeq: ((*a->(*a->Bool))->((List *a)->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import assocdefeq: ((*a->(*b->Bool))->(*a->((List (*b # *c))->(*c->*c)))) {# ARITY _ = 4 #}{# STRICTNESS _ = "2,F" ST #};
+import unioneq: ((*a->(*a->Bool))->((List *a)->((List *a)->(List *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "1,F" ST #};
+import intereq: ((*a->(*b->Bool))->((List *a)->((List *b)->(List *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "1,F" ST #};
+import diffeq: ((*a->(*b->Bool))->((List *a)->((List *b)->(List *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "1,F" ST #};
+import scceq: ((*a->(*a->Bool))->((List (*a # (List *a)))->(List (List (*a # (List *a)))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import tsorteq: (((List Char)->((List Char)->Bool))->((List ((List Char) # (List (List Char))))->(List ((List Char) # (List (List Char)))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};

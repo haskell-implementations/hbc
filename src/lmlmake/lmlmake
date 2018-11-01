@@ -1,0 +1,140 @@
+#! /bin/csh -fe
+# lmlmake - make for lml programs
+# Author: Thomas Hallgren, hallgren@cs.chalmers.se
+
+if ($?LMLDIR) then
+	set lib = $LMLDIR/bin
+else
+	set lib = /usr/local/lib/lmlc/bin
+endif
+
+#set exec = 'csh -ef'
+set exec = 'sh -e'
+set modules = ( )
+set flags = ( )
+set rtflags = ( )	# run-time flags for lmlmk
+set xdgflags = ( )
+
+setenv LMLMK_LANG lml
+
+if ( ! $?LMLMK ) setenv LMLMK $lib/lmlmk
+if ( ! $?OLDER ) setenv OLDER $lib/older
+
+#if ( ! $?LMLINCLUDE ) setenv LMLINCLUDE . #no good, because -
+setenv LMLINCLUDE .	# include path used only by lmlmk
+
+# Take compiler/linker flags from the environment
+if ( ! $?LMLFLAGS ) then
+  setenv LMLFLAGS ''
+endif
+if ( ! $?LDFLAGS ) then
+  setenv LDFLAGS ''
+endif
+
+while ( $#argv > 0 )
+  switch ( $1 )
+    case -xdg:
+      # Show dependency graph with xlmldg instead of compiling
+      set xdg
+      breaksw
+    case -t:
+    case -g
+      set quiet
+    case -P:
+    case -debug:
+    case -n:
+      # also switch off execution...
+      set exec = cat
+    case -s:
+      set flags = ( $flags $1 )
+      breaksw
+    case -A*
+    case -H*:
+    case -h*:
+    case -B*:
+    case -S*:
+    case -gc*:
+    #Any more useful run-time flags?
+      set rtflags = ( $rtflags $1 )
+      breaksw
+    case -f:
+      shift
+      set makefile = $1
+      breaksw
+    case -d:
+      #-d switches on distributed make. Needs distcom to work.
+      setenv LMLMKDISTR ''
+      breaksw
+    case -nd:
+    case -strip:
+      setenv LDFLAGS "$LDFLAGS -s"
+      breaksw
+    case -[xy]space:
+      set xdgflags = ( $xdgflags $1 $2 )
+      shift
+      breaksw
+    case -C:
+      shift
+      setenv LMLFLAGS "$LMLFLAGS $1"
+      breaksw
+    case -o:
+      shift
+      setenv LDFLAGS "$LDFLAGS -o $1"
+      breaksw
+    case -l*:
+    case *.a:
+    case *.so:
+      setenv LDFLAGS "$LDFLAGS $1"
+      breaksw
+    case -I:
+      shift
+      setenv LMLINCLUDE "${LMLINCLUDE}:$1"
+      setenv LMLFLAGS "$LMLFLAGS -I$1"
+      breaksw
+    case -I*:
+      setenv LMLFLAGS "$LMLFLAGS $1"
+      setenv LMLINCLUDE "${LMLINCLUDE}:`echo $1 | sed -e s/-I//`"
+      breaksw
+    case -*:
+      setenv LMLFLAGS "$LMLFLAGS $1"
+      breaksw
+    default:
+      set modules = ( $modules $1 )
+      breaksw
+  endsw
+  shift
+end
+
+if ( $#modules < 1 ) then
+  echo 'Usage: lmlmake [-n] [-t] [-g] [-s] [-d] [-I dir] [-f makefile] modules'
+  exit 1
+endif
+
+if ( ! $?makefile ) then
+  if ( -r Makefile ) then
+    set makefile = Makefile
+  else
+    set makefile = makefile
+  endif
+endif
+
+# Also try to extract compiler/linker flags from a Makefile
+if ( -r $makefile ) then
+  setenv LMLFLAGS "$LMLFLAGS `grep '^[ ]*LMLFLAGS[ 	]*=' $makefile | sed 's/.*=//'`"
+  setenv LDFLAGS "$LDFLAGS `grep '^[ ]*LDFLAGS[ 	]*=' $makefile | sed 's/.*=//'`"
+endif
+
+#if ( ! $?quiet ) then
+#  echo setenv LMLFLAGS "$LMLFLAGS" '#' $from
+#  echo setenv LDFLAGS "$LDFLAGS"
+#  echo setenv OLDER $OLDER
+#endif
+
+#Here we go...
+
+if ( $?xdg ) then
+  echo xlmldg $rtflags $modules $xdgflags
+  xlmldg $rtflags $modules $xdgflags
+else
+  $LMLMK $rtflags - $flags $modules | $exec
+endif

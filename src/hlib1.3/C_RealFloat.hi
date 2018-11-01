@@ -1,0 +1,17 @@
+interface PreludeX where {
+class (Floating a, RealFrac a) => RealFloat a where {
+    floatRadix :: a -> Integer;
+    floatDigits :: a -> Int;
+    floatRange :: a -> (Int, Int);
+    decodeFloat :: a -> (Integer, Int);
+    encodeFloat :: Integer -> Int -> a;
+    exponent :: a -> Int;
+    significand :: a -> a;
+    scaleFloat :: Int -> a -> a;
+    isNaN :: a -> Bool;
+    isInfinite :: a -> Bool;
+    isDenormalized :: a -> Bool;
+    isNegativeZero :: a -> Bool;
+    isIEEE :: a -> Bool
+    }
+}

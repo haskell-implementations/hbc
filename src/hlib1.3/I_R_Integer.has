@@ -1,0 +1,4 @@
+module PreludeX where
+import Ratio
+instance Real Integer where
+	toRational x = x % 1

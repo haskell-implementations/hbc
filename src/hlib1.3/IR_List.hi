@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance (Read a) => Read [a] {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+}

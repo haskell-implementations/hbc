@@ -1,0 +1,14 @@
+interface Monad where {
+join :: (Prelude.Monad b) => (b (b a)) -> b a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+mapAndUnzipM :: (Prelude.Monad d) => (a -> d (b, c)) -> [a] -> d ([b], [c])   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+zipWithM :: (Prelude.Monad d) => (a -> b -> d c) -> [a] -> [b] -> d [c]   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "2,F" ST #-};
+foldM :: (Prelude.Monad c) => (a -> b -> c a) -> a -> [b] -> c a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "3,F" ST #-};
+when :: (Prelude.Monad a) => Prelude.Bool -> (a ()) -> a ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-};
+unless :: (Prelude.Monad a) => Prelude.Bool -> (a ()) -> a ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-};
+ap :: (Prelude.Monad c) => (c (a -> b)) -> (c a) -> c b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+liftM :: (Prelude.Monad c) => (a -> b) -> (c a) -> c b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+liftM2 :: (Prelude.Monad d) => (a -> b -> c) -> (d a) -> (d b) -> d c   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+liftM3 :: (Prelude.Monad e) => (a -> b -> c -> d) -> (e a) -> (e b) -> (e c) -> e d   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "T,F" ST #-};
+liftM4 :: (Prelude.Monad f) => (a -> b -> c -> d -> e) -> (f a) -> (f b) -> (f c) -> (f d) -> f e   {-# ARITY _ = 6 #-}{-# STRICTNESS _ = "T,F" ST #-};
+liftM5 :: (Prelude.Monad g) => (a -> b -> c -> d -> e -> f) -> (g a) -> (g b) -> (g c) -> (g d) -> (g e) -> g f   {-# ARITY _ = 7 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

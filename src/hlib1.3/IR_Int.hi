@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Numeric #-}
+instance Read Int {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+}

@@ -1,0 +1,4 @@
+interface _XI_ResourceIds where {
+{-# IMPORTING _XStuff #-}
+instance Show ResourceIds.WindowId {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

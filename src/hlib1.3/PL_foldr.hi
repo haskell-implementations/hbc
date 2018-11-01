@@ -1,0 +1,3 @@
+interface PreludeX where {
+foldr :: (a -> b -> b) -> b -> [a] -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+}

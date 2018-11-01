@@ -1,0 +1,1 @@
+import kno:*a->Int {# ARITY kno = 1 #}{# STRICTNESS kno = "0,0" ST #};

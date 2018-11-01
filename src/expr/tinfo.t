@@ -1,0 +1,12 @@
+import get_view: (Tinfo->(Option Id)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_isotype: (Tinfo->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_has_existential: (Tinfo->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_cs_from_tinfo: (Tinfo->(List Atype)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_component_types_from_tinfo: (Tinfo->(List Atype)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_no_of_constr_from_tinfo: (Tinfo->Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import get_type_id_from_tinfo: (Tinfo->Id) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import ITtuple: (Int->Tinfo) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,T" ST #};
+import ITlist: Tinfo {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import ITchar: Tinfo {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import ITbool: Tinfo {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import ITint: Tinfo {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};

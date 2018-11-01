@@ -1,0 +1,9 @@
+interface _LibIOErrno where {
+{-# IMPORTING _LibDialogue, _LibIO #-}
+isAlreadyExistsError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isAlreadyInUseError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isFullError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isIllegalOperation :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isPermissionError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isDoesNotExistError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Ord Integer {-# STRICTNESS (<) = "0&1,F" ST #-} {-# STRICTNESS (<=) = "0&1,F" ST #-} {-# STRICTNESS (>=) = "0&1,F" ST #-} {-# STRICTNESS (>) = "0&1,F" ST #-} {-# STRICTNESS max = "0&1,F" ST #-} {-# STRICTNESS min = "0&1,F" ST #-} {-# STRICTNESS compare = "0&1,F" ST #-}
+}

@@ -1,0 +1,16 @@
+#! /bin/sh
+d=${HBCDIR-${LMLDIR-XX_LIB}}
+cd $d
+ext="1.3"
+seds='s/{-#.*//'
+while [ $# -gt 0 ]; do
+	case $1 in
+	-1.3 ) ext="1.3";;
+	-1.2 ) ext="";;
+        -s ) seds="$seds;s/[A-Z,_,a-z,0-9,']*\.//g";;
+	*   ) ns="$ns $arg"; break ;;
+	esac
+	shift
+done
+
+grep "$@" hlib$ext/*.hi hbc_library$ext/*.hi | sed "$seds" | grep "$@"

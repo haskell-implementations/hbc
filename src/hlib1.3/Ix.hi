@@ -1,0 +1,19 @@
+interface Ix where {
+class (Prelude.Ord a) => Ix a where {
+    range :: (a, a) -> [a];
+    index :: (a, a) -> a -> Prelude.Int;
+    inRange :: (a, a) -> a -> Prelude.Bool
+    };
+rangeSize :: (Ix a) => (a, a) -> Prelude.Int   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+instance (Ix a, Ix b) => Ix (a, b) {-# DERIVED #-};
+instance Ix (Prelude.Int, Prelude.Int) {-# STRICTNESS range = "T,F" ST #-} {-# STRICTNESS index = "T,F" ST #-} {-# STRICTNESS inRange = "T,F" ST #-};
+instance (Ix a, Ix b, Ix c) => Ix (a, b, c) {-# DERIVED #-};
+instance (Ix a, Ix b, Ix c, Ix d) => Ix (a, b, c, d) {-# DERIVED #-};
+instance (Ix a, Ix b, Ix c, Ix d, Ix e) => Ix (a, b, c, d, e) {-# DERIVED #-};
+instance Ix () {-# DERIVED #-};
+instance Ix Prelude.Bool {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0,F" ST #-} {-# STRICTNESS inRange = "0,F" ST #-};
+instance Ix Prelude.Char {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0&1,F" ST #-} {-# STRICTNESS inRange = "0&1,F" ST #-};
+instance Ix Prelude.Int {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0&1,F" ST #-} {-# STRICTNESS inRange = "0&1,F" ST #-};
+instance Ix Prelude.Integer {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0&1,F" ST #-} {-# STRICTNESS inRange = "0&1,F" ST #-};
+instance Ix Prelude.Ordering {-# DERIVED #-}
+}

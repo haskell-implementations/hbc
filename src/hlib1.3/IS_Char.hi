@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Char__showLitChar #-}
+instance Show Char {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,T" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

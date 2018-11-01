@@ -1,0 +1,3 @@
+interface PreludeX where {
+shows :: (Show a) => a -> ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE shows :: Int -> String -> String {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-} #-}
+}

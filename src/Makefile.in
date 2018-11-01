@@ -1,0 +1,283 @@
+# Destination for various compiler part
+DST = XX_LIB
+# Destination for the front end, i.e. the visible program
+DSTBIN = XX_BIN
+# Destination for the man pages.
+DSTMAN = XX_MAN
+#
+#
+BIN = bin
+
+OBJS =	main/*.o misc/*.o etype/*.o expr/*.o transform/*.o rename/*.o ExprE/*.o \
+	type/*.o llift/*.o Gcode/*.o zf/*.o curry/*.o \
+	Gopt/*.o strict/*.o simpl/*.o mopt/*.o flic/*.o mcode/*.o bwm/*.o 
+EXE = XX_EXE
+IOBJS = ilml/XX_ILML
+IDEST = XX_DILML
+MTARGET = XX_MTARGET
+HASKELL = install_haskell
+H12	= XX_H12
+IFH12	= if [ "$(H12)" = "yes" ]
+HASKINST = XX_HASKELL
+IHASKELL = XX_IHASKELL
+OBJALL = ${OBJS} ${MTARGET}/*.o
+EXTRA = XX_EXTRA
+IINST = XX_IINST
+IDEFS = XX_IDEFS
+IEXTRA_OBJS = XX_IEXTRA_OJBS
+ILINKS = XX_ILINKS
+GCCLINK = XX_GCCLINK
+COMP = lmlcomp$(EXE)
+# Use the -H6Mg (or even less than 6M) flag if memory is tight.
+#LMLC = lmlc -H6Mg
+LMLC = lmlc
+LMLFLAGS =
+# The interactive system cannot handle zap, catch gets upset.
+ZLMLFLAGS = ${LMLFLAGS} -fno-zap-redex -fcaf-call $(IDEFS)
+MAKE = make
+STATICFLAG = XX_STATIC
+DQDSTLIB = -DQDSTLIB=\"$(DST)\"
+STRIPFLAG = -s
+LINKFLAGS = XX_LMLX $(LMLFLAGS) $(STRIPFLAG) $(STATICFLAG) XX_LINKFLAGS
+CFLAGS = -g
+TIMEPROF=timeprof
+HEAPPROF=heapprof
+PROFS = noprof XX_TIMEPROF XX_HEAPPROF
+SYSTEM = XX_SYSTEM
+MKDIR = sh bin/cmkdir
+SHELL = /bin/sh
+
+.SUFFIXES :
+.SUFFIXES : .m .o
+
+.m.o :
+	${LMLC} -c ${ZLMLFLAGS} $<
+
+${COMP}:	${OBJALL} ${IOBJS} Makefile
+	${LMLC} ${LINKFLAGS} ${OBJALL} ${IOBJS} lib/lib_i.a -o ${COMP} $(ILINKS)
+
+newvers:
+	mv main/version.m main/version.m.old
+	sed -e 's/.*DATE/"'"`date | sed 's/....\(......\).*\(....\)/\2 \1/'`"'" -- DATE/' main/version.m.old >main/version.m
+
+cleanall:
+	make MFLAGS=clean PROFS='' all
+
+ultraslim:
+	make cleanall
+	-rm -rf bin/cinter bin/masm.*
+	-rm -rf *test*
+	-rm -f */*.s */*.ut */ut */errs */errl */core */core.* */STAT* */*.old */xxx* */m.* errs errl ferrl TAGS
+	-rm */*.o
+	-rm */*~
+	-rm *~
+	-rm .setup
+
+clean:
+	-rm -f *.o ${COMP} ${COMP}.* bin/${COMP}* bin/masm.* bin/cinter
+	-rm -f */saveo/*
+	-rm -f */saveoo/*
+	cd lmlc; make EXE=$(EXE) clean
+	cd syntax; make EXE=$(EXE) clean
+	cd masm; make EXE=$(EXE) clean
+	$(IFH12); then cd hlib; make clean; fi
+	$(IFH12); then cd hbc_library; make clean; fi
+	cd hlib1.3; make clean
+	cd hbc_library1.3; make clean
+	cd hp2ps; make EXE=$(EXE) clean
+	cd doc; make clean
+
+OOSAVE:
+	$(MAKE) MTARGET=$(MTARGET) MFLAGS=oosave PROFS='' IDEST='' all
+
+OSAVE:
+	$(MAKE) MTARGET=$(MTARGET) MFLAGS=osave PROFS='' IDEST='' all
+
+UNOSAVE:
+	$(MAKE) MTARGET=$(MTARGET) MFLAGS=unosave PROFS='' IDEST='' all
+
+UNSAVE:
+	$(MAKE) MTARGET=$(MTARGET) MFLAGS=unsave PROFS='' IDEST='' all
+
+oosave:
+
+unosave:
+
+osave:
+
+unsave:
+
+
+countlines:
+
+count:
+	${MAKE} MFLAGS=countlines all 
+
+#| awk -e '{ if ($4=="total") { l+=$1; w+=$2; c+=$3; } }
+#{ print $0; }
+#END {print "TOTAL " l " " w " " c}'
+
+
+# To get everything done: make universe
+# It is impossible to make from scratch.  You must have a running lmlc, to
+# recompile it (of course).
+universe: Makefile myinstall nlmlc all
+
+# make all compiler parts
+all: Makefile
+	cd runtime; ${MAKE} -k EXE=$(EXE) LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' SYSTEM='${SYSTEM}' MTARGET=${MTARGET} ${MFLAGS} ${PROFS}
+	cd lib; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${LMLFLAGS}' MTARGET=${MTARGET} SYSTEM='${SYSTEM}' ${MFLAGS} DST=${DST} ${PROFS}
+	cd misc; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd expr; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd transform; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd rename; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' DQDSTLIB='$(DQDSTLIB)' MTARGET=${MTARGET} ${MFLAGS} 
+	cd ExprE; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd simpl; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd type; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd etype; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd llift; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd Gcode; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd mcode; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd mopt; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd Gopt; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd strict; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd flic; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd bwm; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd zf; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd curry; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd ${MTARGET}; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS}
+	cd main; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS} 
+	cd ilml; ${MAKE} -k LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' SYSTEM='${SYSTEM}' MTARGET=${MTARGET} ${MFLAGS} EXTRAOBJS='$(IEXTRA_OBJS)' ${IDEST}
+	${MAKE} LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' MTARGET=${MTARGET} ${MFLAGS}
+
+# make the runtime system
+rtime:
+	cd runtime; ${MAKE} EXE=$(EXE) MTARGET=${MTARGET}
+
+nlmlc:
+	cd lmlc; ${MAKE} EXE=$(EXE) SYSTEM='${SYSTEM}' STATICFLAG='$(STATICFLAG)' DQDSTLIB='$(DQDSTLIB)'
+
+Makefile: Makefile.in configure
+	yes '' | ./configure
+	@echo " "
+	@echo "*** The Makefile is updated! Run make again."
+	@echo " "
+	@false
+
+
+installcomp:
+	$(MKDIR) ${DST} ${DST}/bin
+	-rm -f ${DST}/bin/lmlcomp$(EXE)
+	cp ${COMP} ${DST}/bin/lmlcomp$(EXE)
+	-strip ${DST}/bin/lmlcomp$(EXE)
+
+install:	install_lml ${HASKINST} install_lmlmake install_man
+
+install_lml:	installcomp installrest
+	cd ilml; ${MAKE} LMLC='${LMLC}' LMLFLAGS='${ZLMLFLAGS}' DST=${DST} DSTBIN=${DSTBIN} H12='${H12}' ${IINST}
+
+installlmlc:
+	$(MKDIR) $(DSTBIN)
+	cd lmlc; ${MAKE} EXE=$(EXE) SYSTEM='$(SYSTEM)' STATICFLAG='$(STATICFLAG)' DQDSTLIB='$(DQDSTLIB)' DST=${DST} DSTBIN=${DSTBIN} GCCLINK=${GCCLINK} install
+
+installrest:	installlmlc nlmlc
+	$(MKDIR) ${DST} ${DST}/lib
+	cd syntax; ${MAKE} EXE=$(EXE) SYSTEM='${SYSTEM}' STATICFLAG='$(STATICFLAG)' DST=${DST} install
+	cd runtime; ${MAKE} EXE=$(EXE) SYSTEM='${SYSTEM}' DST=${DST} install
+	cd lib; ${MAKE} DST=${DST} install
+	cd hp2ps; ${MAKE} -k EXE=$(EXE) STATICFLAG='$(STATICFLAG)' DSTBIN=${DSTBIN} install
+
+install_man:
+	cd doc; make DSTMAN=${DSTMAN} install
+
+install_lmlmake:
+	cd lmlmake; make EXE=$(EXE) DST=${DST} DSTBIN=${DSTBIN} DSTMAN=${DSTMAN} all install installman
+
+haskell: bin/hbcgrep
+	$(IFH12); then cd hlib; ${MAKE} DST=${DST} ${PROFS}; fi
+	$(IFH12); then cd hbc_library; ${MAKE} DST=${DST} ${PROFS}; fi
+	cd hlib1.3; ${MAKE} DST=${DST} ${PROFS}
+	cd hbc_library1.3; ${MAKE} DST=${DST} ${PROFS}
+	cd ilml; ${MAKE} H12='${H12}' DST=${DST} ${IHASKELL}
+
+bin/hbcgrep: bin/hbcgrep.in
+	sh bin/edlib bin/hbcgrep.in bin/hbcgrep
+
+build_libs:
+	$(IFH12); then cd hlib; ${MAKE} ${PROFS}; fi
+	$(IFH12); then cd hbc_library; ${MAKE} ${PROFS}; fi
+	cd hlib1.3; ${MAKE} ${PROFS}
+	cd hbc_library1.3; ${MAKE} ${PROFS}
+
+install_haskell:	install_hlib install_hbc_library install_hlib1_3 install_hbc_library1_3 install_util
+	cp bin/buildshlib $(DST)/bin
+
+install_hlib:
+	$(IFH12); then cd hlib; ${MAKE} ${PROFS} ; ${MAKE} DST=${DST} install; fi
+
+install_hbc_library:
+	$(IFH12); then cd hbc_library; ${MAKE} ${PROFS} ; ${MAKE} DST=${DST} install; fi
+
+install_hlib1_3:
+	cd hlib1.3; ${MAKE} ${PROFS} ; ${MAKE} DST=${DST} install
+
+install_hbc_library1_3:
+	cd hbc_library1.3; ${MAKE} ${PROFS} ; ${MAKE} DST=${DST} install
+
+install_util: bin/hbcgrep
+	cd bin; cp hbcgrep addsign hbcaddsign $(DSTBIN)
+
+#installall:	install install_hlib install_hbc_library
+
+myinstall:
+	-@ sh -c 'if [ ! -r .setup ] ; then sh setup $(EXE); fi'
+	cd syntax; ${MAKE} EXE=$(EXE) SYSTEM='${SYSTEM}' STATICFLAG='$(STATICFLAG)' myinstall
+	cd ${MTARGET}; ${MAKE}
+	cd masm; ${MAKE} EXE=$(EXE) STATICFLAG='$(STATICFLAG)' MTARGET=${MTARGET} myinstall
+	cd runtime; make EXE=$(EXE) STATICFLAG='$(STATICFLAG)' cinter$(EXE)
+#	cp runtime/cinter$(EXE) bin/
+
+depend:
+
+dependall:
+	@$(MAKE) MFLAGS=depend all
+
+fixtest: step1 step2
+
+step1:
+# install new compiler
+#	rm -f PASS1 PASS2 DONE
+	touch ${BIN}/lmlcomp$(EXE)
+	mv ${BIN}/lmlcomp$(EXE) ${BIN}/lmlcomp.old
+	mv ${COMP} ${BIN}/lmlcomp$(EXE)
+#	touch PASS1
+# clean up everything
+	${MAKE} MTARGET=${MTARGET} OOSAVE
+# then make new object files
+	time ${MAKE} MTARGET=${MTARGET} all
+
+step2:
+# save those
+	${MAKE} MTARGET=${MTARGET} OSAVE
+# install the new compiler
+	mv ${BIN}/lmlcomp$(EXE) ${COMP}.old
+	mv ${COMP} ${BIN}/lmlcomp$(EXE)
+#	touch PASS2
+# and compile again
+	time ${MAKE} MTARGET=${MTARGET} all
+# restore old compiler
+	mv ${BIN}/lmlcomp$(EXE) ${COMP}.1
+	mv ${BIN}/lmlcomp.old ${BIN}/lmlcomp$(EXE)
+# and compare compilers
+	-cmp ${COMP} ${COMP}.1
+	echo Done
+#	touch DONE
+
+oldc:
+	mv ${BIN}/lmlcomp$(EXE) ${COMP}
+	mv ${BIN}/lmlcomp.old ${BIN}/lmlcomp$(EXE)
+oldc1:
+	mv ${COMP}.old ${COMP}
+	mv ${BIN}/lmlcomp$(EXE) ${COMP}.1
+	mv ${BIN}/lmlcomp.old ${BIN}/lmlcomp$(EXE)
+

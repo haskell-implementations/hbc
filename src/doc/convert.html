@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Converting from Haskell 1.2 to 1.4</title>
+</head>
+
+<body>
+<h1>Converting from Haskell 1.2 to 1.4</h1>
+
+Haskell 1.4 (the differences is really between 1.2 and 1.3) has some
+substantial differences compared to Haskell 1.2.  Here is a short
+guide how to convert your programs without too much pain.
+
+<h2>I/O</h2>
+The most radical change is the I/O system.  You should really convert
+to the new more powerful I/O system.  It is described in <a
+href="http://haskell.cs.yale.edu/haskell-report/haskell-report.html">the Haskell report</a>.<p>
+If you feel really lazy you can use the old I/O with compatibility
+libraries.  To do this you should add one of these imports:
+<pre>
+    import DialogueIO
+    import ContinuationIO
+</pre>
+and convert the old main function like this
+<pre>
+main = dialogueToIO oldmain
+</pre>
+
+<h2>class Text</h2>
+The class <b>Text</b> has been split into the classes <b>Read</b>
+and <b>Show</b>.  If you do not use any reading (few people do :-)
+all you need to do is to change <code>Text</code> to <code>Show</code>
+everywhere.
+
+<h2>Arrays</h2>
+The syntax of associations have changed and arrays have been moved
+into a separate library.  Change all occurences of ``<code>x :=
+e</code>'' to ``<code>(x, e)</code>'' and do a
+<pre>
+    import Array
+</pre>
+
+<h2>Old Prelude functions</h2>
+Some prelude functions have moved into libraries.  You need to add
+imports of these if you have used any of them.<p>
+<ul>
+  <li><code>isAlpha</code> & co
+      <pre>
+    import Char
+      </pre>
+  <li>Rational numbers
+      <pre>
+    import Ratio
+      </pre>
+  <li>Complex numbers
+      <pre>
+    import Complex
+      </pre>
+  <li>zip4-7 & co
+      <pre>
+    import List
+      </pre>
+</ul>
+Some Prelude entities are gone and replaced by more general ones.
+<ul>
+  <li><code>ord  -->  fromEnum</code>
+  <li><code>chr  -->  toEnum</code>
+  <li><code>minInt  -->  minBound</code>
+  <li><code>maxInt  -->  maxBound</code>
+  <li><code>minChar  -->  minBound</code>
+  <li><code>maxChar  -->  maxBound</code>
+</ul>
+
+<h2>New Prelude stuff</h2>
+
+There are some new useful things in the Prelude that previously needed
+to be imported from libraries.
+<ul>
+  <li><code>data Maybe = Nothing | Just a</code>
+  <li><code>data Either = Left a | Right b</code>
+  <li><code>lookup :: (Eq a) => a -> [(a, b)] -> Maybe b</code>
+  <li><code>concatMap :: (a -> [b]) -> [a] -> [b]</code>
+  <li><code>replicate :: Int -> a -> [a]</code>
+</ul>
+
+<h2>HBC libraries</h2>
+All of the functionality of the old HBC libraries is still there, but
+some of the functions have changed named to adhere to the new upcoming
+library standard and to avoid clashes with the new Prelude.  Consult
+the <a href="http://haskell.cs.yale.edu/haskell-report/newlib/library.html">library documentation</a> and
+<a href="hbc_library.html">HBC library documentation</a> to find
+out more.
+
+To get the trace function you need to do
+<pre>
+    import NonStdTrace
+</pre>
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Jan 30 12:38:26 MET 1997
+<!-- hhmts end -->
+</body> </html>

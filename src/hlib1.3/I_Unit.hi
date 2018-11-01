@@ -1,0 +1,9 @@
+interface PreludeX where {
+data () = ();
+instance Ix.Ix () {-# DERIVED #-};
+instance Bounded () {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-};
+instance Enum () {-# DERIVED #-};
+instance Eq () {-# DERIVED #-};
+instance Prelude.Eval () {-# DERIVED #-};
+instance Ord () {-# DERIVED #-}
+}

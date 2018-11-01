@@ -1,0 +1,19 @@
+interface LMLbyteops where
+longToBytes    :: Int    -> [Char] -> [Char] {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0,0" ST #-}
+intToBytes     :: Int    -> [Char] -> [Char] {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0,0" ST #-}
+shortToBytes   :: Int    -> [Char] -> [Char] {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0,0" ST #-}
+floatToBytes   :: Float  -> [Char] -> [Char] {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0,0" ST #-}
+doubleToBytes  :: Double -> [Char] -> [Char] {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0,0" ST #-}
+
+bytesToLong    :: [Char] -> (Int,    [Char]) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-}
+bytesToInt     :: [Char] -> (Int,    [Char]) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-}
+bytesToShort   :: [Char] -> (Int,    [Char]) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-}
+bytesToFloat   :: [Char] -> (Float,  [Char]) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-}
+bytesToDouble  :: [Char] -> (Double, [Char]) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,0" ST #-}
+
+{-
+bytesToInts    :: Int -> [Char] -> ([Int],    [Char]) {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-}
+bytesToShorts  :: Int -> [Char] -> ([Int],    [Char]) {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-}
+bytesToFloats  :: Int -> [Char] -> ([Float],  [Char]) {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-}
+bytesToDoubles :: Int -> [Char] -> ([Double], [Char]) {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,0&1" ST #-}
+-}

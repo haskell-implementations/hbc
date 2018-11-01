@@ -1,0 +1,37 @@
+%{
+#include "include.h"
+%}
+type impidt;
+	impid	: < gimpid	: id;
+		    gimptype	: ttype;
+		    gimpfinfo	: finfot; >;
+	imptype	: < gimptypet	: ttype;
+		    gimpder	: list; 	/* really impstuff */
+		    gimptypi    : list; >; 	/* really impstuff */
+	impeqtype:< gimpeqtype	: ttype;
+		    gimpeqcon	: list;			/* acons */
+		    gimpeqder	: list /* really impstuff*/; >;
+	impisotype:<gimpisotype	: ttype;
+		    gimpisocon	: list;			/* acons */
+		    gimpisoder	: list /* really impstuff*/; >;
+	impview:  < gimpviewtype: ttype;
+		    gimpviewof	: ttype;
+		    gimpviewcon	: list /* acons */; >;
+	impimport:< gimpimpmodid: id;
+		    gimpimpexp	: list;
+		    gimpimpren	: list; >;
+	impsyn	: < gimpsynsrc	: ttype;
+		    gimpsyndst	: ttype; >;
+	impclass: < gimpclasst	: ttype;
+		    gimpclassd	: list;
+		    gimpclasss  : list; >;	/* pair(string,finfo) */
+	impinst:  < gimpinstt	: ttype;
+		    gimpinstd   : int;
+                    gimpinstm   : id; 
+		    gimpinsts	: list; >;	/* pair(string,finfo) */
+	impids	: < gimpids	: list;			/* id */
+		    gimptypes	: ttype;
+		    gimpfinfos	: finfot; >;
+	impctype: < gimpcttype  : ttype;
+		    gimpctprod  : list; >;
+end;

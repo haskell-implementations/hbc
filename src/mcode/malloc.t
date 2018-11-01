@@ -1,0 +1,2 @@
+import mrecblock: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(*a->((List (List Gcode))->((List Gcode)->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))) {# ARITY _ = 7 #}{# STRICTNESS _ = "T,F" ST #};
+import malloc: ((#3 (List String) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Int->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "(0|2)&3,F" ST #};

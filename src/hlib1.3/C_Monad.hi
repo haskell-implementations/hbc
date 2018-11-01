@@ -1,0 +1,7 @@
+interface PreludeX where {
+class (Monad :: (* -> *) -> *) a where {
+    (>>=) :: (a b) -> (b -> a c) -> a c;
+    (>>) :: (a d) -> (a e) -> a e;
+    return :: f -> a f
+    }
+}

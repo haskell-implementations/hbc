@@ -1,0 +1,2 @@
+interface LMLappend where
+{-:"_@":-} :: [a] -> [a] -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}

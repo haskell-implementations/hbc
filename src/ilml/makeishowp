@@ -1,0 +1,19 @@
+#! /bin/csh -f
+set noglob
+set pa = "../syntax/lmlp -q"
+set a = "$<"
+set fx = ""
+while ("$a" != "")
+	echo "$a" | ../bin/mygreps "nonfix"
+	if ($status == 0) then
+		set fx = "$fx $a"
+	else
+		echo "$a" | ../bin/mygreps "import"
+		if ($status == 0) then
+			echo -n L
+			echo "$fx $a" | $pa
+		endif
+	endif
+	set a = "$<"
+end
+echo -n N

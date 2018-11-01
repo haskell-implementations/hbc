@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance RealFrac Double {-# STRICTNESS properFraction = "T,F" ST #-} {-# STRICTNESS truncate = "T,F" ST #-} {-# STRICTNESS round = "T,F" ST #-} {-# STRICTNESS ceiling = "T,F" ST #-} {-# STRICTNESS floor = "T,F" ST #-}
+}

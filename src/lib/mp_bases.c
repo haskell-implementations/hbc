@@ -1,0 +1,108 @@
+/* __mp_bases -- Structure for conversion between internal binary
+   format and strings in base 2..36.  The fields are explained in
+   gmp-impl.h.
+
+   ***** THIS FILE WAS CREATED BY A PROGRAM.  DON'T EDIT IT! *****
+
+Copyright (C) 1991 Free Software Foundation, Inc.
+
+This file is part of the GNU MP Library.
+
+The GNU MP Library is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2, or
+(at your option) any later version.
+
+The GNU MP Library is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with the GNU MP Library; see the file COPYING.  If not, write
+to the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139,
+USA.  */
+
+#include "gmp.h"
+#include "gmp-impl.h"
+
+const struct bases __mp_bases[37] =
+{
+#if defined(__alpha)
+  /*  0 */ {0, 0, 0, 0.0},
+  /*  1 */ {0, 0, 0, 0.0},
+  /*  2 */ {64, 0x1, 0x0, 1.00000000},
+  /*  3 */ {40, 0xA8B8B452291FE821, 0x7BE892E24631, 0.63092975},
+  /*  4 */ {32, 0x2, 0x0, 0.50000000},
+  /*  5 */ {27, 0x6765C793FA10079D, 0x57FDAFF43B1B, 0.43067656},
+  /*  6 */ {24, 0x41C21CB8E1000000, 0x2AC2499F7CE5, 0.38685281},
+  /*  7 */ {22, 0x3642798750226111, 0x2B581876BA46, 0.35620719},
+  /*  8 */ {21, 0x3, 0x0, 0.33333333},
+  /*  9 */ {20, 0xA8B8B452291FE821, 0x7BE892E24631, 0.31546488},
+  /* 10 */ {19, 0x8AC7230489E80000, 0x58F6456D6E0D, 0.30103000},
+  /* 11 */ {18, 0x4D28CB56C33FA539, 0xACC162C54B9A, 0.28906483},
+  /* 12 */ {17, 0x1ECA170C00000000, 0xD726ABD2DFE, 0.27894295},
+  /* 13 */ {17, 0x780C7372621BD74D, 0x11A1C594ABC3, 0.27023815},
+  /* 14 */ {16, 0x1E39A5057D810000, 0x5A7BA4115938, 0.26264954},
+  /* 15 */ {16, 0x5B27AC993DF97701, 0xD37E6FBEE90B, 0.25595802},
+  /* 16 */ {16, 0x4, 0x0, 0.25000000},
+  /* 17 */ {15, 0x27B95E997E21D9F1, 0xCB186C57E961, 0.24465054},
+  /* 18 */ {15, 0x5DA0E1E53C5C8000, 0x59E1FF56DAE4, 0.23981247},
+  /* 19 */ {15, 0xD2AE3299C1C4AEDB, 0xE5482FDF0456, 0.23540891},
+  /* 20 */ {14, 0x16BCC41E90000000, 0x3FA0CFA95629, 0.23137821},
+  /* 21 */ {14, 0x2D04B7FDD9C0EF49, 0x56C9FDF521D6, 0.22767025},
+  /* 22 */ {14, 0x5658597BCAA24000, 0x772B37DF979C, 0.22424382},
+  /* 23 */ {14, 0xA0E2073737609371, 0x2E965FF688B1, 0.22106473},
+  /* 24 */ {13, 0xC29E98000000000, 0x6760AF286BCA, 0.21810429},
+  /* 25 */ {13, 0x14ADF4B7320334B9, 0x8BE5FF9FC433, 0.21533828},
+  /* 26 */ {13, 0x226ED36478BFA000, 0x8650AF0413E0, 0.21274605},
+  /* 27 */ {13, 0x383D9170B85FF80B, 0x71E63BF81980, 0.21030992},
+  /* 28 */ {13, 0x5A3C23E39C000000, 0xD61AACFD172, 0.20801460},
+  /* 29 */ {13, 0x8E65137388122BCD, 0xD72ADF779A1D, 0.20584683},
+  /* 30 */ {13, 0xDD41BB36D259E000, 0x2F822EF0AD3D, 0.20379505},
+  /* 31 */ {12, 0xAEE5720EE830681, 0xB608E9DE0BEC, 0.20184909},
+  /* 32 */ {12, 0x5, 0x0, 0.20000000},
+  /* 33 */ {12, 0x172588AD4F5F0981, 0x53440D9D9FC, 0.19823986},
+  /* 34 */ {12, 0x211E44F7D02C1000, 0x3752FC6C29CA, 0.19656163},
+  /* 35 */ {12, 0x2EE56725F06E5C71, 0x6FD8C1811A16, 0.19495902},
+  /* 36 */ {12, 0x41C21CB8E1000000, 0x2AC2499F7CE5, 0.19342640},
+#else
+  /*  0 */ {0, 0, 0, 0.0},
+  /*  1 */ {0, 0, 0, 0.0},
+  /*  2 */ {32, 0x1, 0x0, 1.00000000},
+  /*  3 */ {20, 0xCFD41B91, 0x3B563C24, 0.63092975},
+  /*  4 */ {16, 0x2, 0x0, 0.50000000},
+  /*  5 */ {13, 0x48C27395, 0xC25C2684, 0.43067656},
+  /*  6 */ {12, 0x81BF1000, 0xF91BD1B6, 0.38685281},
+  /*  7 */ {11, 0x75DB9C97, 0x1607A2CB, 0.35620719},
+  /*  8 */ {10, 0x3, 0x0, 0.33333333},
+  /*  9 */ {10, 0xCFD41B91, 0x3B563C24, 0.31546488},
+  /* 10 */ {9, 0x3B9ACA00, 0x12E0BE82, 0.30103000},
+  /* 11 */ {9, 0x8C8B6D2B, 0xD24CDE04, 0.28906483},
+  /* 12 */ {8, 0x19A10000, 0x3FA39AB5, 0.27894295},
+  /* 13 */ {8, 0x309F1021, 0x50F8AC5F, 0.27023815},
+  /* 14 */ {8, 0x57F6C100, 0x74843B1E, 0.26264954},
+  /* 15 */ {8, 0x98C29B81, 0xAD0326C2, 0.25595802},
+  /* 16 */ {8, 0x4, 0x0, 0.25000000},
+  /* 17 */ {7, 0x18754571, 0x4EF0B6BD, 0.24465054},
+  /* 18 */ {7, 0x247DBC80, 0xC0FC48A1, 0.23981247},
+  /* 19 */ {7, 0x3547667B, 0x33838942, 0.23540891},
+  /* 20 */ {7, 0x4C4B4000, 0xAD7F29AB, 0.23137821},
+  /* 21 */ {7, 0x6B5A6E1D, 0x313C3D15, 0.22767025},
+  /* 22 */ {7, 0x94ACE180, 0xB8CCA9E0, 0.22424382},
+  /* 23 */ {7, 0xCAF18367, 0x42ED6DE9, 0.22106473},
+  /* 24 */ {6, 0xB640000, 0x67980E0B, 0.21810429},
+  /* 25 */ {6, 0xE8D4A51, 0x19799812, 0.21533828},
+  /* 26 */ {6, 0x1269AE40, 0xBCE85396, 0.21274605},
+  /* 27 */ {6, 0x17179149, 0x62C103A9, 0.21030992},
+  /* 28 */ {6, 0x1CB91000, 0x1D353D43, 0.20801460},
+  /* 29 */ {6, 0x23744899, 0xCE1DECEA, 0.20584683},
+  /* 30 */ {6, 0x2B73A840, 0x790FC511, 0.20379505},
+  /* 31 */ {6, 0x34E63B41, 0x35B865A0, 0.20184909},
+  /* 32 */ {6, 0x5, 0x0, 0.20000000},
+  /* 33 */ {6, 0x4CFA3CC1, 0xA9AED1B3, 0.19823986},
+  /* 34 */ {6, 0x5C13D840, 0x63DFC229, 0.19656163},
+  /* 35 */ {6, 0x6D91B519, 0x2B0FEE30, 0.19495902},
+  /* 36 */ {6, 0x81BF1000, 0xF91BD1B6, 0.19342640},
+#endif
+};

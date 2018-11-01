@@ -1,0 +1,12 @@
+import ktag0:Int->*a {# ARITY ktag0 = 1 #}{# STRICTNESS ktag0 = "0,0" ST #};
+import ktag:Int->*a->*b {# ARITY ktag = 2 #}{# STRICTNESS ktag = "0,0" ST #};
+import kpair0:*a->*b->*c {# ARITY kpair0 = 2 #}{# STRICTNESS kpair0 = "F,F" ST #};
+import kpair1:*a->*b->*c {# ARITY kpair1 = 2 #}{# STRICTNESS kpair1 = "F,F" ST #};
+import kpair2:*a->*b->*c {# ARITY kpair2 = 2 #}{# STRICTNESS kpair2 = "F,F" ST #};
+import kpair3:*a->*b->*c {# ARITY kpair3 = 2 #}{# STRICTNESS kpair3 = "F,F" ST #};
+import kpair4:*a->*b->*c {# ARITY kpair4 = 2 #}{# STRICTNESS kpair4 = "F,F" ST #};
+import ktpair:*a->*b->*c->*d {# ARITY ktpair = 3 #}{# STRICTNESS ktpair = "F,F" ST #};
+import kppair:*a->*b->*c->*d->*e {# ARITY kppair = 4 #}{# STRICTNESS kppair = "F,F" ST #};
+import ktvek:*a;
+import kpvek:*a;
+import ksplvek:*a->*b->*c {# ARITY ksplvek = 2 #}{# STRICTNESS ksplvek = "F,F" ST #};

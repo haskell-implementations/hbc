@@ -1,0 +1,4 @@
+interface LML_BuiltinFile where
+_fileStdin :: a   {-# ARITY _ = 0 #-}
+_fileStdout :: a   {-# ARITY _ = 0 #-}
+_fileStderr :: a   {-# ARITY _ = 0 #-}

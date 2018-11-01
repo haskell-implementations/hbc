@@ -1,0 +1,5 @@
+interface PreludeX where {
+class (Num a, Ord a) => Real a where {
+    toRational :: a -> Ratio.Rational
+    }
+}

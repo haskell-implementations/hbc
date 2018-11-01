@@ -1,0 +1,6 @@
+interface PreludeX where {
+{-:"PfloorDouble2Int":-} :: Double -> Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+{-:"PceilingDouble2Int":-} :: Double -> Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+{-:"PfloorFloat2Int":-} :: Float -> Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+{-:"PceilingFloat2Int":-} :: Float -> Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+}

@@ -1,0 +1,9 @@
+interface Numeric__readInt where {
+{-# IMPORTING Char #-}
+readDec :: (Prelude.Integral a) => Prelude.ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+readOct :: (Prelude.Integral a) => Prelude.ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+readHex :: (Prelude.Integral a) => Prelude.ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+readInt :: (Prelude.Integral a) => a -> (Prelude.Char -> Prelude.Bool) -> (Prelude.Char -> Prelude.Int) -> Prelude.ReadS a   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "4,F" ST #-};
+lexDigits :: Prelude.ReadS Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+nonnull :: (Prelude.Char -> Prelude.Bool) -> Prelude.ReadS Prelude.String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

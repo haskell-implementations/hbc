@@ -1,0 +1,5 @@
+interface PreludeX where {
+data Bool = False | True;
+instance Prelude.Eval Bool {-# DERIVED #-};
+instance Read Bool {-# DERIVED #-}
+}

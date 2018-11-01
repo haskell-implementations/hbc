@@ -1,0 +1,18 @@
+%{
+#include "include.h"
+%}
+type ttype;
+	tname	: < gtypeid	: id;
+		    gtypel	: list; >;
+	tvar	: < gtvar	: int; >;
+	tstrict	: < gtstrict	: ttype; >;
+	tcontext: < gcontexts	: list;
+		    gctype	: ttype; >;
+	tsels	: < gselidstys	: list; >;	/* of pairs with (list id, type) */
+	tap	: < gtapvar	: ttype;
+		    gtaptypel	: list; >;
+	tnamek	: < gtypeidk	: id;
+		    gkindk	: kind;
+		    gtypelk	: list; >;
+end;
+

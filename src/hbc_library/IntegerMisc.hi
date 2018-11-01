@@ -1,0 +1,9 @@
+interface IntegerMisc where {
+integerPowMod :: Integer -> Integer -> Integer -> Integer   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0&1&2,F" ST #-};
+integerToString :: Int -> Integer -> String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+integerGcd :: Integer -> Integer -> Integer   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+integerAnd :: Integer -> Integer -> Integer   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+integerOr :: Integer -> Integer -> Integer   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+integerSqrt :: Integer -> (Integer, Integer)   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+integerToIntList :: Integer -> [Int]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

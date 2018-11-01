@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Enum Float {-# STRICTNESS toEnum = "0,0" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "T,F" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "T,F" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+}

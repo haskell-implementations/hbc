@@ -1,0 +1,9 @@
+%{
+#include "include.h"
+%}
+type kind;
+	karrow	: < kfun	: kind;
+		    karg	: kind; >;
+	kground	: < >;
+end;
+

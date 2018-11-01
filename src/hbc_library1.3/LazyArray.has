@@ -1,0 +1,12 @@
+module LazyArray(array) where
+import Ix
+import LML_array
+import _LibArray
+
+#define lmlarray {-:"Parray":-}
+
+--@@ Similar LibArray.array, but builds the array lazily.
+
+array b@(l,u) ivs =
+	let hi = index b u
+	in  MkArray b (lmlarray 0 hi id [(index b i, v) | (i, v) <- ivs])

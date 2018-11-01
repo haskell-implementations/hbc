@@ -1,0 +1,8 @@
+interface LML_array where
+data LArray a = LArray a	-- used to access the VEK component of an LML array
+instance Eval (LArray a)
+{-:"Parray":-} :: Int -> Int -> ([a]->b) -> [(Int,a)] -> LArray b	{-# ARITY _ = 4 #-} {-# STRICTNESS _ = "0&1&3,F" ST #-}
+{-:"Psarray":-} :: Int -> Int -> Int -> [(Int,a)] -> LArray b		{-# ARITY _ = 4 #-} {-# STRICTNESS _ = "0&1&2&3,F" ST #-}
+{-:"Paindex":-} :: LArray b -> Int -> b					{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pmkarray":-} :: Int -> Int -> a -> LArray a				{-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Paupdate":-} :: LArray b -> Int -> b -> ()				{-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1,F" ST #-}

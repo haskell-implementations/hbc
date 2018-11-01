@@ -1,0 +1,7 @@
+#! /bin/csh -f
+set args=''
+while ("$1" =~ -*)
+	set args = "$args $1"
+	shift
+end
+hbc -c -fshow-top-types $args $1 | addsign $1

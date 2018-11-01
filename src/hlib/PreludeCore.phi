@@ -1,0 +1,231 @@
+interface PreludeCore where
+{-
+-----------------------------------------------------------------------------
+*    Eq((==), (/=)),
+*    Ord((<), (<=), (>=), (>), max, min),
+*    Num((+), (-), (*), negate, abs, signum, fromInteger),
+*    Integral(quotRem, quot, rem, divMod, div, mod, even, odd, toInteger),
+*    Fractional((/), fromRational),
+*    Floating(pi, exp, log, sqrt, (**), logBase,
+*	     sin, cos, tan, asin, acos, atan,
+*	     sinh, cosh, tanh, asinh, acosh, atanh),
+*    Real(toRational),
+*    RealFrac(properFraction),
+*    RealFloat(floatRadix, floatDigits, floatRange,
+*	      encodeFloat, decodeFloat, exponent, significand, scaleFloat),
+*    Ix(range, index, inRange),
+*    Enum(enumFrom, enumFromThen, enumFromTo, enumFromThenTo),
+*    Text(readsPrec, showsPrec, readList, showList),
+*    Binary(readBin, showBin),
+--  List type: [_]((:), [])
+--  Tuple types: (_,_), (_,_,_), etc.
+--  Trivial type: () 
+*    Bool(True, False),
+*    Char, Int, Integer, Float, Double, Bin,
+*    Ratio, Complex((:+)), Assoc((:=)), Array,
+*    String, Rational
+-----------------------------------------------------------------------------
+-}
+
+import Prelude(Request,Response,IOError)
+
+------  X related types
+
+import Command(XCommand, XRequest)
+import Event(XEvent, XResponse)
+import ResourceIds(WindowId, XWId(..))
+import Sockets(AEvent, AsyncInput(..), Descriptor, SocketRequest, SocketResponse)
+import Xtypes(Display, XDisplay(..))
+------
+
+
+-- PreludeCore
+infixr 8  **
+infixl 7  *, /, `quot`, `div`, `rem`, `mod`
+infixl 6  +, -
+infixr 3  :
+infix  2  ==, /=, <, <=, >=, >
+
+class  Eq a  where
+    (==), (/=)		:: a -> a -> Bool
+
+class  (Eq a) => Ord a  where
+    (<), (<=), (>=), (>):: a -> a -> Bool
+    max, min		:: a -> a -> a
+
+class  (Eq a, Text a) => Num a  where
+    (+), (-), (*)	:: a -> a -> a
+    negate		:: a -> a
+    abs, signum		:: a -> a
+    fromInteger		:: Integer -> a
+    fromInt		:: Int -> a			-- Haskell B.
+    {-:"PfromInteger":-} :: (Integer, Int, Double) -> a
+
+class  (Ix a, Real a) => Integral a  where
+    quot, rem, div, mod	:: a -> a -> a
+    quotRem, divMod	:: a -> a -> (a,a)
+    even, odd		:: a -> Bool
+    toInteger		:: a -> Integer
+    toInt		:: a -> Int			-- Haskell B.
+
+class  (Num a) => Fractional a  where
+    (/)			:: a -> a -> a
+    recip		:: a -> a
+    fromRational	:: Rational -> a
+    {-:"PfromRational":-} :: (Rational, Double) -> a
+
+class  (Fractional a) => Floating a  where
+    pi			:: a
+    exp, log, sqrt	:: a -> a
+    (**), logBase	:: a -> a -> a
+    sin, cos, tan	:: a -> a
+    asin, acos, atan	:: a -> a
+    sinh, cosh, tanh	:: a -> a
+    asinh, acosh, atanh :: a -> a
+
+class  (Enum a, Num a) => Real a	where
+    toRational		::  a -> Rational
+
+class  (Fractional a, Real a) => RealFrac a  where
+    properFraction	:: (Integral b) => a -> (b,a)
+    truncate, round	:: (Integral b) => a -> b
+    ceiling, floor	:: (Integral b) => a -> b
+
+class  (Floating a, RealFrac a) => RealFloat a  where
+    floatRadix		:: a -> Integer
+    floatDigits		:: a -> Int
+    floatRange		:: a -> (Int,Int)
+    decodeFloat		:: a -> (Integer,Int)
+    encodeFloat		:: Integer -> Int -> a
+    exponent		:: a -> Int
+    significand		:: a -> a
+    scaleFloat		:: Int -> a -> a
+
+class  (Ord a) => Ix a  where
+    range		:: (a,a) -> [a]
+    index		:: (a,a) -> a -> Int
+    inRange		:: (a,a) -> a -> Bool
+
+class  (Ord a) => Enum a  where
+    enumFrom		:: a -> [a]		-- [n..]
+    enumFromThen	:: a -> a -> [a]	-- [n,n'..]
+    enumFromTo		:: a -> a -> [a]	-- [n..m]
+    enumFromThenTo	:: a -> a -> a -> [a]	-- [n,n'..m]
+
+type ReadS a = String -> [(a, String)]
+type ShowS = String -> String
+
+class  Text a  where
+    readsPrec :: Int -> ReadS a
+    showsPrec :: Int -> a -> ShowS
+    readList  :: ReadS [a]
+    showList  :: [a] -> ShowS
+    showsType :: a -> ShowS
+
+class  Binary a  where
+    readBin		:: Bin -> (a,Bin)
+    showBin		:: a -> Bin -> Bin
+
+-- These are in PreludeType
+--data [a] = [] | a : [a]	deriving (Eq, Ord, Binary)
+--data () = () 			deriving (Eq, Ord, Enum, Ix, Text, Binary)
+--data a -> b			deriving ()
+--data Char			deriving (Eq, Ord, Enum, Ix, Binary)
+--data Int			deriving (Binary)
+--data Integer			deriving (Binary)
+--data Float			deriving (Binary)
+--data Double			deriving (Binary)
+--data Bin			deriving ()
+-- Tuples are in PreludeTuple (built in to the compiler)
+--data (a,b) = (a,b) 		deriving (Eq, Ord, Ix, Text, Binary)
+
+data  Bool  =  False | True 	deriving ()
+
+type  String = [Char]
+data  (Integral a) => Ratio a
+type  Rational = Ratio Integer
+data  (RealFloat a)     => Complex a = a{-# STRICT #-} :+ a{-# STRICT #-}  deriving (Binary,Text)
+data  Assoc a b =  a := b	deriving (Eq, Ord, Text)
+data  (Ix a)    => Array a b
+
+--data Response
+--data Request
+--data IOError
+type Dialogue    =  [Response] -> [Request]
+type SuccCont    =                Dialogue
+type StrCont     =  String     -> Dialogue
+type BinCont     =  Bin        -> Dialogue
+type FailCont    =  IOError    -> Dialogue
+type StrListCont =  [String]   -> Dialogue
+ 
+instance Eq Bool {-# DERIVED #-}
+instance Ord Bool {-# DERIVED #-}
+--instance Enum Bool
+--instance Ix Bool
+instance Binary Bool
+
+instance Eq Char {-# DERIVED #-}
+instance Ord Char {-# DERIVED #-}
+--instance Enum Char
+--instance Ix Char
+instance Binary Char
+
+instance  Eq Int {-# DERIVED #-}
+instance  Ord Int {-# DERIVED #-}
+--instance  Ix Int
+--instance  Enum Int
+--instance  Num Int
+--instance  Real Int
+--instance  Integral Int
+instance  Binary Int
+
+instance  Eq Integer {-# DERIVED #-}
+instance  Ord Integer {-# DERIVED #-}
+--instance  Ix Integer
+--instance  Enum Integer
+--instance  Num Integer
+--instance  Real Integer
+--instance  Integral Integer
+instance  Binary Integer
+
+instance  Eq Float {-# DERIVED #-}
+instance  Eq Double {-# DERIVED #-}
+instance  Ord Float {-# DERIVED #-}
+instance  Ord Double {-# DERIVED #-}
+--instance  Num Float
+--instance  Num Double
+--instance  Real Float
+--instance  Real Double
+--instance  Fractional Float
+--instance  Fractional Double
+--instance  Floating Float
+--instance  Floating Double
+--instance  RealFrac Float
+--instance  RealFrac Double
+--instance  RealFloat Float
+--instance  RealFloat Double
+--instance  Enum Float
+--instance  Enum Double
+instance  Binary Float
+instance  Binary Double
+
+instance Text ()
+instance Text Bool
+instance Text Bin
+--instance Text Char
+instance Text Double
+instance Text File
+instance Text Float
+--instance Text Int
+--instance Text Integer
+instance (Text a) => Text [a]
+instance (Text a, Text b) => Text (a -> b)
+
+--instance (RealFloat a) => Num (Complex a)
+--instance (RealFloat a) => Fractional (Complex a)
+--instance (RealFloat a) => Floating (Complex a)
+
+--instance (Ix a, Text a, Text b) => Text (Array a b)
+--instance (Integral a, Text a) => Text (Ratio a)
+-- Should all instances be done here?!!
+

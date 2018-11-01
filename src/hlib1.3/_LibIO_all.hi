@@ -1,0 +1,51 @@
+interface _LibIO_all where {
+{-# IMPORTING _LibIO__mkErrMsg, _LibDialogue, _LibIO__dialogueToIO, _LibIO__fail, _LibIO___unsafePerformIO, _LibIO__ioToDialogue, _LibIO__process, _LibIO, _LibIO__instance #-}
+type _LibIO.IOT a = (a -> _LibDialogue._Dialogue) -> _LibDialogue._Dialogue;
+newtype _LibIO.IO a = IO (_LibIO.IOT (Prelude.Either _LibIO.IOError a));
+data _LibIO.Handle = Handle _LibIO.IOMode Prelude._File;
+data _LibIO.IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode;
+data _LibIO.IOErrorCode = EOF | User Prelude.String | PosixErrno Prelude.Int Prelude.String;
+data _LibIO.IOError = IOError _LibIO.IOErrorCode (Prelude.Maybe _LibIO.Handle) (Prelude.Maybe Prelude.String);
+_LibIO__process.processRequestIO :: _LibDialogue._Request -> _LibIO.IO _LibDialogue._Response   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOUnit :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOFile :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO Prelude._File   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOInt :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO Prelude.Int   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOString :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO Prelude.String   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOStringList :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO [Prelude.String]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIODouble :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO Prelude.Double   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOSigActResp :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO _LibDialogue.SigAct   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOSelectData :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO [([Prelude._File], [Prelude._File], [Prelude.Double])]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIO_CUnion :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO _LibDialogue._CUnion   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.processRequestIOGetTimeZone :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue._Request -> _LibIO.IO (Prelude.Bool, Prelude.String, Prelude.Int)   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__process.procError :: Prelude.String -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+_LibIO__process.getIOErrorCode :: (Prelude.Maybe _LibIO.Handle) -> (Prelude.Maybe Prelude.String) -> _LibDialogue.D_IOError -> _LibIO.IO a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-};
+_LibIO__process.posixError :: Prelude.Int -> _LibIO.IOErrorCode   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__ioToDialogue.ioToDialogue :: (_LibIO.IO a) -> _LibDialogue._Dialogue   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIO__ioToDialogue.mkErrorMessage :: _LibIO.IOError -> [Prelude.Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+_LibIO__ioToDialogue._ioToDialogue :: (_LibIO.IO a) -> [_LibDialogue._Response] -> [_LibDialogue._Request]   ;
+_LibIO__mkErrMsg.mkErrMsg :: _LibIO.IOError -> [Prelude.Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIO__mkErrMsg.mkMessageCode :: _LibIO.IOErrorCode -> (Prelude.Maybe [Prelude.Char]) -> [Prelude.Char]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIO__fail.fail :: _LibIO.IOError -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO__dialogueToIO.dialogueToIO :: _LibDialogue._Dialogue -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+_LibIO___unsafePerformIO._unsafePerformIO :: (_LibIO.IO a) -> a   ;
+instance Ix.Ix _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Bounded _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Enum _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Eq _LibIO.Handle {-# STRICTNESS (Prelude.==) = "T,F" ST #-} {-# STRICTNESS (Prelude./=) = "T,F" ST #-};
+instance Prelude.Eq _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Eq _LibIO.IOErrorCode {-# DERIVED #-};
+instance Prelude.Eq _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Eval _LibIO.Handle {-# DERIVED #-};
+instance Prelude.Eval (_LibIO.IO a) {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOErrorCode {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Functor _LibIO.IO {-# STRICTNESS Prelude.map = "T,F" ST #-};
+instance Prelude.Monad _LibIO.IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance Prelude.Ord _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Read _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Show _LibIO.Handle {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance (Prelude.Show a) => Prelude.Show (_LibIO.IO a) {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show _LibIO.IOError {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show _LibIO.IOMode {-# DERIVED #-}
+}

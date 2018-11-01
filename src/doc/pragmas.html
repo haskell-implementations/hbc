@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Pragmas</title>
+</head>
+
+<body>
+<h1>Pragmas</h1>
+
+Hbc implements the following pragmas:
+<ul>
+  <li>STRICT<p>
+Force strict evaluation of an expression.
+For example
+<pre>
+        f x ((y+1){-#STRICT#-})
+</pre>
+forces evaluation of <tt>y+1</tt> before the call of <tt>f</tt>.
+<p>
+
+  <li>SPECIALIZE<p>
+<pre>
+  {-# SPECIALIZE f :: T, ...}
+</pre>
+Specialize the function <tt>t</tt> to the type(s) <tt>T</tt>.  For example
+<pre>
+  {-# SPECIALIZE inc :: Int->Int, Double->Double #-}
+  inc x = x + 1
+</pre>
+will give the usual overloaded version of <tt>inc</tt>, but also versions 
+specialized to the types Int and Double.  The specialized instances are used 
+whereever the typechecker can determine (statically) that the specialized type 
+occurs.
+<p>
+  <li>SPECIALIZE instance<p>
+<pre>
+  {-# SPECIALIZE instance C T #-}
+</pre>
+Specialize an instance declaration to a particular type.
+
+Suitable specializations have been inserted for a lot of functions and instances
+in the standard prelude to improve efficiency.
+<p>
+
+  <li>COMPILERFLAGS flag ...<p>
+If this pragma is given on the first line of a file the flags
+are decoded as ordinary compiler flags.
+<p>
+</ul>
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Sun Sep  8 00:46:46 MET DST 1996
+<!-- hhmts end -->
+</body> </html>

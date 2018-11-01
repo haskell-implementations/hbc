@@ -1,0 +1,43 @@
+cat <<eof
+<html> <head>
+<title>HBC Libraries</title>
+</head>
+
+<body>
+<h1>HBC Libraries</h1>
+
+The import one of these modules you only need to do an ordinary import, 
+no compiler flags are needed.<p>
+
+Some of these module are based on very early Haskell library
+proposals.
+
+<hr>
+eof
+files=`echo $* | tr ' ' '\12' | sort`
+for hi in $files; do
+    mod=`echo $hi | sed 's/.hi$//'`
+    hs=$mod.hs
+    if [ ! -r $hs ]; then hs=$mod.has; fi
+    if [ -r $hs ] ; then
+	echo '<a name="'$mod'">'
+	echo "<h2>$mod</h2>"
+	sed -n 's/--@@ //p' $hs
+	
+	if ../bin/mygreps '@NOINTERFACE' $hs ; then
+	    	:
+	else
+		echo '<pre>'
+		sed -e 's/  {-# ARITY.*//' -e 's/ {-# STRICTNESS.*//' -e 's/ {-# DERIVED.*//' -e '/interface/d' -e '/IMPORTING/d' -e '/^[ ]*}/d' -e 's/;//' -e 's/Prelude\.//g' -e 's/_LibIO\.//g' -e 's/_LibDialogue\.//g' -e 's/_LibArray\.//g' -e 's/LMLUnsafe\.//g' -e 's/Ix\.//g' -e 's/{[ ]*$//' -e '/ Eval /d' -e '/^_/d' $hi
+		echo '</pre>'
+		echo ''
+	fi
+    fi
+done
+date=`date`
+cat <<eof
+
+<hr>
+Last modified: $date
+</body> </html>
+eof

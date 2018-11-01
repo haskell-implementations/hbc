@@ -1,0 +1,116 @@
+module State(
+	ST, runST, RunST(..), fixST, (>>=!), (>>!), (>>=?), (>>?), returnStrict,
+        _unsafeInterleaveST,
+	MutableVar, newVar, readVar, writeVar, sameVar, 
+	MutVector, newMutVector, readMutVector, writeMutVector, _unsafeFreezeVector
+	) where
+import LMLunsafe
+import LML_array
+
+--@@ Mutable state with safe encapsulation.
+
+infixr 0 >>=!, >>!, >>=?, >>?
+
+data State a = State                  -- This is the state placeholder
+
+-- The state transformer is isomorphic to a function.
+newtype ST s a = ST (State s -> (a, State s))
+
+-- We need to pattern match against the State to force the functions
+-- to evaluate arguments in the prescribed order.
+
+instance Functor (ST s) where
+    map f (ST m) = ST (\ s -> 
+			let (x, s') = m s
+                        in  (f x, s'))
+
+instance Monad (ST s) where
+    return x   = ST $ \ s -> (x, s)
+    m >>= f = m >>=? f
+    m >>  f = m >>? f
+
+(>>=?) :: ST s a -> (a -> ST s b) -> ST s b
+ST m >>=? f = ST $ \ s ->
+		let (x, s') = m s
+                    ST f'  = f x
+                in  f' s'
+(>>?) :: ST s a -> ST s b -> ST s b
+ST m >>? ST f' = ST $ \ s -> 
+		let (_, s') = m s
+                in  f' s'
+
+-- Strict usage of the results.
+returnStrict :: a -> ST s a
+returnStrict x = ST $ \ State -> (x, State)
+
+(>>=!) :: ST s a -> (a -> ST s b) -> ST s b
+ST m >>=! f = ST $ \ s -> 
+		case m s of
+		(x, s') -> case f x of 
+		           ST f' -> f' s'
+
+(>>!) :: ST s a -> ST s b -> ST s b
+ST m >>! ST n = ST $ \ s -> 
+		case m s of
+		(_, s') -> n s'
+
+_unsafeInterleaveST :: ST s a -> ST s a
+_unsafeInterleaveST (ST m) = ST $ \ s -> let (x, _) = m s in (x, s)
+
+data RunST a = RunST (ST s a)
+
+runST :: RunST a -> a
+runST (RunST (ST m)) =
+    case m State of
+        (r, _) -> r
+
+fixST :: (a -> ST s a) -> ST s a
+fixST f = ST $ \s -> let ST m = f r
+			 y@(r, _) = m s
+                     in  y
+
+---- Mutable variables
+newtype MutableVar s a = MVar (Ref a)
+
+newVar   :: a -> ST s (MutableVar s a)
+readVar  :: MutableVar s a -> ST s a
+writeVar :: MutableVar s a -> a -> ST s ()
+sameVar  :: MutableVar s a -> MutableVar s a -> Bool
+
+newVar x = 
+	ST $ \ s -> case newVarR x s of (r, s') -> (MVar r, s')
+readVar (MVar r) =
+	ST $ \ s -> readVarR r s
+writeVar (MVar r) x =
+	ST $ \ s -> writeVarR r x s
+sameVar (MVar x) (MVar y) = 
+	{-:"Peqref":-} x y
+
+---- Mutable vectors
+newtype MutVector s a = MVec (LArray a)
+
+newMutVector :: Int -> a -> ST s (MutVector s a)
+newMutVector i x =
+	ST $ \ s -> case newArrayR i x s of (a, s') -> (MVec a, s')
+
+readMutVector :: MutVector s a -> Int -> ST s a
+readMutVector (MVec v) i =
+	ST $ \ s -> aIndexR v i s
+
+writeMutVector :: MutVector s a -> Int -> a -> ST s ()
+writeMutVector (MVec v) i x =
+	ST $ \ s -> aUpdateR v i x s
+
+_unsafeFreezeVector :: MutVector s a -> LArray a
+_unsafeFreezeVector (MVec a) = a
+
+--------
+#define seq {-:"Pseq":-}
+-- These are the "semi-safe" versions of the Ref operations
+newVarR     x State = let r = {-:"Pref":-} x in seq r (r, State)
+readVarR  r   State = let v = {-:"Pderef":-} r in  seq v (v, State)
+writeVarR r x State = case {-:"Passign":-} r x of () -> ((), State)
+
+newArrayR i x   State = let a = {-:"Pmkarray":-} 0 i x in seq a (a, State)
+aIndexR   a i   State = let v = {-:"Paindex":-} a i in seq v (v, State)
+aUpdateR  a i x State = case {-:"Paupdate":-} a i x of () -> ((), State)

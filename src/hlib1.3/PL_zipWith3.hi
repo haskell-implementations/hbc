@@ -1,0 +1,3 @@
+interface PreludeX where {
+zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

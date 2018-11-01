@@ -1,0 +1,9 @@
+import type SigAct = SAIgnore + SADefault + SACatch Dialog;
+import stdecho: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import stderr: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import stdout: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import stdin: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import type Dialog == ((List Response)->(List Request));
+import type IOError = WriteError String + ReadError String + SearchError String + FormatError String + OtherError String;
+import type Response = Success + Str String + Bn Bin + Failure IOError + Tag (List (String # Char)) + BinTag (List (String # Bin)) + StrList (List String) + Fil File + Dbl Double + AsyncInput AsyncInput + SocketResponse SocketResponse + XResponse XResponse;
+import type Request = ReadFile String + WriteFile String String + AppendFile String String + ReadBinFile String + WriteBinFile String Bin + AppendBinFile String Bin + DeleteFile String + StatusFile String + ReadChan String + AppendChan String String + ReadBinChan String + AppendBinChan String Bin + StatusChan String + Echo Bool + GetArgs + GetEnv String + SetEnv String String + ReadChannels (List String) + ReadBinChannels (List String) + CreateProcess Dialog + CreateDirectory String String + OpenFile String Bool + OpenBinFile String Bool + CloseFile File + ReadVal File + ReadBinVal File + WriteVal File Char + WriteBinVal File Bin + Sleep Double + ChangeDirectory String + GetTime + DeleteDirectory String + System String + ReadDirectory String + XCommand (#3 DisplayT Window XCommand) + GetAsyncInput + GetCpuTime + GetProgName + GetLocalTime + SigAction Int SigAct + Exit Int + ReadFileScattered String (List Int) + Select (List Descriptor) + SocketRequest SocketRequest + XRequest (#3 DisplayT Window XRequest) + ReadFileFast String;

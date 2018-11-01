@@ -1,0 +1,29 @@
+interface _LibIO where {
+{-# IMPORTING _LibDialogue #-}
+type IOT a = (a -> _LibDialogue._Dialogue) -> _LibDialogue._Dialogue;
+newtype IO a = IO (IOT (Prelude.Either IOError a));
+data Handle = Handle IOMode Prelude._File;
+data IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode;
+data IOErrorCode = EOF | User Prelude.String | PosixErrno Prelude.Int Prelude.String;
+data IOError = IOError IOErrorCode (Prelude.Maybe Handle) (Prelude.Maybe Prelude.String);
+instance Ix.Ix IOMode {-# DERIVED #-};
+instance Prelude.Bounded IOMode {-# DERIVED #-};
+instance Prelude.Enum IOMode {-# DERIVED #-};
+instance Prelude.Eq Handle {-# STRICTNESS (==) = "0&1,F" ST #-} {-# STRICTNESS (/=) = "T,F" ST #-};
+instance Prelude.Eq IOMode {-# DERIVED #-};
+instance Prelude.Eq IOErrorCode {-# DERIVED #-};
+instance Prelude.Eq IOError {-# DERIVED #-};
+instance Prelude.Eval (IO a) {-# DERIVED #-};
+instance Prelude.Eval Handle {-# DERIVED #-};
+instance Prelude.Eval IOMode {-# DERIVED #-};
+instance Prelude.Eval IOErrorCode {-# DERIVED #-};
+instance Prelude.Eval IOError {-# DERIVED #-};
+instance Prelude.Functor IO {-# STRICTNESS Prelude.map = "T,F" ST #-};
+instance Prelude.Monad IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance Prelude.Ord IOMode {-# DERIVED #-};
+instance Prelude.Read IOMode {-# DERIVED #-};
+instance (Prelude.Show a) => Prelude.Show (IO a) {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show Handle {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Prelude.Show IOMode {-# DERIVED #-};
+instance Prelude.Show IOError {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-}
+}

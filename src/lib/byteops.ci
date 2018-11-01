@@ -1,0 +1,10 @@
+_longToBytes 2 long2bytes F T
+_bytesToLong 1 bytes2long F T
+_intToBytes 2 int2bytes F T
+_bytesToInt 1 bytes2int F T
+_shortToBytes 2 short2bytes F T
+_bytesToShort 1 bytes2short F T
+_floatToBytes 2 float2bytes F T
+_bytesToFloat 1 bytes2float F T
+_doubleToBytes 2 double2bytes F T
+_bytesToDouble 1 bytes2double F T

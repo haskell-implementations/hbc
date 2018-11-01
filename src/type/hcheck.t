@@ -1,0 +1,1 @@
+import Wdlh: (Subst->(Prefix->((List (List (Id # Expr)))->(((List (Id # (List (Id # Ttype)))) # (List Ttype))->(Int->(#4 Subst Prefix Int (List (List (Id # Expr))))))))) {# ARITY _ = 5 #}{# STRICTNESS _ = "3,F" ST #};

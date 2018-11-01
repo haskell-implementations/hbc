@@ -1,0 +1,11 @@
+import parse: (((List ((Int # Int) # *a))->(reply *b *c))->((List ((Int # Int) # *a))->*b)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import loc: ((List (*a # *b))->(reply *a (List (*a # *b)))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import notlit: (*a->((List (*b # *a))->(reply *a (List (*b # *a))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import litp: ((*a->Bool)->((List (*b # *a))->(reply *a (List (*b # *a))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import lit: (*a->((List (*b # *a))->(reply *a (List (*b # *a))))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import ko: (reply *a *b) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import ok: (*a->(*b->(reply *a *b))) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,T" ST #};
+import alt: ((*a->(reply *b *c))->((*a->(reply *b *c))->(*a->(reply *b *c)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "T,F" ST #};
+import nxtok: (((List ((Int # Int) # *a))->(reply *b *c))->((*b->(*c->*d))->((List ((Int # Int) # *a))->*d))) {# ARITY _ = 3 #}{# STRICTNESS _ = "T,F" ST #};
+import nxt: ((*a->(reply *b *c))->((*b->(*c->(reply *d *e)))->(*a->(reply *d *e)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "T,F" ST #};
+import type (reply *b *c) = Ok *b *c + Ko;

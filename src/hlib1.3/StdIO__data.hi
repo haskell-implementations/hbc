@@ -1,0 +1,23 @@
+interface StdIO__data where {
+type FilePath = Prelude.String;
+data BufferMode = NoBuffering | LineBuffering | BlockBuffering (Prelude.Maybe Prelude.Int);
+data HandlePosn = HandlePosn Prelude.Int;
+data SeekMode = AbsoluteSeek | RelativeSeek | SeekFromEnd;
+instance Ix.Ix SeekMode {-# DERIVED #-};
+instance Prelude.Bounded SeekMode {-# DERIVED #-};
+instance Prelude.Enum SeekMode {-# DERIVED #-};
+instance Prelude.Eq BufferMode {-# DERIVED #-};
+instance Prelude.Eq HandlePosn {-# DERIVED #-};
+instance Prelude.Eq SeekMode {-# DERIVED #-};
+instance Prelude.Eval BufferMode {-# DERIVED #-};
+instance Prelude.Eval HandlePosn {-# DERIVED #-};
+instance Prelude.Eval SeekMode {-# DERIVED #-};
+instance Prelude.Ord BufferMode {-# DERIVED #-};
+instance Prelude.Ord HandlePosn {-# DERIVED #-};
+instance Prelude.Ord SeekMode {-# DERIVED #-};
+instance Prelude.Read BufferMode {-# DERIVED #-};
+instance Prelude.Read SeekMode {-# DERIVED #-};
+instance Prelude.Show BufferMode {-# DERIVED #-};
+instance Prelude.Show HandlePosn {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-};
+instance Prelude.Show SeekMode {-# DERIVED #-}
+}

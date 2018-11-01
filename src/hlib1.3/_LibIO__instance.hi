@@ -1,0 +1,5 @@
+interface _LibIO__instance where {
+{-# IMPORTING _LibIO #-}
+instance Prelude.Functor _LibIO.IO {-# STRICTNESS map = "1,1" ST #-};
+instance Prelude.Monad _LibIO.IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-}
+}

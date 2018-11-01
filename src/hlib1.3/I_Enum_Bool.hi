@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Enum Bool {-# STRICTNESS toEnum = "0,F" ST #-} {-# STRICTNESS fromEnum = "0,0" ST #-} {-# STRICTNESS enumFrom = "0,0" ST #-} {-# STRICTNESS enumFromThen = "T,F" ST #-} {-# STRICTNESS enumFromTo = "0,0&1" ST #-} {-# STRICTNESS enumFromThenTo = "T,F" ST #-}
+}

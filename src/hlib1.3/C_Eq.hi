@@ -1,0 +1,6 @@
+interface PreludeX where {
+class Eq a where {
+    (==) :: a -> a -> Bool;
+    (/=) :: a -> a -> Bool
+    }
+}

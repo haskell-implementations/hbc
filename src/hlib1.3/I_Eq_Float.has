@@ -1,0 +1,4 @@
+module PreludeX where
+instance  Eq Float where
+    	x == y 	= {-:"MM`Prelude.Eq`Prelude.Float`==":-} x y
+    	x /= y 	= {-:"MM`Prelude.Eq`Prelude.Float`/=":-} x y

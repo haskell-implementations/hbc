@@ -1,0 +1,2 @@
+module P_extra where
+{-:"_,":-} x y = {-:"P#2":-} x y

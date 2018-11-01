@@ -1,0 +1,11 @@
+%{
+#include "include.h"
+%}
+type brack;
+	normal          : < gconstrn    : list;
+                            gprecn      : int;   
+                            gassn       : assoc;     >;
+	forget          : < gconstrf    : list;
+                            gprecf      : int;
+                            gassf       : assoc;      >;
+end;

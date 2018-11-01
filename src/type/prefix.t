@@ -1,0 +1,14 @@
+import getgp: (Prefix->(List (Id # (Ttype # (List Int))))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import innongen: (Id->(Prefix->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import getngp: (Prefix->(List (Id # (Ttype # (List Int))))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import getngs: (Prefix->(List TyVar)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import addpreng: ((List (Id # Ttype))->(Prefix->((List TyVar)->Prefix))) {# ARITY _ = 3 #}{# STRICTNESS _ = "0&1,F" ST #};
+import addngens: ((List (Id # (Ttype # (List Int))))->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import addgens: ((List (Id # (Ttype # (List Int))))->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import addngs: ((List (Id # Ttype))->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import addgs: ((List (Id # Ttype))->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import addpre: ((List (Id # Ttype))->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import prpre: (Prefix->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import startpre: Prefix {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import TRprefix: (Subst->(Prefix->Prefix)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import pfind: (Id->(Prefix->(Ttype # (List Int)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};

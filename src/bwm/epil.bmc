@@ -1,0 +1,19 @@
+###################################################
+# Standard epilogue
+nil:	2
+        UPDATE  *        0
+
+stop:	0
+	HALT
+
+pr2:	2
+	PRC
+	UPDATE	*	1	$stop	$pr1
+
+pr1:	2
+	UPDATE	*	0	$pr2	1
+
+main:	0
+	UPDATE	*	$Pmain	$nil	$stop	$pr1
+
+###################################################

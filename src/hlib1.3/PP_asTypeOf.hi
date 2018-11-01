@@ -1,0 +1,3 @@
+interface PreludeX where {
+asTypeOf :: a -> a -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-}
+}

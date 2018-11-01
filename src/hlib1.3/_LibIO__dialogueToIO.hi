@@ -1,0 +1,4 @@
+interface _LibIO__dialogueToIO where {
+{-# IMPORTING _LibDialogue, _LibIO #-}
+dialogueToIO :: _LibDialogue._Dialogue -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

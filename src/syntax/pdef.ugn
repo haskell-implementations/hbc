@@ -1,0 +1,7 @@
+%{
+#include "include.h"
+%}
+type pbinding;
+	ppat	: < gppat	: tree;
+		    gpexpr	: tree; >;
+end;

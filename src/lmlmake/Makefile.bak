@@ -1,0 +1,63 @@
+LMLMK_OBJS = lmlmk.o getdepend.o getmodtime.o makemod.o makeexe.o order.o filenames.o utils.o argv.o env.o cmds.o tsort.o graph.o unlit.o isalpha.o isalnum.o
+OLDER_OBJS = older.o getmodtime.o
+
+# Change these if you want.  If you change DST then the scripts lmlmake and hbcmake need to be changed as well.
+DSTBIN = /usr/local/bin
+DST = /usr/local/lib/lmlc
+#DSTMAN = /usr/man/manl
+DSTMAN = /usr/local/man/man1
+
+#LDFLAGS = -Bstatic
+LDFLAGS = -s -Bstatic
+
+#
+DSTLIB = $(DST)/bin
+
+BINS = older lmlmk
+SCRIPTS = lmlmake hbcmake hbcmakehbc
+#MANS = lmlmake.l hbcmake.l
+MANS = lmlmake.1 hbcmake.1
+
+LMLC = lmlc
+LMLFLAGS=-fzap-redex -fno-strict-call
+.SUFFIXES : .m .t
+
+.m.o:
+	$(LMLC) -c $(LMLFLAGS) $<
+
+.o.t:
+	@
+
+all: $(BINS)
+
+lmlmk : $(LMLMK_OBJS)
+	$(LMLC) $(LMLFLAGS) $(LDFLAGS) $(LMLMK_OBJS) -o lmlmk 
+
+older : $(OLDER_OBJS)
+	$(LMLC) $(LMLFLAGS) $(LDFLAGS) $(OLDER_OBJS) -o older 
+
+clean:
+	rm -f *.o $(BINS)
+
+install:
+	strip $(BINS)
+	cp $(BINS) $(DSTLIB)
+	cp $(SCRIPTS) $(DSTBIN)
+
+installman:
+	cp $(MANS) $(DSTMAN)
+
+tar:
+	tar cf lmlmake.tar *.m HISTORY Makefile Summary TODO hbcmake hbcmake.1 lmlmake lmlmake.1
+
+# automatically generated dependencies follows
+
+cmds.o: cmds.m env.t argv.t filenames.t utils.t
+env.o: env.m utils.t unlit.t isalpha.t isalnum.t
+filenames.o: filenames.m env.t
+getdepend.o: getdepend.m filenames.t utils.t env.t
+lmlmk.o: lmlmk.m getdepend.t getmodtime.t makemod.t makeexe.t order.t filenames.t utils.t argv.t
+makeexe.o: makeexe.m filenames.t cmds.t
+makemod.o: makemod.m getmodtime.t cmds.t filenames.t utils.t
+older.o: older.m getmodtime.t
+order.o: order.m utils.t tsort.t graph.t

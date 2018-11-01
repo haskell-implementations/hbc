@@ -1,0 +1,4 @@
+interface Ratio__approxRational where {
+{-# IMPORTING Ratio #-}
+approxRational :: (Prelude.RealFrac a) => a -> a -> Ratio.Rational   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE approxRational :: Ratio.Rational -> Ratio.Rational -> Ratio.Rational {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}, Prelude.Float -> Prelude.Float -> Ratio.Rational {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}, Prelude.Double -> Prelude.Double -> Ratio.Rational {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-} #-}
+}

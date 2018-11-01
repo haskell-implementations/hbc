@@ -1,0 +1,3 @@
+interface LMLintegerMisc where
+{-:"PIntegerPowMod":-}  :: Integer->Integer->Integer->Integer {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0&1&2,F" ST #-}
+{-:"PInteger2String":-} :: Int->Integer->String {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}

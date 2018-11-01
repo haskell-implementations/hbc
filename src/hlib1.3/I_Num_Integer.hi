@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Num Integer {-# STRICTNESS (+) = "0&1,F" ST #-} {-# STRICTNESS (-) = "0&1,F" ST #-} {-# STRICTNESS (*) = "0&1,F" ST #-} {-# STRICTNESS negate = "0,F" ST #-} {-# STRICTNESS abs = "0,F" ST #-} {-# STRICTNESS signum = "0,F" ST #-} {-# STRICTNESS fromInteger = "0,0" ST #-} {-# STRICTNESS fromInt = "0,F" ST #-} {-# STRICTNESS {-:"PfromInteger":-} = "0,F" ST #-}
+}

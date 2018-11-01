@@ -1,0 +1,10 @@
+Dencode 2 dencode
+Dfencode 2 sencode
+DisNaN 1 disNaN
+DisInfinity 1 disInfinity
+DisDenormalized 1 disDenormalized
+DisNegativeZero 1 disNegativeZero
+DfisNaN 1 fisNaN
+DfisInfinity 1 fisInfinity
+DfisDenormalized 1 fisDenormalized
+DfisNegativeZero 1 fisNegativeZero

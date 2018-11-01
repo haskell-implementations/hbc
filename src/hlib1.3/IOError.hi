@@ -1,0 +1,18 @@
+interface IOError where {
+{-# IMPORTING _LibDialogue, _LibIO_all, _LibIOErrno #-}
+data _LibIO.IOError;
+_LibIOErrno.isAlreadyExistsError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIOErrno.isAlreadyInUseError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIOErrno.isFullError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isEOFError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIOErrno.isIllegalOperation :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIOErrno.isPermissionError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+_LibIOErrno.isDoesNotExistError :: _LibIO.IOError -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+isUserError :: _LibIO.IOError -> Prelude.Maybe Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+ioeGetHandle :: _LibIO.IOError -> Prelude.Maybe _LibIO.Handle   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+ioeGetFileName :: _LibIO.IOError -> Prelude.Maybe StdIO.FilePath   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+ioeGetErrorString :: _LibIO.IOError -> Prelude.Maybe Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+instance Prelude.Eq _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Show _LibIO.IOError {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-}
+}

@@ -1,0 +1,3 @@
+interface LazyArray where {
+lazyArray :: (Ix a) => (a, a) -> [Assoc a b] -> Array a [b]   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

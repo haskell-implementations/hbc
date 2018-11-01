@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Running compiled programs</title>
+</head>
+
+<body>
+<h1>Running compiled programs</h1>
+
+<h3>Program flags</h3>
+A Haskell program compiled with hbc automatically decodes a number of flags:
+<ul>
+  <li>-C<br>
+      Produce a ``core'' file when a signal occurs.
+  <li>-f<br>
+      Prints a description of the flags; the program is not executed.
+  <li>-H<var>size</var><br>
+      Set maximum heap size. Default is 8M.
+  <li>-h<var>size</var><br>
+      Set minimum heap size. Default is 500k.
+  <li>-A<var>size</var><br>
+      Set pointer stack size. Default is 100k.
+  <li>-V<var>size</var><br>
+      SPARC only! Set return stack size. Default is 50000.
+  <li>-T<br>
+      Enter the runtime tracer.  This only works if some of the files
+      were compiled with the ``-T'' flag.  If this flag is used twice
+      a trace is produced without any user interaction.
+  <li>-gc-gen<br>
+      Use a generational garbage collector.
+  <li>-gc-slide<br>
+      Use an in-place compacting garbage collector.
+  <li>-X<br>
+      Debug mode (gives some additional messages).
+  <li>-<br>
+      Marks the end of decoded arguments.
+</ul>
+<p>
+
+If the runtime system was compiled with dumping enabled there are some
+additional flags:
+<ul>
+  <li>-d<br>
+	Print a stack dump on error.
+  <li>-G<br>
+	Print a stack dump before and after each garbage collection.
+  <li>-K<var>addr</var><br>
+	When GC reaches stack location <var>addr</var> the routine debstop is called.
+  <li>-M<var>n</var><br>
+	The maximum number of dumped nodes is set to <var>n</var>.
+  <li>-t<var>n</var><br>
+	The depth of dump is set to <var>n</var>.
+</ul>
+
+<p>
+
+If the runtime system was compiled with GC statistics enabled there
+are some additional flags:
+<ul>
+  <li>-B<br>
+	Sound the bell at the start of garbage collection.
+  <li>-S<var>file</var><br>
+	Produce a garbage collection statistics file.  If no file name is given
+	it is written in ``STAT.<var>program</var>''.  If the file name is ``stderr'' it is written
+	on standard error.
+
+</ul>
+<p>
+The file ``STAT.<var>program</var>'' (when produced)
+will contain various (selfexplanatory?) statistics.
+
+<h3>Heap profiling (Authors: Colin Runciman and David Wakeling)</h3>
+If the program has been compiled with the heap profiling turned of (the -ph flag
+to the compiler) it decodes the following flags:
+<ul>
+  <li>-i<var>float</var><br>
+set the sampling interval of the heap profiler to <var>float</var> seconds.
+Normally the profiler runs with an exponentially increasing profiling
+interval.
+  <li>-g[{<var>g</var>,...}]<br>
+Give profiling information by <var>module group</var>.
+When the graph is sampled the space occupied by each node (in bytes) is
+charged to the particular group of modules that produced the node. In 
+some cases, only certain groups of modules may be of interest, and
+these groups can be named in an optional restriction set following the
+-g flag.
+  <li>-m[{<var>m</var>,...}]<br>
+Give profiling information by <var>module</var>.  Similar to the -g flag.
+In this case though, the space occupied by each node is charged to the 
+module that produced the node. Once again, only certain modules may be 
+of interest, and those can be named in a restriction set.
+  <li>-p[{<var>p</var>,...}]<br>
+Give profiling information by <var>producer</var>.
+In this case, the space occupied by each node is charged to the
+function that produced the node. 
+  <li>-c[{<var>c</var>,...}]<br>
+Give profiling information by <var>construction</var>.
+As for the -p flag. In this case the space occupied by each node is charged to the
+construction that it represents, with the function component being used 
+for closures. 
+  <li>-t[{<var>t</var>,...}]<br>
+Give profiling information by <var>type</var>.
+In this case, the space occupied by each node is charged to the
+type of the node.
+</ul>
+Two or more of the -g, -m, -p, and -c
+flags may be used together. In this case, the first flag specifies what
+kind of profile is to be produced, and the remainder are used to specify
+restrictions. <p>
+
+
+During reduction the graph is periodically sampled and the samples
+are written to a file whose name is that of the program, extended 
+with a ``.hp'' suffix.  This file can be converted to a PostScript
+file by the hp2ps program.<p>
+
+
+A notable feature is that there is absolutely no concept of scope.
+Profiles do not distinguish between nested functions with the same
+name, or between functions in different modules with the same name.
+The only way to make such distinctions is to copy and rename function
+bodies. Some names get lost during compilation, and obscure
+identifiers appear in their place. This happens most often in programs
+that make heavy use of higher-order functions; my apologies.<p>
+
+
+Examples:<p>
+
+Running the program ``a.out -p'' gives a producer profile.<p>
+
+
+``a.out -p -c{(.)}'' gives a producer profile, in which the only producers of interest are those
+of ``(.)'' nodes. <p>
+
+
+``a.out -c -m{lex,parse,typecheck}'' gives a construction profile, 
+but only for constructions produced by the modules ``lex'', ``parse'' and ``typecheck''.<p>
+
+
+``a.out -c -m{lex,parse,typecheck} -p{tokeniser,syntax,tcheck}'' 
+gives a construction profile, but only for constructions produced by the  
+modules ``lex'', ``parse'' and ``typecheck'', and only for the functions
+``tokeniser'', ``syntax'' and ``tcheck'' within these modules.<p>
+
+
+<h3>Tracing</h3>
+There is no debugger available that can handle programs produced by lmlc/hbc,
+but if programs are compiled with the ``-T'' flag there is a simple interactive
+tracer that can be used.  The tracer is invoked by giving the ``-T'' flag to a
+<em>compiled</em> program.  Unfortunately the tracer cannot be used together with
+the interactive system (yet).
+
+The tracer has an interactive interface where the user can turn tracing of and
+off, run till a certain point etc.
+
+<p>
+
+The following commands are available:
+<ul>
+  <li><tt>help</tt><br>
+	Print a help message describing the commands.
+  <li><tt>quit</tt><br>
+	Quit the tracer and the program.
+  <li><tt>leave</tt><br>
+	Leave a recursive invokation of the tracer.
+  <li><tt>next</tt><br>
+	Trace (i.e.\ print messages) until the next function is entered.
+  <li><tt>cont</tt><br>
+	Run (i.e.\ do not print messages) the program to completion.
+  <li><tt>rcont</tt><br>
+	Trace the program to completion.
+  <li><tt>exit</tt><br>
+	Trace until the current function exits.
+  <li><tt>rexit</tt><br>
+	Run until the currentfunction exits.
+  <li><tt>stop</tt> <var>re</var><br>
+	Set breakpoints on all functions matching <var>re</var>.
+  <li><tt>nostop</tt> <var>re</var><br>
+	Remove breakpoints from all functions matching <var>re</var>.
+  <li><tt>arg</tt> <var>n</var><br>
+	Evaluate (to WHNF) and print argument number <var>n</var>.
+  <li><tt>farg</tt> <var>n</var><br>
+	Fully evaluate and print argument number <var>n</var>.
+  <li><tt>on</tt> <var>re</var><br>
+	Turn on tracing for functions matching <var>re</var>.
+	<var>Re</tt> may contain ``*'' which matches any number of characters.
+  <li><tt>off</var> <var>re</var><br>
+	Turn off tracing for functions matching <var>re</var>.
+	<var>Re</var> may contain ``*'' which matches any number of characters.
+  <li><tt>where</tt><br>
+	Show call stack.
+  <li><tt>depth</tt> <var>n</var><br>
+	Set print depth to <var>n</var>. Default value is 3.
+  <li><tt>file y/n</tt><br>
+	Turn on/off file (module) name printing.
+</ul>
+Identifier may be prefixed by their file (module) name followed by a dot
+to make them unique.  An empty command will repeat the previous command.
+Any kind of error or call to fail will cause the tracer to be entered.
+
+The tracer prints the following messages:
+<ul>
+  <li><tt>Enter</tt> <var>expr</var><br>
+A function is just about to be entered.  The <var>expr</var> shows the function
+with its arguments.
+  <li><tt>Return</tt> <var>expr</var><br>
+A function is just about to return with an evaluated expression.
+  <li><tt>Return variable</tt><br>
+A function is just about to return with variable that might evaluate
+to a function.
+  <li><tt>Jump (unknown)</tt><br>
+A function is just about to tail call another function that was not known at compile time
+(or had a number of arguments that did not correspond to its arity).
+  <li><tt>Jump</tt><br>
+A function is just about to tail call a function known at compile time.
+</ul>
+Each message is indented with a depth corresponding to the call stack depth.
+In the case of a tail called the function which is called can be seen from
+the following ``Enter'' message, provided that function has been compiled with the
+trace flag on.  The enter and exit messages always come in pairs, even if
+tracing is turned off for a particular function between.
+<p>
+
+The tracer is not able to determine the type for all constructed values.
+If it cannot then it uses the name CON<var>n</var> for the <var>n</var>:th constructor of a type.
+<p>
+
+Traced and non-traced modules can be mixed, but only calls to traced code can be observed.
+Each module in a program can be compiled for tracing, but then the trace flag
+can be omitted when linking the program.  In this case the program will run with
+a moderate slowdown (it will take about 25\% longer).  If it is linked for tracing,
+but run without the ``-T'' flag it may run as much as 5 times slower.
+<p>
+
+A problem with understanding the trace messages is that they refer to the program
+after the extensive transformations performed by the compiler.  An aid to understanding
+is to look at the program after all transformations; given the ``-ftransformed'' flag
+the compiler will show this.
+<p>
+
+<h3>Memory allocation</h3>
+The current strategy for memory allocation is as follows:
+On startup a heap is allocated, the size of this never changes during
+execution.  The size is the heapsize
+given as argument, or a default of 8 megabytes.
+<p>
+
+Only part of this memory is used during exection to lower the working
+set of the program.  How large part is determined after each garbage
+collection.  The amount is used (i.e., available for allocation) is
+the amount that was copied when the collection occured multiplied by 4.
+  In this way the working set is
+adapted to the amount of heap that is actually in use.
+
+<h3>Tips to get efficient programs</h3>
+NOTHING MUCH WRITTEN YET (maybe it's impossible?)!!!
+
+<h4>Haskell overloading</h4>
+Overloaded Haskell functions are nice but slow.  The compiler tries to
+remove overloading where the types are known, so type signatures help
+to improve efficiency.  It is a good idea, both from efficiency and
+also from a programming point of view, to include type signatures for
+all top level functions in a module.  With optimization turned on the
+compiler tries to make specialized functions for all possible types it
+is used at.  This is currently impossible across module boundaries, so
+for exported functions the <tt>SPECIALIZE</tt> pragma should be used.
+<p>
+
+It is generally not a good idea to worry too much about what the
+compiler does, but here are a few general tips.
+Elementary functions, as well as certain idioms, on simple data basic
+types turn into a few machine instructions.
+The number of machine instructions cited below does not include those
+that compute the value, check if it is computed, loads it into a
+register etc.  These instructions usually take much longer than the
+operation itself, but the table gives an indication of which operations
+you can expect reasonable efficiency.
+<p>
+
+<ul>
+  <li><tt>Bool</tt><br>
+      <ul>
+	<li><tt>==,/=,<,<=,>,>=</tt><br>
+	    turn into single machine instruction.
+      </ul>
+  <li><tt>Char</tt><br>
+      <ul>
+	<li><tt>chr,ord</tt><br>
+	    usually turn into nothing at all.
+	<li><tt>==,/=,<,<=,>,>=</tt><br>
+	    turn into single machine instruction.
+      </ul>
+  <li><tt>Int</tt><br>
+      <ul>
+	<li><tt>==,/=,<,<=,>,>=,+,-,*,negate,quot,rem</tt><br>
+	    turn into single machine instruction.
+	<li><tt>max,min,abs,signum,div,mod,even,odd</tt><br>
+	    turn into a few machine instructions.
+      </ul>
+  <li><tt>Float,Double</tt><br>
+      <ul>
+	<li><tt>==,/=,<,<=,>,>=,+,-,*,negate,/,fromRational.toRational,fromInt</tt><br>
+	    turn into single machine instructions.  The composition
+	    <tt>fromRational.toRational</tt> turns into a single instructions if the
+	    argument/result type is <tt>Float</tt>/<tt>Double</tt> or <tt>Double</tt>/<tt>Float</tt>.
+	<li><tt>truncate</tt><br>
+	    turns into a single machine instruction if the result type is <tt>Int</tt>.
+	<li><tt>max,min,abs,signum</tt><br>
+	    turn into a few machine instructions.
+	<li><tt>exp,log,sqrt,sin,cos,tan,asin,acos,atan,sinh,cosh,tanh</tt><br>
+	    turn into calls to C.  For type <tt>Float</tt> the argument is first
+	    converted to <tt>Double</tt>, then the C function is called, and the
+	    result is converted back again.
+      </ul>
+  <li><tt>Integer</tt><br>
+      All functions involve a call to C routines, so they are likely to be
+      slow for small values, but for large numbers they are quite efficient
+      as the actual computations tend to dominate the running time.
+  <li><tt>Complex</tt><br>
+      Complex numbers based on <tt>Float</tt> and <tt>Double</tt> have specialized
+      instances everywhere in the Prelude and are fairly efficient.  Part of
+      the efficiency comes from the strict data constructor for <tt>Complex</tt>.
+  <li><tt>Rational</tt><br>
+      Has specialized instances, but is not as efficient as you could make
+      it by calling C functions to do the arithmetic.
+</ul>
+
+There are a few things that should be currently avoided because they
+are very slow:
+<ul>
+  <li><tt>show,read</tt><br> on numeric types in general, and floating
+types in particular.
+  <li><tt>atan2</tt><br>
+it is a real beast.
+  <li><tt>fromRational</tt><br>
+is very slow for floating types.  An exception is <tt>fromRational</tt>
+applied to a constant with a result type which is <tt>Float</tt> or
+<tt>Double</tt> which the compiler handles specially.
+  <li><tt>toRational,fromInteger</tt><br>
+can be slow.  Again <tt>fromInteger</tt> on constants are handled
+specially.
+  <li><tt>gcd</tt><br>
+uses Euclid's algorithm.
+  <li><tt>Array</tt><br>
+All operations on arrays are worse than you would hope for.
+Some operations on arrays with <tt>Int</tt> as index are handled more efficiently.
+</ul>
+
+Most Prelude functions involving numeric types have specialized
+instances for all the numeric types in the Prelude, e.g.
+<tt>sum</tt> can sum lists of any Prelude numeric type efficiently.
+
+<p>
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Mon Jul 22 01:15:26 MET DST 1996
+<!-- hhmts end -->
+</body> </html>

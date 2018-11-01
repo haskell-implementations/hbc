@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Lexical Structure</title>
+</head>
+
+<body>
+<h1>Lexical Structure</h1>
+
+Gaps and & are allowed in Char constants.
+<hr>
+
+The string ``<tt>{-#</tt>'' starts annotations.  Unknown
+or badly placed annotations may cause an error.
+<hr>
+
+Character and string literals may contain <A HREF="http://www.unicode.org">Unicode</A> characters.
+Unicode is a 16 bit character encoding that encompasses most
+of the alphabets in the world.  The first 256 characters of Unicode
+are the ISO8859-1 characters (i.e. the normal Haskell character
+set).
+<p>
+A Unicode character is written
+as <tt>\uXXXX</tt>, where XXXX is exactly 4 hexadecimal digits
+(i.e. exactly like Java).
+<p>
+Although hbc handles 16 bit characters correctly within a program
+the I/O libraries are still 8 bit oriented.  The <A
+HREF="hbc_library.html#Unicode">Unicode module</A> contains functions to
+encode and decode various Unicode formats.
+<p>
+Example: <tt>"\u05d0\u05d1\u05d2"</tt> is a string with the first three characters
+(alef, bet, and gimel) of the Hebrew alphabet.
+<p>
+The Unicode character extension is always turned on.
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Sun Jul 21 23:54:14 MET DST 1996
+<!-- hhmts end -->
+</body> </html>

@@ -1,0 +1,15 @@
+nonfix "_[]";
+infixr "_.";
+import type _Bool = _false + _true;
+import type _List *a = [] + *a . (_List *a);
+import type _Char{# FLAT 256 #};
+import type _Int{# FLAT 10000 #};
+import type _Integer;
+import type _Float;
+import type _Double;
+nonfix "P->";
+import type -> *a *b;
+import type _String == _List _Char;
+import type _LArray *a;
+import type _Option *a = _None + _Some *a;
+import type _OK *a *b = _No *a + _Yes *b;

@@ -1,0 +1,9 @@
+module PreludeX where
+instance Ord Double where
+        compare x y = if {-:"MM`Prelude.Ord`Prelude.Double`<":-} x y then LT else if {-:"MM`Prelude.Ord`Prelude.Double`>":-} x y then GT else EQ
+	x <  y = {-:"MM`Prelude.Ord`Prelude.Double`<":-}  x y
+	x <= y = {-:"MM`Prelude.Ord`Prelude.Double`<=":-} x y
+	x >  y = {-:"MM`Prelude.Ord`Prelude.Double`>":-}  x y
+	x >= y = {-:"MM`Prelude.Ord`Prelude.Double`>=":-} x y
+	max x y = if {-:"MM`Prelude.Ord`Prelude.Double`>":-} x y then x else y
+	min x y = if {-:"MM`Prelude.Ord`Prelude.Double`<":-} x y then x else y

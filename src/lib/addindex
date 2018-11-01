@@ -1,0 +1,22 @@
+set -f
+lib=lib.index
+pa="../syntax/lmlp -q"
+gr="../bin/mygreps"
+read a
+while [ ! -z "$a" ] ; do
+	if echo "$a" | $gr "import type" ; then
+		:
+	else
+		name=`echo "$a" | sed -e 's/import \([^:]*\).*/\1/'`
+		if [ "$1" = "-Z" ]; then
+#			a=`echo "$a" | sed -e 's/\([^a-zA-Z0-9_]\)_\([a-zA-Z0-9_]\)/\1\2/g'`
+			:
+		else
+			name="_$name"
+		fi
+		echo "$a" | $pa $1 > "parsed/${name}.p"
+		$gr "^$name"'$' $lib || echo "$name" >>$lib
+	fi
+	read a
+done
+exit 0

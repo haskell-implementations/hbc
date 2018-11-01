@@ -1,0 +1,2 @@
+interface LMLfmtf where
+fmtf :: String -> Double -> String

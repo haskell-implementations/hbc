@@ -1,0 +1,43 @@
+.TH HBI 1 local
+.SH NAME
+hbi \- an interactive Haskell B
+.SH SYNOPSIS
+.B hbi
+.SH DESCRIPTION
+.I Hbi
+has very few commands.  You can load files, define and evaluate values.
+See the HBC user's manual for details.
+.PP
+The syntax of Haskell programs is described in the Haskell Report.
+.PP
+The following options are interpreted by 
+.I hbc
+.TP 10
+.B \-1.2
+Use Haskell 1.2 instead of Haskell 1.3.
+.TP
+.B \-s
+Use shared libraries instead of `.o' files (only useful for
+platform supporting both).
+.TP
+.BI \-H size
+set the heapsize to
+.IR size .
+.SH ENVIRONMENT
+The environment variable HBCDIR is used to find the place to look for the
+various files used by the compiler.  The default value is /usr/local/lib/lmlc.
+.SH FILES
+.TP 25
+.B $HBCDIR/bin/curryp
+the parser program.
+.TP
+.B $HBCDIR/bin/lmlcomp
+the interactive system proper.
+.TP
+.SH DIAGNOSTICS
+Bad for syntax errors.
+Even worse for other errors.
+.SH "SEE ALSO"
+hbc(1)
+.SH BUGS
+Definitely, yes!

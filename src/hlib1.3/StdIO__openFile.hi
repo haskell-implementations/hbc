@@ -1,0 +1,6 @@
+interface StdIO__openFile where {
+{-# IMPORTING _LibDialogue, _LibIO__process, _LibIO #-}
+openFile :: StdIO.FilePath -> _LibIO.IOMode -> _LibIO.IO _LibIO.Handle   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+openBinaryFile :: StdIO.FilePath -> _LibIO.IOMode -> _LibIO.IO _LibIO.Handle   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+modeToInt :: _LibIO.IOMode -> Prelude.Int   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+}

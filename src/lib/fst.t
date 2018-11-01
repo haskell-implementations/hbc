@@ -1,0 +1,1 @@
+import fst: ((*a # *b)->*a) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};

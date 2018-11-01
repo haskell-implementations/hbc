@@ -1,0 +1,14 @@
+interface MonadicIO where {
+{-# IMPORTING _LibDialogue, _LibIO #-}
+data _LibIO.IO a;
+catch :: (_LibIO.IO a) -> (_LibIO.IOError -> _LibIO.IO a) -> _LibIO.IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-};
+userError :: Prelude.String -> _LibIO.IOError   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+bracket :: (_LibIO.IO a) -> (a -> _LibIO.IO b) -> (a -> _LibIO.IO c) -> _LibIO.IO c   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0,0" ST #-};
+bracket_ :: (_LibIO.IO a) -> (a -> _LibIO.IO b) -> (_LibIO.IO c) -> _LibIO.IO c   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0,0" ST #-};
+try :: (_LibIO.IO a) -> _LibIO.IO (Prelude.Either _LibIO.IOError a)   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+_LibIO__fail.fail :: _LibIO.IOError -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+instance Prelude.Eval (_LibIO.IO a) {-# DERIVED #-};
+instance Prelude.Functor _LibIO.IO {-# STRICTNESS Prelude.map = "T,F" ST #-};
+instance Prelude.Monad _LibIO.IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance (Prelude.Show a) => Prelude.Show (_LibIO.IO a) {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-}
+}

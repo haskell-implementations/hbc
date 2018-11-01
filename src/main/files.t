@@ -1,0 +1,10 @@
+import groupname: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import modulename: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import fstderr: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import fstdout: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import fbwm: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import fgcode: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import fasm: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import fotype: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import ftype: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import finput: (List Char) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};

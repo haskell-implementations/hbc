@@ -1,0 +1,10 @@
+%{
+#include "include.h"
+%}
+type expidt;
+	expid	: < gexpid	: id; >;
+	expdd	: < gexpdd	: id; >;
+	exppdd	: < gexppdd	: id; >;
+	expl	: < gexplid	: id;
+		    gexpll	: list; >;
+end;

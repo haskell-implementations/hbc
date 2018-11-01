@@ -1,0 +1,126 @@
+prog=$0
+dir=`dirname $prog`
+cpp=$dir/mycpp
+myasm=$dir/myas
+deftarget=XX_MTARGET
+defos=XX_SYSTEM
+mflags=""
+if [ "${HOSTTYPE:-NONE}" != NONE ]; then
+	hosttype="$HOSTTYPE"
+else
+	hosttype=unknown
+fi
+if [ "${SYSTEM:-NONE}" != NONE ]; then
+	defos="$SYSTEM"
+fi
+if [ "$defos" = "-DSOLARIS" ]; then
+	defos="-msolaris"
+	cppflags2="-DSOLARIS"
+elif [ "$defos" = "-Dlinux" ]; then
+	defos="-mlinux"
+	cppflags2="-Dlinux"
+else
+	defos=""
+	cppflags2=""
+fi
+as=1
+pro=""
+hpro=""
+slide=""
+cppinc=""
+cppdef=""
+done=""
+while [ -z "$done" ]; do
+    case "$1" in
+    -S)
+	as=0
+	shift
+	;;
+    -DPROFILE)
+	pro=$1
+	shift
+	;;
+    -DHPROFILE)
+	hpro=$1
+	shift
+	;;
+    -DSLIDE_GC)
+	slide=$1
+	shift
+	;;
+    -DBAKER_GC)
+	slide=$1
+	shift
+	;;
+    -I*)
+	cppinc="$cppinc $1"
+	shift
+	;;
+    -D*)
+	cppdef="$cppdef $1"
+	shift
+	;;
+    -m*)
+	mflags="$mflags $1"
+	shift
+	;;
+    -f*)
+	mflags="$mflags $1"
+	shift
+	;;
+    *)
+	done=y
+	;;
+    esac
+done
+
+if [ "${MTARGET:-NONE}" != NONE ]; then
+	target="$MTARGET"
+else
+	target="$deftarget"
+	case "$hosttype" in
+	decstation)
+		target=m_mips
+		;;
+	sequent | symmetry)
+		target=m_80386
+		;;
+	hp300 | sun3)
+		target=m_68000
+		;;
+	sun4 | sparc)
+		target=m_sparc
+		;;
+	vax)
+		target=m_vax
+		;;
+	rs6000)
+		target=m_rs6000
+		;;
+	*)
+		target="$deftarget"
+		;;
+	esac
+fi
+if [ "$hosttype" = hp300 ]; then
+	cppflags='-$'
+else 
+        cppflags=''
+fi
+tmp=`echo "$1" | sed 's/.M$/.s/'`
+$cpp -P $cppinc $cppflags $cppflags2 -D$target $cppdef $pro $hpro $slide $1 | $dir/masm.$target - $mflags $defos >$tmp
+ok=$?
+if [ "$target" = "m_mips" -a "$1" = "mrun.M" ]; then
+	# What a hack...
+	ed - $tmp <<eof
+1,22d
+w
+q
+eof
+fi
+if [ $as -ne 0 -a $ok -eq 0 ]; then
+	sh $myasm -o `echo "$1" | sed 's/.M$/.o/'` $tmp
+	ok=$?
+	rm $tmp
+fi
+exit $ok

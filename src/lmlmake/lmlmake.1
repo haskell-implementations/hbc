@@ -1,0 +1,143 @@
+.TH LMLMAKE 1 local
+.SH NAME
+lmlmake \- a tool for automated compilation of LML programs
+.SH SYNOPSIS
+.B lmlmake
+[ options ]
+.I file ...
+.SH DESCRIPTION
+.I lmlmake
+is a
+.I make(1)
+like command for compiling LML programs.
+Dependencies are automatically extracted from the source files;
+there is no need to construct or maintain a Makefile.
+
+The
+.I file
+arguments determine what to compile. If
+.I file
+is the name of an executable (i.e. it has no extension),
+.I file.m
+is assumed to contain the main module of a program.
+All modules it depends on are compiled (if necessary)
+and linked to an executable.
+If
+.I file
+is the name of a source module (i.e it ends in .m) or an object module
+(i.e. it ends in .o) then the object file for that module is generated.
+
+.I lmlmake
+allows programs to be spread over several directories.
+All modules required to build a target are compiled,
+even if they don't reside in the current directory.
+Also, several programs can reside in the same directory.
+Modules can be shared between several programs.
+
+.I lmlmake
+correctly handles the fact that the LML compiler generates two files,
+an object file and an interface file, for each module compiled.
+
+.I lmlmake
+inspects each source module for compilation flags. If the very first
+line contains the string " Flags:", the rest of that line is
+passed as flags to
+.IR lmlc .
+
+.SH OPTIONS
+.TP
+.B \-n
+No execution mode. Print commands but do not execute them.
+.TP
+.B \-s
+Silent mode. Do not print commands before executing them.
+.TP
+.B \-g
+Output a Makefile compatible dependency list on the standard output.
+.TP
+.B \-t
+Output a (topologically sorted) list of object files.
+.TP
+.BI \-f " file"
+Try to extract LMLFLAGS and LDFLAGS from
+.I file
+instead of Makefile.
+.TP
+.BI \-I directory
+Add
+.I directory
+to the end of the list of directories to search for imported modules.
+The default is to search only the current directory.
+.TP
+.BI \-o " name"
+Names the executable file
+.I name
+by passing this option to lmlc when linking an executable.
+.TP
+.B \-strip
+Produce a stripped executable by passing
+.B \-s
+to lmlc when linking an executable.
+.TP
+.BI \-C " args"
+Passes
+.I args
+to lmlc when compiling and linking.
+.PP
+Most other flags are assumed to be compiler options and are
+passed to lmlc when compiling and linking.
+.SH COMPILER OPTIONS
+The command line used to compile a module is
+
+	lmlc -c $LMLFLAGS file.m
+
+and to link an executable
+
+	lmlc $LMLFLAGS -o executable file.o ... $LDFLAGS
+
+where LMLFLAGS and LDFLAGS are taken from the environment and then augmented
+with any compiler/linker options given when invoking
+.I lmlmake.
+In addition, if there is a Makefile in the current directory,
+definitions of LMLFLAGS and LDFLAGS found in it will be added.
+The default value of these variables is the empty string.
+.SH ENVIRONMENT
+.TP
+.B LMLFLAGS
+contains flags that are passed to lmlc.
+.TP
+.B LDFLAGS
+contains flags that are passed to lmlc when linking an executable.
+.TP
+'.B LMLINCLUDE
+'contains a colon separated list of directories to search for imported
+'modules. Directories can be added to this list with the
+'.B \-I
+'option.
+'.TP
+.B PARALLEL
+if set, independent modules are compiled in parallel.
+(Use with care - there is no way to limit how many compilations are
+started in parallel.)
+.TP
+.B LMLC
+if set, it is used as the name of the LML compiler. The default is lmlc.
+.TP
+.B LMLMK
+if set, it is used as the location of the main program, instead of the default /usr/local/lib/lmlmk
+.TP
+.B OLDER
+if set, it is used as the location of the help program `older', instead of the default /usr/local/lib/older
+.SH FILES
+.B /usr/local/lib/lmlmk
+the main program
+.PP
+.B /usr/local/lib/older
+help program to determine if a target is out of date.
+.SH SEE ALSO
+lmlc(1), hbcmake(1), make(1)
+.SH BUGS
+This is just a first test version.
+Please report any bugs or enhancement suggestions to the author.
+.SH AUTHOR
+Thomas Hallgren, hallgren@cs.chalmers.se

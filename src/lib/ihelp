@@ -1,0 +1,47 @@
+		LMLI - Interactive LML
+Commands:
+    <expr> ;
+	Evaluate and print the expression (more on printing below).
+    let <decl> ;
+	Make the bindings in declarator and make them available in
+	the rest of the session.  No evaluation of the bound objects
+	is performed.
+    load <string> ... ;
+	Load a file.  The string specifies what should be loaded, it
+	can have three forms:
+	*.m	load a .m file.  This must be an ordinary LML module.
+	*.o	load .o and .t files.  These files must be produced
+		by compiling an ordinary LML module with lmlc.
+	*	loads *.m if it is newer than *.o, otherwise the *.o file.
+        If more than one file is loaded they should all be given without
+	suffix, and the .o and .t files are loaded.
+    source <string> ;
+	Read commands from the given file.
+    whatis <ident> ;
+	Give information about the identifier.
+    show_ <ident> ;
+	Make a show function for type <ident>.
+    help ;
+	Print some information about lmli.
+    <fix> <string> ;
+	Make a fixity declaration.
+    quit ;
+	Quit the system.
+
+It is possible to interrupt the evalution of an expression by hitting
+the interrupt key.
+
+The system attempts to pretty print the result of the evaluation, it
+knows how to print the pre-defined types.  For a non-pre-defined type,
+T, it checks if there is a function show_T.  If there is one this
+function is used to print it, otherwise it uses a default routine that
+just prints the type enclosed in "<<T>>".  If the type is a type
+constructor (as List) the show_T function should be a curried function
+with as many extra arguments as there are type variables in the type.
+When the function is called these arguments will be functions to print
+the corresponding values.  A result of the type "List Char" is always
+printed as itself.
+
+WARNING! There is no typechecking performed for the show_T functions,
+any mistake can make the program crash.
+

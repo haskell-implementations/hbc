@@ -1,0 +1,4 @@
+interface _LibIO__fail where {
+{-# IMPORTING _LibIO #-}
+fail :: _LibIO.IOError -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

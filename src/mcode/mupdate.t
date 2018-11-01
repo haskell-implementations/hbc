@@ -1,0 +1,2 @@
+import mupdateindir: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(Int->((List Gcode)->(Int->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))) {# ARITY _ = 7 #}{# STRICTNESS _ = "T,T" ST #};
+import mupdate: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(Int->((List Gcode)->(Gbasicconstr->(Int->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))))) {# ARITY _ = 8 #}{# STRICTNESS _ = "T,T" ST #};

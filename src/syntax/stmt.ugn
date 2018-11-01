@@ -1,0 +1,13 @@
+%{
+#include "include.h"
+%}
+type stmt;
+	stmtexp     : < gseexp     : tree; >;
+	stmtexpstmt : < gsesexp    : tree;
+			gsesstmt   : stmt; >;
+	stmtlet     : < gslbind    : binding;
+			gslstmt    : stmt; >;
+	stmtbind    : < gsbpat     : tree;
+			gsbexp     : tree;
+			gsbstmt    : stmt; >;
+end;

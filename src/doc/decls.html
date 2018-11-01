@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Declarations and Bindings</title>
+</head>
+
+<body>
+<h1>Declarations and Bindings</h1>
+
+Data type declarations can specify that certain type variables are to
+be universally or existentially quantified.  This extension is turned
+on with the <tt>-flocal-quant</tt> flag.
+<h3>Universal</h3>
+Universal quantification is indicated by having free type variables on
+the right hand side of a <tt>data</tt> (<tt>newtype</tt>) declaration.
+<p>
+Example:
+<pre>
+  data IdFun = IdCon (a -> a)
+</pre>
+Here <tt>IdCon</tt> can only be applied to values which
+have type <i>for all a.a->a</i>.  This means that the application
+"<tt>IdCon id</tt>" is type correct, whereas "<tt>IdCon negate</tt>"
+is <b>wrong</b> since <tt>negate</tt> does not have type <tt>a->a</tt>
+for all <tt>a</tt>.
+<p>
+When such a value is deconstructed (in pattern matching) it regains
+its universal quantification.
+Type correct example:
+<pre>
+  f (IdCon g) = (g 'a', g True)
+</pre>
+Notice how g is applied to arguments of different types; this is
+normally not possible with lambda bound variables.
+<p>
+A universally quantified type variable can have a context as well, e.g.
+<pre>
+  data NumOps = (Num a) => NumOps { square :: a->a, cube :: a->a }
+  numOps = NumOps { square = \x->x*x, cube = \x->x*x*x }
+  f :: (Num a) => NumOps -> a -> a
+  f (NumOps { square, cube }) x = cube (square x)
+</pre>
+<h3>Existential</h3>
+The type system has been extended with existential types as described
+in Konstantin Läufer's thesis.
+
+All type variables that are free and have a name that starts with `?'
+in a type definition are considered
+to be existentially quantified just before the constructor in which they appear.
+Example
+<pre>
+  data T = C ?a (?a->Int)
+</pre>
+Here <tt>?a</tt> is free (since it does not appear after <tt>T</tt>) and thus existentially quantified.
+When constructing values <tt>C</tt> is polymorphic as usual.
+<pre>
+  hetl = [C 4 (+1), C [1,2] length, C 3.14 toInt]
+</pre>
+This list has typing <tt>hetl::[T]</tt>, but is really heterogenous since
+the elements have different types.
+When a constructor with a existentially quantified type is used
+in pattern matching it
+behaves differently.  The actual type of the quantified variable
+is not allowed to escape outside the expression tied to the pattern matching.
+
+The following function is allowed
+<pre>
+  f c = 
+      case c of 
+         C v f -> f v 
+</pre>
+since it has typing <tt>f::T->Int</tt>, but not this
+<pre>
+  g c = 
+      case c of 
+         C x y -> x 
+</pre>
+since the actual type of <tt>x</tt> is not known.
+
+Existentially quantified variables can also be constrained by giving
+a context before a constructor.  The following defines a type where the
+argument to the constructor has to have a type belonging to class <tt>Show</tt>.
+<pre>
+  data TShow = (Show ?a) => T ?a
+</pre>
+This can be used as follows:
+<pre>
+  l :: [TShow]
+  l = [T True, T 1, T (atan 1), T [True]] 
+  s = map show l
+</pre>
+and the value of <tt>s</tt> will be <tt>["True","1","7.8539816339744828e-1","[True]"]</tt>.
+<p>
+The automatic derivation of instance declarations does not work for
+types containing existentially quantified variables.
+<p>
+<b>NOTE</b> The current implementation does not allow mixing universal
+and existential quantification within a single constructor.  As soon
+as one type variable starts with a `?' all free type variables are
+considered to be existential.
+<p>
+<hr>
+<p>
+The restrictions on instance declarations are relaxed if the flag
+<tt>-no-pedantic</tt>.
+Normally instance declarations can have the form
+<pre>
+  instance K => C (T a<sub>1</sub> ... a<sub>n</sub>)
+</pre>
+where a<sub>1</sub> ... a<sub>n</sub> are type vars.
+With the flags they can be of the form
+<pre>
+  instance K => C (T t<sub>1</sub> ... t<sub>n</sub>)
+</pre>
+where t<sub>1</sub> ... t<sub>n</sub> are arbitrary type expressions.
+If more than one instance declaration can be used to resolve an overloading
+the following rule is used:
+<blockquote>
+  If there is a single most specific declaration (in the usual type
+  specialisation ordering) then this is used, otherwise an ambiguity
+  error is reported.
+</blockquote>
+This means that you can make declarations like
+<pre>
+  instance Eq [Char] where ...
+</pre>
+and make a special purpose fast comparison routine for strings and
+get this whenever strings are compared.  So far this has not been
+used anywhere in the Prelude, but a faster version of Ratio Integer
+(coded in C) will probably be included in a future version.
+<p>
+This is a dubious feature and should not be used carelessly.
+<p>
+
+<hr>
+Instance declarations cannot contain pattern bindings.
+<p>
+<hr>
+Instance declarations are not exported exactly as the Haskell standard
+says, instead of always being exported they are only exported if the
+type and/or the class are exported.  The Haskell behaviour can be
+gotten by <tt>-fno-inst-with-c-t</tt>.
+
+<p>
+<hr>
+In Hugs 1.3 you will not get an Eval instance if a <tt>newtype</tt>
+does not admit it.  E.g.
+<blockquote>
+  newtype T f = T (f Int)
+</blockquote>
+You can get a similar behaviour from hbc by specifying the
+<tt>-fno-bad-eval-inst</tt> flag.
+<p>
+<hr>
+Type synonyms defined in hbc can only have kind *, so this definition
+<blockquote>
+  type List = []
+</blockquote>
+is legal Haskell 1.4, but not possible in hbc.  Use
+<blockquote>
+  type List a = [a]
+</blockquote>
+instead.
+<p>
+<hr>
+
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Jan 30 12:38:26 MET 1997
+<!-- hhmts end -->
+</body> </html>

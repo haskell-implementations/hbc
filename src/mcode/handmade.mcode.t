@@ -1,0 +1,1 @@
+import M: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(Int->((List Gcode)->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "2&3,F" ST #};

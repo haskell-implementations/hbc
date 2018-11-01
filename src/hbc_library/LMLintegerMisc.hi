@@ -1,0 +1,8 @@
+interface LMLintegerMisc where
+{-:"PIntegerPowMod":-}  :: Integer->Integer->Integer->Integer {-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1&2,F" ST #-}
+{-:"PInteger2String":-} :: Int->Integer->String {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerGcd":-}     :: Integer->Integer->Integer {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerAnd":-}     :: Integer->Integer->Integer {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerOr":-}      :: Integer->Integer->Integer {-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerSqrt":-}    :: Integer->(Integer,Integer) {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"PInteger2IntList":-}:: Integer->[Int] {-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}

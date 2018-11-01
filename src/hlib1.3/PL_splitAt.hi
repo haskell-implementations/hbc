@@ -1,0 +1,3 @@
+interface PreludeX where {
+splitAt :: Int -> [a] -> ([a], [a])   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

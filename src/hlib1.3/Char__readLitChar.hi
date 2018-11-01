@@ -1,0 +1,4 @@
+interface Char__readLitChar where {
+{-# IMPORTING Numeric__readInt, Char #-}
+readLitChar :: Prelude.ReadS Prelude.Char   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

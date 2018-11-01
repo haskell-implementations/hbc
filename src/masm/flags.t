@@ -1,0 +1,12 @@
+import Linux: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import PIC: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import PowerPC: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import Power: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import Solaris: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import FarJump: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import NoMOpt: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import I586: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import I486: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import Sparc8: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};
+import realname: String {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import PrMtrans: Bool {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};

@@ -1,0 +1,14 @@
+interface System where {
+{-# IMPORTING _LibDialogue, _LibIO__process, IO, _LibIO #-}
+getArgs :: _LibIO.IO [Prelude.String]   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getProgName :: _LibIO.IO Prelude.String   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getEnv :: Prelude.String -> _LibIO.IO Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+system :: Prelude.String -> _LibIO.IO ExitCode   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+exitWith :: ExitCode -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+data ExitCode = ExitSuccess | ExitFailure Prelude.Int;
+instance Prelude.Eq ExitCode {-# DERIVED #-};
+instance Prelude.Eval ExitCode {-# DERIVED #-};
+instance Prelude.Ord ExitCode {-# DERIVED #-};
+instance Prelude.Read ExitCode {-# DERIVED #-};
+instance Prelude.Show ExitCode {-# DERIVED #-}
+}

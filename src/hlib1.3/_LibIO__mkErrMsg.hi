@@ -1,0 +1,9 @@
+interface _LibIO__mkErrMsg where {
+{-# IMPORTING _LibIO #-}
+mkErrMsg :: _LibIO.IOError -> [Prelude.Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+mkMessageCode :: _LibIO.IOErrorCode -> (Prelude.Maybe [Prelude.Char]) -> [Prelude.Char]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-};
+data _LibIO.IOError;
+instance Prelude.Eq _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Show _LibIO.IOError {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

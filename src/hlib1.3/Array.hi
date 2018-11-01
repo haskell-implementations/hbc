@@ -1,0 +1,41 @@
+interface Array where {
+{-# IMPORTING _LibArray, Array__bang, List, Array__array, Ix #-}
+infixl 9 !;
+infixl 9 //;
+data (Ix.Ix a) => _LibArray.Array a b;
+Array__array.array :: (Ix.Ix a) => (a, a) -> [(a, b)] -> _LibArray.Array a b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-};
+listArray :: (Ix.Ix a) => (a, a) -> [b] -> _LibArray.Array a b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE listArray :: (Prelude.Int, Prelude.Int) -> [b] -> _LibArray.Array Prelude.Int b {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-};
+(Array__bang.!) :: (Ix.Ix a) => (_LibArray.Array a b) -> a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-};
+bounds :: (Ix.Ix a) => (_LibArray.Array a b) -> (a, a)   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,1" ST #-}{-# SPECIALIZE bounds :: (_LibArray.Array Prelude.Int b) -> (Prelude.Int, Prelude.Int) {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-} #-};
+indices :: (Ix.Ix a) => (_LibArray.Array a b) -> [a]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+elems :: (Ix.Ix a) => (_LibArray.Array a b) -> [b]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE elems :: (_LibArray.Array Prelude.Int b) -> [b] {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-} #-};
+assocs :: (Ix.Ix a) => (_LibArray.Array a b) -> [(a, b)]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+accumArray :: (Ix.Ix c) => (a -> b -> a) -> a -> (c, c) -> [(c, b)] -> _LibArray.Array c a   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "3,F" ST #-};
+(//) :: (Ix.Ix a) => (_LibArray.Array a b) -> [(a, b)] -> _LibArray.Array a b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE (//) :: (_LibArray.Array Prelude.Int c) -> [(Prelude.Int, c)] -> _LibArray.Array Prelude.Int c {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-};
+accum :: (Ix.Ix c) => (a -> b -> a) -> (_LibArray.Array c a) -> [(c, b)] -> _LibArray.Array c a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "3,F" ST #-};
+ixmap :: (Ix.Ix a, Ix.Ix b) => (a, a) -> (a -> b) -> (_LibArray.Array b c) -> _LibArray.Array a c   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "2,F" ST #-};
+class (Prelude.Ord a) => Ix.Ix a where {
+    range :: (a, a) -> [a];
+    index :: (a, a) -> a -> Prelude.Int;
+    inRange :: (a, a) -> a -> Prelude.Bool
+    };
+Ix.rangeSize :: (Ix.Ix a) => (a, a) -> Prelude.Int   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+{-:"Poutside":-} :: a   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+instance (Ix.Ix a, Ix.Ix b) => Ix.Ix (a, b) {-# DERIVED #-};
+instance Ix.Ix (Prelude.Int, Prelude.Int) {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c) => Ix.Ix (a, b, c) {-# DERIVED #-};
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c, Ix.Ix d) => Ix.Ix (a, b, c, d) {-# DERIVED #-};
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c, Ix.Ix d, Ix.Ix e) => Ix.Ix (a, b, c, d, e) {-# DERIVED #-};
+instance Ix.Ix () {-# DERIVED #-};
+instance Ix.Ix Prelude.Bool {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance Ix.Ix Prelude.Char {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance Ix.Ix Prelude.Int {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance Ix.Ix Prelude.Integer {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance Ix.Ix Prelude.Ordering {-# DERIVED #-};
+instance (Ix.Ix a, Prelude.Eq b) => Prelude.Eq (_LibArray.Array a b) {-# STRICTNESS (==) = "T,F" ST #-} {-# STRICTNESS (/=) = "T,F" ST #-};
+instance (Ix.Ix a) => Prelude.Eval (_LibArray.Array a b) {-# DERIVED #-};
+instance (Ix.Ix a) => Prelude.Functor (_LibArray.Array a) {-# STRICTNESS map = "2,F" ST #-};
+instance (Ix.Ix a, Prelude.Ord b) => Prelude.Ord (_LibArray.Array a b) {-# STRICTNESS (<) = "T,F" ST #-} {-# STRICTNESS (<=) = "T,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-};
+instance (Ix.Ix a, Prelude.Read a, Prelude.Read b) => Prelude.Read (_LibArray.Array a b) {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-};
+instance (Ix.Ix a, Prelude.Show a, Prelude.Show b) => Prelude.Show (_LibArray.Array a b) {-# STRICTNESS showsPrec = "3,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

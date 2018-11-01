@@ -1,0 +1,17 @@
+mkdir lib/parsed
+(cd hbc_library; ln -s ../hlib/P_Array_data.hi .; ln -s ../lib/trace.M Trace.M)
+(cd ilml; ln -s ../lib/OK.m ../lib/Option.m .)
+(cd lib/include; ln -s ../OK.t OK; ln -s ../Option.t Option)
+(cd bin; ln -s ../syntax/lmlp$1 ../syntax/curryp$1 .; ln -s ../lmlc/unlit$1 .)
+(cd lmlc; ln -s lmlc$1 hbc$1)
+(cd hbc_library1.3; make links)
+(cd hlib1.3; ln -s ../hbc_library/LMLbitops.hi .)
+
+for d in lib hlib hbc_library hlib1.3 hbc_library1.3 ; do
+    mkdir $d/normo $d/profo $d/hprofo
+done
+mkdir hlib/hprelo
+for d in runtime misc expr transform rename ExprE simpl type etype llift Gcode mcode mopt Gopt strict flic bwm zf curry m_* main ilml lib hlib hbc_library hlib1.3 hbc_library1.3 ; do
+    mkdir $d/saveo $d/saveoo
+done
+touch .setup

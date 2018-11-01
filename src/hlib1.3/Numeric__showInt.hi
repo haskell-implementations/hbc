@@ -1,0 +1,4 @@
+interface Numeric__showSigned where {
+showInt :: (Prelude.Integral a) => a -> Prelude.ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+showInt' :: (Prelude.Integral a) => a -> Prelude.ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

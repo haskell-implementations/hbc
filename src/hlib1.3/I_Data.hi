@@ -1,0 +1,9 @@
+interface PreludeX where {
+instance Eval (a -> b);
+instance Eval Char;
+instance Eval Double;
+instance Eval Float;
+instance Eval Int;
+instance Eval Integer;
+instance Eval _File
+}

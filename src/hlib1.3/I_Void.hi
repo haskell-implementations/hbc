@@ -1,0 +1,4 @@
+interface PreludeX where {
+data Void;
+instance Prelude.Eval Void {-# DERIVED #-}
+}

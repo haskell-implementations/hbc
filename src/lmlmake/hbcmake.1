@@ -1,0 +1,191 @@
+.TH HBCMAKE 1 local
+.SH NAME
+hbcmake \- a tool for automated compilation of Haskell programs
+.SH SYNOPSIS
+.B hbcmake
+[ options ]
+.I file ...
+.SH DESCRIPTION
+.I hbcmake
+is a
+.I make(1)
+like command for compiling Haskell programs.
+Dependencies are automatically extracted from the source files;
+there is no need to construct or maintain a Makefile.
+
+The
+.I file
+arguments determine what to compile. If
+.I file
+is the name of an executable (i.e. it has no extension),
+.I file.hs
+is assumed to contain the main module of a program.
+All modules it depends on are compiled (if necessary)
+and linked to an executable.
+If
+.I file
+is the name of a source module (i.e it ends in .hs) or an object module
+(i.e. it ends in .o) then the object file for that module is generated.
+
+.I hbcmake
+allows several programs to reside in the same directory.
+Modules can be shared between several programs.
+Directories to search for library modules can be specified with the -i flag,
+in the same way as for
+.IR hbc .
+
+.I hbcmake
+correctly handles the fact that the Haskell compiler generates two files,
+an object file and an interface file, for each module compiled.
+
+.I hbcmake
+inspects each source module for compilation flags. If the very first
+line contains the string " Flags:", the rest of that line is
+passed as flags to
+.IR hbc .
+
+.SH OPTIONS
+.TP
+.B \-n
+No execution mode. Print commands but do not execute them.
+.TP
+.B \-s
+Silent mode. Do not print commands before executing them.
+.TP
+.B \-g
+Output a Makefile compatible dependency list on the standard output.
+.TP
+.B \-t
+Output a (topologically sorted) list of object files.
+.TP
+.BI \-f " file"
+Try to extract HBCFLAGS and LDFLAGS from
+.I file
+instead of Makefile.
+.TP
+.BI \-i[paths]
+This option is the same as for hbc.
+It sets the search path for library modules.
+.I paths
+is a colon separated list of directories, which are added to the list of
+directories to search for imported modules. If -i is given without any paths,
+all directories (including the default ones) are removed from the list.
+The default search path is .:/usr/local/lib/lmlc/hbc_library, or the contents
+of the environment variable HBCINCPATH, if it is defined.
+.TP
+.BI \-I " directory"
+Add
+.I directory
+to the list of directories to search for source modules. This flag allows the
+source code of big programs to be distributed into several directories. The
+default is to search the current directory only.
+.TP
+.BI \-o " name"
+Names the executable file
+.I name
+by passing this option to hbc when linking an executable.
+.TP
+.B \-nostrip
+Produce an unstripped executable. Default is to produce a stripped executable, by passing
+.B \-s
+to hbc when linking.
+.TP
+.B \-mkso
+Generate shared object files suitable for loading in
+.IR hbi .
+.TP
+.B \-retry
+Interactive retry mode: if a compilation error occurs for a file,
+the user is given the 
+option to ignore that file, retry the compilation, or abort
+.IR hbcmake .
+.TP
+.BI \-C " args"
+Passes
+.I args
+to hbc when compiling and linking.
+.TP
+.B \-1.3
+Use Haskell 1.3 (default).
+.TP
+.B \-1.2
+Use Haskell 1.2.
+.TP
+.B \-xdg
+Run xhbdg to display the module dependency graph instead of compiling.
+.PP
+Most other flags are assumed to be compiler options and are
+passed to hbc when compiling and linking.
+.SH COMPILER OPTIONS
+The command line used to compile a module is
+
+	hbc -c $HBCFLAGS file.hs
+
+and to link an executable
+
+	hbc $HBCFLAGS -o executable file.o ... $LDFLAGS
+
+where HBCFLAGS and LDFLAGS are taken from the environment and then augmented
+with any compiler/linker options given when invoking
+.IR hbcmake .
+In addition, if there is a Makefile in the current directory,
+definitions of HBCFLAGS and LDFLAGS found in it will be added.
+The default value of these variables is the empty string.
+.SH ENVIRONMENT
+.TP
+.B HBCFLAGS
+contains flags that are passed to hbc.
+.TP
+.B HBCINCPATH
+search path for library modules.
+.TP
+.B LDFLAGS
+contains flags that are passed to hbc when linking an executable.
+.TP
+.B PARALLEL
+if set, independent modules are compiled in parallel.
+(Use with care - there is no way to limit how many compilations are
+started in parallel.)
+.TP
+.B HBC
+if set, it is used as the name of the Haskell compiler. The default is hbc.
+.TP
+.B LMLMK
+if set, it is used as the location of the main program, instead of the default /usr/local/lib/lmlc/bin/lmlmk
+.TP
+.B OLDER
+if set, it is used as the location of the help program `older', instead of the default /usr/local/lib/lmlc/bin/older
+.TP
+.B LMLDIR
+if set, used instead of /usr/local/lib/lmlc to locate help programs and
+library modules.
+.SH FILES
+.TP
+.B /usr/local/lib/lmlc/bin/lmlmk
+the main program
+.TP
+.B /usr/local/lib/lmlc/bin/older
+help program to determine if a target is out of date.
+.TP
+.B hbcmakehbc
+Script that handles the flags
+.B -retry
+and
+.B -mkso
+flags and some other stuff.
+
+.SH SEE ALSO
+hbc(1), lmlmake(1), make(1)
+.SH BUGS
+Please report any bugs or enhancement suggestions to the author.
+
+The flags
+.B -mkso
+and
+.B -retry
+only works if
+.B HBC
+is set to
+.B hbcmakehbc.
+.SH AUTHOR
+Thomas Hallgren, hallgren@cs.chalmers.se

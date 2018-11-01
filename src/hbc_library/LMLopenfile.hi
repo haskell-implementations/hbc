@@ -1,0 +1,3 @@
+interface LMLopenfile where
+import Either(Either)
+openfile :: String -> Either String String

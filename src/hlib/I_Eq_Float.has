@@ -1,0 +1,4 @@
+module I_Eq_Float where
+instance  Eq Float where
+    	x == y 	= {-:"MM.Eq.Float.==":-} x y
+    	x /= y 	= {-:"MM.Eq.Float./=":-} x y

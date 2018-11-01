@@ -1,0 +1,12 @@
+module UnsafeDirty(Ref, ref, assign, deref, seq, force) where
+-- This module contains highly unsafe operations.
+-- Some of them even have (GASP!!) *side effects*.
+-- All ye who enter here, abadon all hope.
+import LMLunsafe
+ref x      = {-:"Pref":-} x
+assign r x = {-:"Passign":-} r x
+deref r    = {-:"Pderef":-} r
+seq x y    = {-:"Pseq":-} x y
+force x    = {-:"Pforce":-} x
+instance Eq (Ref a) where
+	x == y = seq x (seq y ({-:"Peqptr":-} x y))

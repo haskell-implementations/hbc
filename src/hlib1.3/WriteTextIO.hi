@@ -1,0 +1,12 @@
+interface WriteTextIO where {
+{-# IMPORTING StdIO, _LibDialogue, IOError, _LibIO__process, MonadicIO, _LibIO #-}
+hPutChar :: _LibIO.Handle -> Prelude.Char -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-};
+putChar :: Prelude.Char -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+hPutStr :: _LibIO.Handle -> Prelude.String -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hPrint :: (Prelude.Show a) => _LibIO.Handle -> a -> _LibIO.IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,1" ST #-};
+putStr :: Prelude.String -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+putStrLn :: Prelude.String -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+print :: (Prelude.Show a) => a -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+writeFile :: StdIO.FilePath -> Prelude.String -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+appendFile :: StdIO.FilePath -> Prelude.String -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

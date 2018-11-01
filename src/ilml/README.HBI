@@ -1,0 +1,33 @@
+How to make a hbc library:
+--------------------------
+Put all your source files in a directory and use the Makefile
+template below to compile them.
+
+When using hbc/hbi you should use the flag '-i<directory>' to be able
+to just say "import Module" for any Module in these directories.  You
+can also use the environment variable HBCINCPATH.  The default path is
+".:$LMLDIR/hbc_library".  Hbc will automagically link lib.a from these
+directories, and hbi will find .hi and .o files in them.
+
+
+--------- Makefile -------------
+OBJS=	one .o file corresponding to each source file
+
+LMLC = lmlc
+LMLFLAGS =
+HBC = hbc
+HBCFLAGS =
+
+.SUFFIXES :
+.SUFFIXES : .hs .m .o
+
+.m.o :
+	${LMLC} -c ${LMLFLAGS} $<
+
+.hs.o :
+	${HBC} -c ${HBCFLAGS} $<
+
+lib.a:	${OBJS}
+	rm -f lib.a
+	ar cr lib.a ${OBJS}
+	ranlib lib.a

@@ -1,0 +1,7 @@
+%{
+#include "include.h"
+%}
+type pair;
+	ppair	: < pfst : voidptr;
+		    psnd : voidptr; >;
+end;

@@ -1,0 +1,2 @@
+interface LMLstrerror where
+strerror :: Int -> String

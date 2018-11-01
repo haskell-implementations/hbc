@@ -1,0 +1,1 @@
+import mbasicop: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->(Int->((List Gcode)->(Gbasicconstr->(Gbasicconstr->(Gbasicop->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))))) {# ARITY _ = 9 #}{# STRICTNESS _ = "T,F" ST #};

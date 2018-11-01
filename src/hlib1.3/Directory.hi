@@ -1,0 +1,26 @@
+interface Directory where {
+{-# IMPORTING _LibDialogue, Time, _LibIO__process, IO #-}
+data Permissions = Permissions { readable :: Prelude.Bool, writable :: Prelude.Bool, executable :: Prelude.Bool, searchable :: Prelude.Bool };
+readable :: Permissions -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+writable :: Permissions -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+executable :: Permissions -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+searchable :: Permissions -> Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+getPermissions :: StdIO.FilePath -> _LibIO.IO Permissions   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+setPermissions :: StdIO.FilePath -> Permissions -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+createDirectory :: StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+removeDirectory :: StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+removeFile :: StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+renameDirectory :: StdIO.FilePath -> StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+renameFile :: StdIO.FilePath -> StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getDirectoryContents :: StdIO.FilePath -> _LibIO.IO [StdIO.FilePath]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getCurrentDirectory :: _LibIO.IO StdIO.FilePath   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+setCurrentDirectory :: StdIO.FilePath -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+doesFileExist :: StdIO.FilePath -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+doesDirectoryExist :: StdIO.FilePath -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getModificationTime :: StdIO.FilePath -> _LibIO.IO Time.ClockTime   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+instance Prelude.Eq Permissions {-# DERIVED #-};
+instance Prelude.Eval Permissions {-# DERIVED #-};
+instance Prelude.Ord Permissions {-# DERIVED #-};
+instance Prelude.Read Permissions {-# DERIVED #-};
+instance Prelude.Show Permissions {-# DERIVED #-}
+}

@@ -1,0 +1,3 @@
+interface LMLBin where
+{-:"PnullBin":-} :: Bin		{-# ARITY _ = 0 #-}{-# STRICTNESS _ = "F,T" ST #-}
+{-:"PisNullBin":-} :: Bin -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}

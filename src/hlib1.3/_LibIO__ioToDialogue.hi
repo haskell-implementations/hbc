@@ -1,0 +1,6 @@
+interface _LibIO__ioToDialogue where {
+{-# IMPORTING _LibIO__mkErrMsg, _LibDialogue, _LibIO #-}
+ioToDialogue :: (_LibIO.IO a) -> _LibDialogue._Dialogue   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+mkErrorMessage :: _LibIO.IOError -> [Prelude.Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+_ioToDialogue :: (_LibIO.IO a) -> _LibDialogue._Dialogue   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

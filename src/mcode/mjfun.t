@@ -1,0 +1,2 @@
+import mcallfun: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Int->(*a->(*b->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))) {# ARITY _ = 7 #}{# STRICTNESS _ = "T,F" ST #};
+import mjfun: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Int->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))) {# ARITY _ = 5 #}{# STRICTNESS _ = "T,T" ST #};

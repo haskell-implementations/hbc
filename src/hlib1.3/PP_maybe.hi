@@ -1,0 +1,3 @@
+interface PreludeX where {
+maybe :: a -> (b -> a) -> (Maybe b) -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "2,F" ST #-}
+}

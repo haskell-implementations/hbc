@@ -1,0 +1,24 @@
+module I_Integral_Int where
+#define QUOT {-:"MM.Integral.Int.quot":-}
+#define REM {-:"MM.Integral.Int.rem":-}
+#define MOD {-:"MM.Integral.Int.mod":-}
+instance Integral Int where
+	x `quot` y = QUOT x y
+	x `rem`  y = REM  x y
+	quotRem x y = (QUOT x y, REM x y)
+
+        x `div` y = if x > 0 && y < 0 then QUOT (x-y-1) y else if x < 0 && y > 0 then QUOT (x-y+1) y else QUOT x y
+        x `mod` y = if x > 0 && y < 0 || x < 0 && y > 0 then if r/=0 then r+y else 0 else r
+		    where r = REM x y
+        divMod x y = (x `div` y, x `mod` y)
+{-
+	n `div` d           =  q  where (q,r) = divMod n d
+	n `mod` d           =  r  where (q,r) = divMod n d
+	divMod n d          =  if signum r == - signum d then (q-1, r+d) else (q,r)
+                               where q = QUOT n d
+				     r = REM n d
+-}
+	even x = {-:"MM.Eq.Int.==":-} (MOD x {-:#2:-}) {-:#0:-}
+	odd x  = {-:"MM.Eq.Int./=":-} (MOD x {-:#2:-}) {-:#0:-}
+	toInteger x = {-:"PInt2Integer":-} x
+	toInt x = x

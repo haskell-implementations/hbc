@@ -1,0 +1,27 @@
+interface _XStuff where {
+data Command.XCommand;
+data Event.XEvent;
+type ResourceIds.XWId = ResourceIds.WindowId;
+data ResourceIds.WindowId;
+data Command.XRequest;
+data Event.XResponse;
+type Sockets.AsyncInput = (Sockets.Descriptor, Sockets.AEvent);
+data Sockets.AEvent;
+data Sockets.SocketRequest;
+data Sockets.Descriptor;
+data Sockets.SocketResponse;
+type Xtypes.XDisplay = Xtypes.Display;
+data Xtypes.Display;
+
+instance Prelude.Show Sockets.Descriptor;
+instance Prelude.Show Sockets.AEvent;
+instance Prelude.Show Sockets.SocketRequest;
+instance Prelude.Show Sockets.SocketResponse;
+instance Prelude.Show ResourceIds.WindowId;
+instance Prelude.Show Command.XCommand;
+instance Prelude.Show Event.XEvent;
+instance Prelude.Show Command.XRequest;
+instance Prelude.Show Event.XResponse;
+instance Prelude.Show Xtypes.Display
+
+}

@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Char #-}
+lex :: ReadS String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

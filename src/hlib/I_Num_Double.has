@@ -1,0 +1,11 @@
+module I_Num_Double where
+instance Num Double where
+	x + y = {-:"MM.Num.Double.+":-} x y
+	x - y = {-:"MM.Num.Double.-":-} x y
+	x * y = {-:"MM.Num.Double.*":-} x y
+	negate x = {-:"MM.Num.Double.negate":-} x
+	abs x = if {-:"MM.Ord.Double.<":-} x 0.0 then {-:"MM.Num.Double.negate":-} x else x
+	signum x = if {-:"MM.Ord.Double.<":-} x 0.0 then {-:"MM.Num.Double.negate":-} 1.0 else if {-:"MM.Ord.Double.>":-} x 0.0 then 1.0 else 0.0
+        fromInt x = {-:"MM.Num.Double.fromInt":-} x
+	fromInteger x = encodeFloat x 0
+	{-:"PfromInteger":-} x = case x{-# NOEVAL #-} of { (_,_,d) -> d{-# NOEVAL #-} }

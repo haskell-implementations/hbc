@@ -1,0 +1,10 @@
+interface UnsafeDirty where {
+import LMLunsafe(Ref);
+data Ref a;
+ref :: a -> Ref a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+assign :: (Ref a) -> a -> ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+deref :: (Ref a) -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+seq :: a -> b -> b   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+force :: a -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+instance Eq (Ref a) {-# FROMMODULE UnsafeDirty #-} {-# STRICTNESS (==) = "0&1,F" ST #-} {-# STRICTNESS (/=) = "T,F" ST #-}
+}

@@ -1,0 +1,107 @@
+-- Temporary module to fake the primitives
+--
+module
+export _primMinInt, _primMaxInt, _primCharToInt, _primIntToInteger, 
+_primIntegerToInt, _primEqInt, _primLeInt, _primPlusInt, _primMulInt,
+_primNegInt, _primDivRemInt, 
+
+_primFloatRadix, _primFloatDigits, _primFloatMinExp, _primFloatMaxExp,
+_primFloatDecode, _primFloatEncode, _primEqFloat, _primLeFloat,
+_primPlusFloat, _primMulFloat, _primDivFloat, _primNegFloat, _primPiFloat,
+_primExpFloat, _primLogFloat, _primSqrtFloat, _primSinFloat, _primCosFloat,
+_primTanFloat, _primAsinFloat, _primAcosFloat, _primAtanFloat,
+_primSinhFloat, _primCoshFloat, _primTanhFloat, _primAsinhFloat,
+_primAcoshFloat, _primAtanhFloat,
+
+_primDoubleRadix, _primDoubleDigits, _primDoubleMinExp, _primDoubleMaxExp,
+_primDoubleDecode, _primDoubleEncode, _primEqDouble, _primLeDouble,
+_primPlusDouble, _primMulDouble, _primDivDouble, _primNegDouble, _primPiDouble,
+_primExpDouble, _primLogDouble, _primSqrtDouble, _primSinDouble, _primCosDouble,
+_primTanDouble, _primAsinDouble, _primAcosDouble, _primAtanDouble,
+_primSinhDouble, _primCoshDouble, _primTanhDouble, _primAsinhDouble,
+_primAcoshDouble, _primAtanhDouble,
+
+_primNullBin, _primIsNullBin;
+
+rec _primMinInt = -2147483648
+and _primMaxInt = 2147483647
+and _primCharToInt _c = _ord _c
+and _primIntToInteger _i = PInt2Integer _i
+and _primIntegerToInt _i = PInteger2Int _i
+and _primEqInt _x _y = _x+0 = _y
+and _primLeInt _x _y = _x+0 <= _y
+and _primPlusInt _x _y = _x+_y
+and _primMulInt _x _y = _x*_y
+and _primNegInt _x = -_x
+and _primDivRemInt _x _y = (_x/_y, _x%_y) -- ???
+
+and _primEqInteger _x _y = _x = _y
+and _primLeInteger _x _y = _x <= _y
+and _primPlusInteger _x _y = _x +# _y
+and _primMulInteger _x _y = _x *# _y
+and _primNegInteger _x = 0# -# _x
+and _primDivRemInteger _x _y = (_x /# _y, _x %# _y)
+
+and _primDoubleRadix = 2
+and _primDoubleDigits = 54
+and _primDoubleMinExp = -1024
+and _primDoubleMaxExp = 1023
+and _primDoubleDecode = Pfail "_primDoubleDecode"
+and _primDoubleEncode = Pfail "_primDoubleEncode"
+and _primEqDouble _x _y = _x = _y
+and _primLeDouble _x _y = _x <= _y
+and _primPlusDouble _x _y = _x +. _y
+and _primMulDouble _x _y = _x *. _y
+and _primDivDouble _x _y = _x /. _y
+and _primNegDouble _x = 0.0 -. _x
+and _primPiDouble = 3.141592653589793238
+and _primExpDouble _x = _exp _x
+and _primLogDouble _x = _log _x
+and _primSqrtDouble _x = _sqrt _x
+and _primSinDouble _x = _sin _x
+and _primCosDouble _x = _cos _x
+and _primTanDouble _x = _tan _x
+and _primAsinDouble _x = _asin _x
+and _primAcosDouble _x = _acos _x
+and _primAtanDouble _x = _atan _x
+and _primSinhDouble _x = _sinh _x
+and _primCoshDouble _x = _cosh _x
+and _primTanhDouble _x = _tanh _x
+and _primAsinhDouble = Pfail "_primAsinhDouble"
+and _primAcoshDouble = Pfail "_primAcoshDouble"
+and _primAtanhDouble = Pfail "_primAtanhDouble"
+
+and _primFloatRadix = _primDoubleRadix
+and _primFloatDigits = _primDoubleDigits
+and _primFloatMinExp = _primDoubleMinExp
+and _primFloatMaxExp = _primDoubleMaxExp
+and _primFloatDecode = _primDoubleDecode
+and _primFloatEncode = _primDoubleEncode
+and _primEqFloat = _primEqDouble
+and _primLeFloat = _primLeDouble
+and _primPlusFloat = _primPlusDouble
+and _primMulFloat = _primMulDouble
+and _primDivFloat = _primDivDouble
+and _primNegFloat = _primNegDouble
+and _primPiFloat = _primPiDouble
+and _primExpFloat = _primExpDouble
+and _primLogFloat = _primLogDouble
+and _primSqrtFloat = _primSqrtDouble
+and _primSinFloat = _primSinDouble
+and _primCosFloat = _primCosDouble
+and _primTanFloat = _primTanDouble
+and _primAsinFloat = _primAsinDouble
+and _primAcosFloat = _primAcosDouble
+and _primAtanFloat = _primAtanDouble
+and _primSinhFloat = _primSinhDouble
+and _primCoshFloat = _primCoshDouble
+and _primTanhFloat = _primTanhDouble
+and _primAsinhFloat = _primAsinhDouble
+and _primAcoshFloat = _primAcoshDouble
+and _primAtanhFloat = _primAtanhDouble
+
+and _primNullBin = []
+and _primIsNullBin [] = _true
+||  _primIsNullBin _  = _false
+
+end

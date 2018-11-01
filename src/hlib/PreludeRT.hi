@@ -1,0 +1,110 @@
+interface _PreludeRT where
+
+-- Stuff in the runtime system (or libraries) with unreachable names.
+
+Pfail		:: [_Char] -> a			{-# ARITY Pfail = 1 #-} {-# STRICTNESS Pfail = "T,F" ST #-}
+Pcno		:: a -> _Int			{-# ARITY Pcno = 1 #-} {-# STRICTNESS Pcno = "0,F" ST #-}
+Pord		:: a -> _Int			{-# ARITY Pord = 1 #-} {-# STRICTNESS Pord = "0,F" ST #-}
+Ptag		:: Int -> a			{-# ARITY Ptag = 1 #-} {-# STRICTNESS Ptag = "0,F" ST #-}
+Peqi		:: _Int -> _Int -> _Bool	{-# ARITY Peqi = 2 #-} {-# STRICTNESS Peqi = "0&1,F" ST #-}
+Plti		:: _Int -> _Int -> _Bool	{-# ARITY Plti = 2 #-} {-# STRICTNESS Plti = "0&1,F" ST #-}
+Plei		:: _Int -> _Int -> _Bool	{-# ARITY Plei = 2 #-} {-# STRICTNESS Plei = "0&1,F" ST #-}
+Prange		:: (a,a) -> [a]			{-# ARITY Prange = 1 #-} {-# STRICTNESS Prange = "0,F" ST #-}
+Pindex		:: (a,a) -> a -> _Int		{-# ARITY Pindex = 2 #-} {-# STRICTNESS Pindex = "0&1,F" ST #-}
+PinRange	:: (a,a) -> a -> _Bool		{-# ARITY PinRange = 2 #-} {-# STRICTNESS PinRange = "0&1,F" ST #-}
+PenumFT		:: a -> a -> [a]		{-# ARITY PenumFT = 2 #-} {-# STRICTNESS PenumFT = "0&1,F" ST #-}
+PenumFTT	:: a -> a -> a -> [a]		{-# ARITY PenumFTT = 3 #-} {-# STRICTNESS PenumFTT = "0&1&2,F" ST #-}
+PenumFTTU	:: a -> a -> a -> a -> [a]	{-# ARITY PenumFTTU = 4 #-} {-# STRICTNESS PenumFTTU = "0&1&(2|3),F" ST #-}
+PshowBin	:: a -> _Bin -> _Bin		{-# ARITY PshowBin = 2 #-} {-# STRICTNESS PshowBin = "T,F" ST #-}
+PreadBin	:: _Bin -> (a,_Bin)		{-# ARITY PreadBin = 1 #-} {-# STRICTNESS PreadBin = "T,F" ST #-}
+Pnever		:: a				{-# ARITY Pnever = 0 #-} {-# STRICTNESS Pnever = "T,F" ST #-}
+Pshowt		:: a				{-# ARITY Pshowt = 0 #-} {-# STRICTNESS Pshowt = "T,F" ST #-}
+{-:"_,":-}	:: a -> b -> (a,b)		{-# ARITY {-:"_,":-} = 2 #-} {-# STRICTNESS {-:"_,":-} = "T,T" ST #-}
+
+Pseq		:: b -> a -> a			{-# ARITY Pseq = 2 #-} {-# STRICTNESS Pseq = "0,F" ST #-}
+
+Pgeneq		:: a -> a -> _Bool		{-# ARITY Pgeneq = 2 #-} {-# STRICTNESS Pgeneq = "0&1,F" ST #-}
+Pgenne		:: a -> a -> _Bool		{-# ARITY Pgenne = 2 #-} {-# STRICTNESS Pgenne = "0&1,F" ST #-}
+Pgengt		:: a -> a -> _Bool		{-# ARITY Pgengt = 2 #-} {-# STRICTNESS Pgengt = "0&1,F" ST #-}
+Pgenge		:: a -> a -> _Bool		{-# ARITY Pgenge = 2 #-} {-# STRICTNESS Pgenge = "0&1,F" ST #-}
+Pgenlt		:: a -> a -> _Bool		{-# ARITY Pgenlt = 2 #-} {-# STRICTNESS Pgenlt = "0&1,F" ST #-}
+Pgenle		:: a -> a -> _Bool		{-# ARITY Pgenle = 2 #-} {-# STRICTNESS Pgenle = "0&1,F" ST #-}
+
+PIntegerAdd	:: _Integer -> _Integer -> _Integer	{-# ARITY PIntegerAdd = 2 #-} {-# STRICTNESS PIntegerAdd = "0&1,F" ST #-}
+PIntegerSub	:: _Integer -> _Integer -> _Integer	{-# ARITY PIntegerSub = 2 #-} {-# STRICTNESS PIntegerSub = "0&1,F" ST #-}
+PIntegerMul	:: _Integer -> _Integer -> _Integer	{-# ARITY PIntegerMul = 2 #-} {-# STRICTNESS PIntegerMul = "0&1,F" ST #-}
+PIntegerDiv	:: _Integer -> _Integer -> _Integer	{-# ARITY PIntegerDiv = 2 #-} {-# STRICTNESS PIntegerDiv = "0&1,F" ST #-}
+PIntegerMod	:: _Integer -> _Integer -> _Integer	{-# ARITY PIntegerMod = 2 #-} {-# STRICTNESS PIntegerMod = "0&1,F" ST #-}
+PIntegerDivMod	:: _Integer -> _Integer -> (_Integer,_Integer)	{-# ARITY PIntegerDivMod = 2 #-} {-# STRICTNESS PIntegerDivMod = "0&1,F" ST #-}
+PIntegerNeg	:: _Integer -> _Integer		{-# ARITY PIntegerNeg = 1 #-} {-# STRICTNESS PIntegerNeg = "0,F" ST #-}
+PInt2Integer	:: _Int -> _Integer		{-# ARITY PInt2Integer = 1 #-} {-# STRICTNESS PInt2Integer = "0,F" ST #-}
+PInteger2Int	:: _Integer -> _Int		{-# ARITY PInteger2Int = 1 #-} {-# STRICTNESS PInteger2Int = "0,F" ST #-}
+
+Prindex         :: a -> _Int -> b		{-# ARITY Prindex = 2 #-} {-# STRICTNESS Prindex = "0&1,F" ST #-}
+Prindexu        :: a -> _Int -> b		{-# ARITY Prindexu = 2 #-} {-# STRICTNESS Prindexu = "0&1,F" ST #-}
+
+#if 0
+DFloatAdd	:: _Double -> _Double -> _Double	{-# ARITY DFloatAdd = 2 #-} {-# STRICTNESS DFloatAdd = "0&1,0&1" ST #-}
+DFloatSub	:: _Double -> _Double -> _Double	{-# ARITY DFloatSub = 2 #-} {-# STRICTNESS DFloatSub = "0&1,0&1" ST #-}
+DFloatMul	:: _Double -> _Double -> _Double	{-# ARITY DFloatMul = 2 #-} {-# STRICTNESS DFloatMul = "0&1,0&1" ST #-}
+DFloatDiv	:: _Double -> _Double -> _Double	{-# ARITY DFloatDiv = 2 #-} {-# STRICTNESS DFloatDiv = "0&1,F" ST #-}
+DFloatNeg	:: _Double -> _Double -> _Double	{-# ARITY DFloatNeg = 1 #-} {-# STRICTNESS DFloatNeg = "0,F" ST #-}
+Dfabs		:: _Double -> _Double 		{-# ARITY Dfabs = 1     #-} {-# STRICTNESS Dfabs = "0,0" ST #-}
+Dftoi		:: _Double -> _Int  		{-# ARITY Dftoi = 1 #-} {-# STRICTNESS Dftoi = "0,0" ST #-}
+Ditof		:: _Int -> _Double  		{-# ARITY Ditof = 1 #-} {-# STRICTNESS Ditof = "0,0" ST #-}
+Dexp		:: _Double -> _Double 		{-# ARITY Dexp = 1 #-} {-# STRICTNESS Dexp = "0,0" ST #-}
+Dsin		:: _Double -> _Double 		{-# ARITY Dsin = 1 #-} {-# STRICTNESS Dsin = "0,0" ST #-}
+Dcos		:: _Double -> _Double 		{-# ARITY Dcos = 1 #-} {-# STRICTNESS Dcos = "0,0" ST #-}
+Dtan		:: _Double -> _Double 		{-# ARITY Dtan = 1 #-} {-# STRICTNESS Dtan = "0,0" ST #-}
+Dlog		:: _Double -> _Double 		{-# ARITY Dlog = 1 #-} {-# STRICTNESS Dlog = "0,F" ST #-}
+Dsqrt		:: _Double -> _Double 		{-# ARITY Dsqrt = 1 #-} {-# STRICTNESS Dsqrt = "0,F" ST #-}
+Dasin		:: _Double -> _Double 		{-# ARITY Dasin = 1 #-} {-# STRICTNESS Dasin = "0,F" ST #-}
+Dacos		:: _Double -> _Double 		{-# ARITY Dacos = 1 #-} {-# STRICTNESS Dacos = "0,F" ST #-}
+Datan		:: _Double -> _Double 		{-# ARITY Datan = 1 #-} {-# STRICTNESS Datan = "0,F" ST #-}
+Dgamma		:: _Double -> _Double 		{-# ARITY Dgamma = 1 #-} {-# STRICTNESS Dgamma = "0,F" ST #-}
+Dsinh		:: _Double -> _Double 		{-# ARITY Dsinh = 1 #-} {-# STRICTNESS Dsinh = "0,0" ST #-}
+Dcosh		:: _Double -> _Double 		{-# ARITY Dcosh = 1 #-} {-# STRICTNESS Dcosh = "0,0" ST #-}
+Dtanh		:: _Double -> _Double 		{-# ARITY Dtanh = 1 #-} {-# STRICTNESS Dtanh = "0,0" ST #-}
+Dasinh		:: _Double -> _Double 		{-# ARITY Dasinh = 1 #-} {-# STRICTNESS Dasinh = "0,F" ST #-}
+Dacosh		:: _Double -> _Double 		{-# ARITY Dacosh = 1 #-} {-# STRICTNESS Dacosh = "0,F" ST #-}
+Datanh		:: _Double -> _Double 		{-# ARITY Datanh = 1 #-} {-# STRICTNESS Datanh = "0,F" ST #-}
+Dceil		:: _Double -> _Double 		{-# ARITY Dceil = 1 #-} {-# STRICTNESS Dceil = "0,0" ST #-}
+Dfloor		:: _Double -> _Double 		{-# ARITY Dfloor = 1 #-} {-# STRICTNESS Dfloor = "0,0" ST #-}
+#endif
+PDouble2Float   :: _Double -> _Float		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+PFloat2Double   :: _Float -> _Double		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+PfloorDouble2Int:: _Double -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+PfloorFloat2Int :: _Float -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+PceilingDouble2Int :: _Double -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+PceilingFloat2Int  :: _Float -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+ProundDouble2Int:: _Double -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+ProundFloat2Int :: _Float -> _Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+PintArray :: (_Int,_Int) -> [_Assoc _Int b] -> _Array _Int b
+PintIndex :: _Array _Int a -> _Int -> a
+
+Ps2_1		:: (a, b)->a			{-# ARITY Ps2_1 = 1 #-} {-# STRICTNESS Ps2_1 = "0,F" ST #-}
+Ps2_2		:: (a, b)->b			{-# ARITY Ps2_2 = 1 #-} {-# STRICTNESS Ps2_2 = "0,F" ST #-}
+Ps3_1		:: (a, b, c)->a			{-# ARITY Ps3_1 = 1 #-} {-# STRICTNESS Ps3_1 = "0,F" ST #-}
+Ps3_2		:: (a, b, c)->b			{-# ARITY Ps3_2 = 1 #-} {-# STRICTNESS Ps3_2 = "0,F" ST #-}
+Ps3_3		:: (a, b, c)->c			{-# ARITY Ps3_3 = 1 #-} {-# STRICTNESS Ps3_3 = "0,F" ST #-}
+Ps4_1		:: (a, b, c, d)->a		{-# ARITY Ps4_1 = 1 #-} {-# STRICTNESS Ps4_1 = "0,F" ST #-}
+Ps4_2		:: (a, b, c, d)->b		{-# ARITY Ps4_2 = 1 #-} {-# STRICTNESS Ps4_2 = "0,F" ST #-}
+Ps4_3		:: (a, b, c, d)->c		{-# ARITY Ps4_3 = 1 #-} {-# STRICTNESS Ps4_3 = "0,F" ST #-}
+Ps4_4		:: (a, b, c, d)->d		{-# ARITY Ps4_4 = 1 #-} {-# STRICTNESS Ps4_4 = "0,F" ST #-}
+Ps5_1		:: (a, b, c, d, e)->a		{-# ARITY Ps5_1 = 1 #-} {-# STRICTNESS Ps5_1 = "0,F" ST #-}
+Ps5_2		:: (a, b, c, d, e)->b		{-# ARITY Ps5_2 = 1 #-} {-# STRICTNESS Ps5_2 = "0,F" ST #-}
+Ps5_3		:: (a, b, c, d, e)->c		{-# ARITY Ps5_3 = 1 #-} {-# STRICTNESS Ps5_3 = "0,F" ST #-}
+Ps5_4		:: (a, b, c, d, e)->d		{-# ARITY Ps5_4 = 1 #-} {-# STRICTNESS Ps5_4 = "0,F" ST #-}
+Ps5_5		:: (a, b, c, d, e)->e		{-# ARITY Ps5_5 = 1 #-} {-# STRICTNESS Ps5_5 = "0,F" ST #-}
+Ps6_1		:: (a, b, c, d, e, f)->a	{-# ARITY Ps6_1 = 1 #-} {-# STRICTNESS Ps6_1 = "0,F" ST #-}
+Ps6_2		:: (a, b, c, d, e, f)->b	{-# ARITY Ps6_2 = 1 #-} {-# STRICTNESS Ps6_2 = "0,F" ST #-}
+Ps6_3		:: (a, b, c, d, e, f)->c	{-# ARITY Ps6_3 = 1 #-} {-# STRICTNESS Ps6_3 = "0,F" ST #-}
+Ps6_4		:: (a, b, c, d, e, f)->d	{-# ARITY Ps6_4 = 1 #-} {-# STRICTNESS Ps6_4 = "0,F" ST #-}
+Ps6_5		:: (a, b, c, d, e, f)->e	{-# ARITY Ps6_5 = 1 #-} {-# STRICTNESS Ps6_5 = "0,F" ST #-}
+Ps6_6		:: (a, b, c, d, e, f)->f	{-# ARITY Ps6_6 = 1 #-} {-# STRICTNESS Ps6_6 = "0,F" ST #-}
+
+{-:"VV_Eq_a":-}	:: a
+{-:"VV_Ord_a":-}	:: a
+
+

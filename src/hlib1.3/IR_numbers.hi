@@ -1,0 +1,5 @@
+interface PreludeX where {
+{-# IMPORTING Numeric #-}
+instance Read Double {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-};
+instance Read Float {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+}

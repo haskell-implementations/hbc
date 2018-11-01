@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Char__readLitChar #-}
+instance Read Char {-# STRICTNESS readsPrec = "T,F" ST #-} {-# STRICTNESS readList = "T,F" ST #-}
+}

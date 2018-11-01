@@ -1,0 +1,8 @@
+interface PreludeX where {
+data Either a b = Left a | Right b;
+instance (Eq a, Eq b) => Eq (Either a b) {-# DERIVED #-};
+instance Prelude.Eval (Either a b) {-# DERIVED #-};
+instance (Ord a, Ord b) => Ord (Either a b) {-# DERIVED #-};
+instance (Read a, Read b) => Read (Either a b) {-# DERIVED #-};
+instance (Show a, Show b) => Show (Either a b) {-# DERIVED #-}
+}

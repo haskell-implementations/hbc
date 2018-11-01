@@ -1,0 +1,3 @@
+interface PreludeX where {
+sequence :: (Monad b) => [b a] -> b ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

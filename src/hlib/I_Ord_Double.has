@@ -1,0 +1,8 @@
+module I_Ord_Double where
+instance Ord Double where
+	x <  y = {-:"MM.Ord.Double.<":-}  x y
+	x <= y = {-:"MM.Ord.Double.<=":-} x y
+	x >  y = {-:"MM.Ord.Double.>":-}  x y
+	x >= y = {-:"MM.Ord.Double.>=":-} x y
+	max x y = if {-:"MM.Ord.Double.>":-} x y then x else y
+	min x y = if {-:"MM.Ord.Double.<":-} x y then x else y

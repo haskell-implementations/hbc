@@ -1,0 +1,1 @@
+import mbconstr: ((#3 (List (List Char)) (List (#3 Int Int Int)) (List Char))->(Int->((List Gcode)->(Gbasicconstr->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "T,F" ST #};

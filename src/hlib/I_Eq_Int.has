@@ -1,0 +1,4 @@
+module I_Eq_Int() where
+instance Eq Int where
+	x == y = {-:"MM.Eq.Int.==":-} x y
+	x /= y = {-:"MM.Eq.Int./=":-} x y

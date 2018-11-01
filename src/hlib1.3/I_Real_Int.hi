@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Ratio #-}
+instance Real Int {-# STRICTNESS toRational = "T,F" ST #-}
+}

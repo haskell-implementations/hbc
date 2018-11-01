@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>The HBI interactive system</title>
+</head>
+
+<body>
+<h1>The HBI interactive system</h1>
+
+<h3>Using hbi</h3>
+The interactive system can load both source
+files and compiled files.  Functions defined with the interactive
+system runs 10 -- 50 times slower than compiled code; compiled code
+called from interactive use runs at full speed.
+<p>
+The system is started by
+<pre>
+  hbi
+</pre>
+and you will then be greeted by (something like)
+<pre>
+Welcome to interactive Haskell B. 1.4 version 0.9999.4 Pentium 1997 Feb 12!
+Loading prelude... 1457 values, 199 types found.
+Type "help;" to get help.
+> 
+</pre>
+<p>
+The interactive version of Haskell B uses dynamic loading of object files,
+since this is rather complicated for some machines it has not been
+implemented for all platforms yet.
+
+<h3>Commands</h3>
+The first prompt is ``<tt>></tt>'' and any subsequent prompts until a command
+is completed will be ``<tt>#</tt>''.
+The following commands are available (note that they all end with semicolon):
+<ul>
+  <li> <var>expression</var><tt>;</tt><br>
+      Evaluate and print the expression (more on printing below).
+
+  <li> <tt>let </tt><var>decl</var><tt>;</tt></br>
+      Make the bindings in <var>decl</var> and make them available in
+      the rest of the session.  No evaluation of the bound objects
+      is performed.  The usual offside rule applies here.
+
+  <li> <var>ident</var><tt> &lt;- </tt><var>expression</var><tt>;</tt><br>
+      The expression must be of type <tt>IO t</tt>.  The I/O action is
+      performed and the identifier gets the resulting value.
+
+  <li> <var>topdecl</var><tt>;</tt><br>
+      Any top level declaration except <var>decl</var>.
+
+  <li> <tt>load "</tt><var>file</var><tt>";</tt><br>
+      Load a file.  The string specifies what should be loaded, it can have
+      three forms:
+      <ul>
+	<li> *.hs<br>
+	load a .hs file.  This must be an ordinary Haskell B module.
+	<li> *.o<br>
+	load .o and .hi files.  These files must be produced
+	by compiling an ordinary Haskell B module with hbc.
+	<li> *<br>
+	loads *.hs if it is newer than *.o, otherwise the *.o file.
+      </ul>
+
+  <li> <tt>import </tt><var>moduleid</var><tt>;</tt><br>
+      Load a .o file using the $HBCINCPATH, used to load library stuff.
+
+  <li> <tt>source "</tt><var>file</var><tt>";</tt><br>
+      Read commands from the given file.
+
+  <li> <tt>whatis </tt><var>ident</var><tt>;</tt><br>
+      Give information about the identifier <var>ident</var>.
+
+  <li> <tt>help;</tt><br>
+      Print some information about hbi.
+
+  <li> <tt>quit;</tt><br>
+      Quit the system.
+</ul>
+
+The defaults for numeric types are <tt>Integer</tt> and <tt>Double</tt>
+instead of <tt>Int</tt> and <tt>Double</tt> in the compiler.
+(This is nicer when hbi is used as a calculator.)
+<p>
+
+It is possible to interrupt the evalution of an expression by hitting
+the interrupt key.
+If the program does not stop after the first at first try, then wait a little and try again.
+The first only interrupts the program at certain well defined places
+and is less dangerous.  The second stops the program anywhere except in
+garbage collection.
+<p>
+
+There is an tcsh/Emacs like command line editing available.
+<p>
+
+The system catches most errors and prints an appropriate message.
+Unfortunately some errors, like stack overflow, may be uncaught and
+the system just dies.
+<p>
+
+<h3>Printing</h3>
+If the value to be printed is of type <tt>IO ()</tt> the I/O action is
+performed and nothing is printed.  If it is of type <tt>IO t</tt> the
+I/O action is performed and the resulting value is printed by first
+applying <tt>show</tt> to it.  All other values are printed by
+applying <tt>show</tt> and printing the resulting string.
+<p>
+
+During garbage collection the string `` GC '' will occur on the output.
+
+<h3>Shared object loading</h3>
+
+On some systems, hbi cannot load object code from .o files, but use
+<i>shared objects</i> (.so files) instead. When loading or importing
+files compiled by the user, hbi will automatically build and use such
+shared objects. On these systems, hbi will also look for shared
+libraries named <tt>lib_i.so</tt> or <tt>lib.so</tt> in $HBCINCPATH
+when importing library modules.
+<p>
+
+On systems which allow both normal and shared object loading, hbi
+defaults to normal loading. Shared object loading can then be achieved
+by starting hbi with ``-s''.
+
+<h3>Compiling with hbc for use by hbi</h3>
+
+If shared object loading is used, compile with the flag ``-fno-zap-redex''.
+
+<p>
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Jan 30 12:38:23 MET 1997
+<!-- hhmts end -->
+</body> </html>

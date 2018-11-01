@@ -1,0 +1,3 @@
+interface PreludeX where {
+(^^) :: (Fractional a, Integral b) => a -> b -> a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE (^^) :: Double -> Int -> Double {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}, Float -> Int -> Float {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+}

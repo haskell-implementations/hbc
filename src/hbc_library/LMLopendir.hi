@@ -1,0 +1,3 @@
+interface LMLopendir where
+import Either(Either)
+opendir :: String -> Either String [String]

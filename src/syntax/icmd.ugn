@@ -1,0 +1,20 @@
+%{
+#include "include.h"
+%}
+type icmd;
+	Iexpr	: < gIexpr	: tree; >;
+	Ibinding: < gIbinding	: list; >;
+	Itload  : < gItloads    : list; >;     /* of name, [ImpId] pairs */
+	Icload  : < gIcloadnames: list;
+		    gIcloadimp	: tree; >;
+	Imload  : < gImloadfile	: id; 
+	            gImloadtree : tree; >;
+	Imsg	: < gImsg	: tree; >;
+	Imsgnp	: < gImsgnp	: tree; >;
+	Inull   : < >;
+	Iwhatis	: < gIwhatid	: id;   >;
+	Ihelp   : < >;
+	Ishow_	: < gIshow_	: id;   >;
+	Imbind	: < gImbpat	: tree;
+		    gImbexp	: tree; >;
+end;

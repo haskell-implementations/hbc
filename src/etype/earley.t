@@ -1,0 +1,1 @@
+import earley: (Bool->(Prefix->((List (Ttype # (List (IdOrConstr # Prod))))->(Ttype->((List Lex)->(Int->((List (#4 Texpr (List (Id # Ttype)) Subst Ttype)) # Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "T,T" ST #};

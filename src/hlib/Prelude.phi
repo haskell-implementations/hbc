@@ -1,0 +1,29 @@
+interface Prelude where
+
+-- Prelude
+infixr 9  .
+infixr 8  ^, ^^
+infixr 1  &&
+infixr 0  ||
+
+-- PreludeRatio
+infix  7  %, :%
+
+-- PreludeComplex
+infix  6  :+
+
+-- PreludeArray
+infixl 9  !
+infix  5  :=
+infixl 4  //
+
+-- Prelude
+-- These functions are implemented in LML
+nullBin	    	    	:: Bin		{-# ARITY nullBin = 0 #-}{-# STRICTNESS nullBin = "F,T" ST #-}
+isNullBin    	    	:: Bin -> Bool	{-# ARITY isNullBin = 1 #-}{-# STRICTNESS isNullBin = "0,0" ST #-}
+ord			:: Char -> Int	{-# ARITY ord = 1 #-}{-# STRICTNESS ord = "0,0" ST #-}
+chr			:: Int -> Char	{-# ARITY chr = 1 #-}{-# STRICTNESS chr = "0,0" ST #-}
+error			:: String -> a	{-# ARITY error = 1 #-}{-# STRICTNESS error = "T,F" ST #-}
+
+------------ Append compiled stuff here
+

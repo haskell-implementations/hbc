@@ -1,0 +1,49 @@
+%{
+#include "include.h"
+%}
+type tree;
+	module	: < gimplist 	: list;
+		    gexplist	: list;
+		    gmodlist	: list; >;
+	ident	: < gident 	: id; >;
+	integer : < ginteger	: int; >;
+	charr	: < gchar	: id;   >;
+	string	: < gstring	: id;	>;
+	floatt  : < gfloat	: double;   >;
+	bignum	: < gbignum	: id; >;
+        ratnum  : < gratnum     : id; >;
+	tuple	: < gtuplelist	: list; >;
+	ap	: < gfun	: tree;
+		    garg	: tree; >;
+	lam	: < glamid	: tree;
+		    glamexpr	: tree; >;
+	cexpr 	: < gsymlist	: list; >;		/* for conctypes */
+	letv	: < gletvdeflist	: list;
+		    gletvexpr	: tree; >;
+	casee	: < gcaseexpr	: tree;
+		    gcasebody	: list; >;
+	par	: < gpare	: tree; >;
+	as	: < gasid	: id;
+		    gase	: tree; >;
+	condp	: < gcondpp	: tree;
+		    gcondpe	: tree; >;
+	lazyp	: < glazyp	: tree; >;
+	restr	: < grestre	: tree;
+		    grestrt	: ttype; >;
+	eannot	: < geannote	: tree;
+		    geannota	: id; >;
+	listf	: < glistt	: int;
+		    glistf	: list; >;
+	listg	: < glgg	: tree;
+		    glgq	: list; >;
+	hmodule	: < ghmodid	: id;			/* module id */
+		    ghexp	: list;			/* expid, exports */
+		    ghimp	: list;			/* impstuff=import, imports */
+		    ghfix	: list;			/* impstuff=ifix, fixties */
+		    ghbind	: list; >;		/* really a bind */
+	wherev  : < gwges	: list;			/* guard, expression list */
+		    gwdefs	: list; >;		/* definitions */
+	doexp   : < gstmt       : list; >;		/* really stmt */
+	record	: < grecid	: tree;
+		    grecfields	: list; >;		/* of pairs */
+end;

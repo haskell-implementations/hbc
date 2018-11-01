@@ -1,0 +1,11 @@
+import addlds: ((List String)->(State->State)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import st_lds: (State->(List String)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import st_map_menv: (((List (String # Renv))->(List (String # Renv)))->(State->State)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,1" ST #};
+import st_menv: (State->(List (String # Renv))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import prsymbol: ((Symbol Id *a)->(List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import st_mk: (Renv->((List (Symbol Id Cexpr))->(Int->((List Ttype)->((List (String # Renv))->((List String)->State)))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "T,T" ST #};
+import st_def: (State->(List Ttype)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import st_u: (State->Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import st_lib: (State->(List (Symbol Id Cexpr))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import st_env: (State->Renv) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import type (Symbol *c *b) = Internal *c *b + DynLib String Handle;

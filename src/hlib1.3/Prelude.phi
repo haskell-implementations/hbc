@@ -1,0 +1,246 @@
+interface Prelude where
+
+infixr 9  .
+infixl 9  !!
+infixr 8  ^, ^^, **
+infixl 7  *, /, `quot`, `div`, `rem`, `mod`
+infixl 6  +  --, -
+infix  5  \\
+infixr 5  ++, :
+infix  4  ==, /=, <, <=, >=, >
+infix  4  `elem`, `notElem`
+infixr 3  &&
+infixr 2  ||
+infixl 1  >>, >>=
+infixr 0  $, `seq`
+
+class  Eq a  where
+    (==), (/=)		:: a -> a -> Bool
+
+class  (Eq a) => Ord a  where
+    (<), (<=), (>=), (>):: a -> a -> Bool
+    max, min		:: a -> a -> a
+    compare		:: a -> a -> Ordering
+
+class  (Eq a, Eval a, Show a) => Num a  where
+    (+), (-), (*)	:: a -> a -> a
+    negate		:: a -> a
+    abs, signum		:: a -> a
+    fromInteger		:: Integer -> a
+    fromInt		:: Int -> a			-- Haskell B.
+    {-:"PfromInteger":-} :: (Integer, Int, Double) -> a
+
+class  (Num a, Ord a) => Real a	where
+    toRational		::  a -> Ratio.Rational
+
+class  (Enum a, Real a) => Integral a  where
+    quot, rem, div, mod	:: a -> a -> a
+    quotRem, divMod	:: a -> a -> (a,a)
+    toInteger		:: a -> Integer
+    toInt		:: a -> Int			-- Haskell B.
+
+class  (Num a) => Fractional a  where
+    (/)			:: a -> a -> a
+    recip		:: a -> a
+    fromRational	:: Ratio.Rational -> a
+    {-:"PfromRational":-} :: (Ratio.Rational, Double) -> a
+
+class  (Fractional a) => Floating a  where
+    pi			:: a
+    exp, log, sqrt	:: a -> a
+    (**), logBase	:: a -> a -> a
+    sin, cos, tan	:: a -> a
+    asin, acos, atan	:: a -> a
+    sinh, cosh, tanh	:: a -> a
+    asinh, acosh, atanh :: a -> a
+
+class  (Fractional a, Real a) => RealFrac a  where
+    properFraction	:: (Integral b) => a -> (b,a)
+    truncate, round	:: (Integral b) => a -> b
+    ceiling, floor	:: (Integral b) => a -> b
+
+class  (Floating a, RealFrac a) => RealFloat a  where
+    floatRadix		:: a -> Integer
+    floatDigits		:: a -> Int
+    floatRange		:: a -> (Int,Int)
+    decodeFloat		:: a -> (Integer,Int)
+    encodeFloat		:: Integer -> Int -> a
+    exponent		:: a -> Int
+    significand		:: a -> a
+    scaleFloat		:: Int -> a -> a
+    isNaN, isInfinite, isDenormalized, isNegativeZero, isIEEE
+			:: a -> Bool
+
+-- Ix(Ix(..))
+class  (Ord a) => Ix.Ix a  where
+    range		:: (a,a) -> [a]
+    index		:: (a,a) -> a -> Int
+    inRange		:: (a,a) -> a -> Bool
+
+class  Enum a  where
+    toEnum		:: Int -> a
+    fromEnum		:: a -> Int
+    enumFrom		:: a -> [a]		-- [n..]
+    enumFromThen	:: a -> a -> [a]	-- [n,n'..]
+    enumFromTo		:: a -> a -> [a]	-- [n..m]
+    enumFromThenTo	:: a -> a -> a -> [a]	-- [n,n'..m]
+
+class  Bounded a where
+    minBound, maxBound	:: a
+
+type ReadS a = String -> [(a, String)]
+type ShowS = String -> String
+
+class  Show a  where
+    showsPrec :: Int -> a -> ShowS
+    showList  :: [a] -> ShowS
+    showsType :: a -> ShowS
+
+class  Read a  where
+    readsPrec :: Int -> ReadS a
+    readList  :: ReadS [a]
+
+class  (Functor :: (* -> *) -> *) f where
+    map :: (a -> b) -> (f a -> f b)
+
+class  (Monad :: (* -> *) -> *) m where
+    (>>=)	:: m a -> (a -> m b) -> m b
+    (>>)	:: m a -> m b -> m b
+    return	:: a -> m a
+
+class  (Monad m) => (MonadZero :: (* -> *) -> *) m where
+    zero	:: m a
+
+class (MonadZero m) => (MonadPlus :: (* -> *) -> *) m where
+    (++) :: m a -> m a -> m a
+
+class  Eval a
+
+-- Types
+
+data  Void
+
+data  () = ()
+
+data  Bool = False | True
+
+data  [] a = [] | a : [a]
+
+data  (->) a b
+
+data  Char {-# FLAT 256 #-}
+data  Int {-# FLAT 10000 #-}
+data  Integer
+data  Float
+data  Double
+-- Tuples are in PreludeTuple (built in to the compiler)
+--data (a,b) = (a,b) 		deriving (Eq, Ord, Ix, Show, Read, Bounded)
+
+data  _File
+
+type  String = [Char]
+
+data  (Integral a) => Ratio.Ratio a
+--instance Eval (Ratio.Ratio a)
+
+type  Ratio.Rational = Ratio.Ratio Integer
+
+data  Maybe a  =  Nothing | Just a
+
+data  Either a b  =  Left a | Right b
+
+data  Ordering = LT | EQ | GT
+
+type  StdIO.FilePath = String
+
+data  _LibDialogue._CPointer
+
+data  _ByteVector._ByteVector
+
+---
+-- These definitions are here only to make them accessible to
+-- the interactive system.
+data _LibDialogue._Response
+data _LibDialogue._Request
+_LibIO__ioToDialogue._ioToDialogue :: _LibIO.IO a -> [_LibDialogue._Response] -> [_LibDialogue._Request]
+_LibIO___unsafePerformIO._unsafePerformIO :: _LibIO.IO a -> a
+
+---------
+
+-- Stuff in the runtime system (or libraries) with unreachable names.
+
+{-:"Pfail":-}		:: String -> a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"Pcno":-}		:: a -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Pord":-}		:: a -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ptag":-}		:: Int -> a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Peqi":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Plti":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Plei":-}		:: Int -> Int -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Prange":-}		:: (a,a) -> [a]			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Pindex":-}		:: (a,a) -> a -> Int		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PinRange":-}	:: (a,a) -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PenumFT":-}		:: a -> a -> [a]		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PenumFTT":-}	:: a -> a -> a -> [a]		{-# ARITY _ = 3 #-} {-# STRICTNESS _ = "0&1&2,F" ST #-}
+{-:"PenumFTTU":-}	:: a -> a -> a -> a -> [a]	{-# ARITY _ = 4 #-} {-# STRICTNESS _ = "0&1&(2|3),F" ST #-}
+{-:"Pnever":-}		:: a				{-# ARITY _ = 0 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"Pshowt":-}		:: a				{-# ARITY _ = 0 #-} {-# STRICTNESS _ = "T,F" ST #-}
+{-:"P_ord":-}		:: Char -> Int			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"P_chr":-}		:: Int -> Char			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"Pseq":-}		:: b -> a -> a			{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "T,F" ST #-}
+
+{-:"Pgeneq":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenne":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgengt":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenge":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenlt":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Pgenle":-}		:: a -> a -> Bool		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+
+{-:"PIntegerAdd":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerSub":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerMul":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerDiv":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerMod":-}	:: Integer -> Integer -> Integer	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerDivMod":-}	:: Integer -> Integer -> (Integer,Integer)	{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"PIntegerNeg":-}	:: Integer -> Integer		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"PInt2Integer":-}	:: Int -> Integer		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"PInteger2Int":-}	:: Integer -> Int		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"Prindex":-}         :: a -> Int -> b		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Prindexu":-}        :: a -> Int -> b		{-# ARITY _ = 2 #-} {-# STRICTNESS _ = "0&1,F" ST #-}
+
+{-:"PDouble2Float":-}   :: Double -> Float		{-# ARITY _  = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PFloat2Double":-}   :: Float -> Double		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PfloorDouble2Int":-}:: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PfloorFloat2Int":-} :: Float -> Int			{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PceilingDouble2Int":-} :: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"PceilingFloat2Int":-}  :: Float -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"ProundDouble2Int":-}:: Double -> Int		{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"ProundFloat2Int":-} :: Float -> Int			{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"PintArray":-} :: (Int,Int) -> [(Int, b)] -> Array Int b
+{-:"PintIndex":-} :: Array Int a -> Int -> a
+
+{-:"Ps2_1":-}		:: (a, b)->a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps2_2":-}		:: (a, b)->b			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_1":-}		:: (a, b, c)->a			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_2":-}		:: (a, b, c)->b			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps3_3":-}		:: (a, b, c)->c			{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_1":-}		:: (a, b, c, d)->a		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_2":-}		:: (a, b, c, d)->b		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_3":-}		:: (a, b, c, d)->c		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps4_4":-}		:: (a, b, c, d)->d		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_1":-}		:: (a, b, c, d, e)->a		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_2":-}		:: (a, b, c, d, e)->b		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_3":-}		:: (a, b, c, d, e)->c		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_4":-}		:: (a, b, c, d, e)->d		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps5_5":-}		:: (a, b, c, d, e)->e		{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_1":-}		:: (a, b, c, d, e, f)->a	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_2":-}		:: (a, b, c, d, e, f)->b	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_3":-}		:: (a, b, c, d, e, f)->c	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_4":-}		:: (a, b, c, d, e, f)->d	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_5":-}		:: (a, b, c, d, e, f)->e	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ps6_6":-}		:: (a, b, c, d, e, f)->f	{-# ARITY _ = 1 #-} {-# STRICTNESS _ = "0,F" ST #-}
+
+{-:"VV_Eq_a":-}		:: a
+{-:"VV_Ord_a":-}	:: a

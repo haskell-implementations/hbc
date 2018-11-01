@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Floating Double {-# STRICTNESS pi = "T,T" ST #-} {-# STRICTNESS exp = "0,F" ST #-} {-# STRICTNESS log = "0,F" ST #-} {-# STRICTNESS sqrt = "0,F" ST #-} {-# STRICTNESS (**) = "T,F" ST #-} {-# STRICTNESS logBase = "T,F" ST #-} {-# STRICTNESS sin = "0,F" ST #-} {-# STRICTNESS cos = "0,F" ST #-} {-# STRICTNESS tan = "0,F" ST #-} {-# STRICTNESS asin = "0,F" ST #-} {-# STRICTNESS acos = "0,F" ST #-} {-# STRICTNESS atan = "0,F" ST #-} {-# STRICTNESS sinh = "0,F" ST #-} {-# STRICTNESS cosh = "0,F" ST #-} {-# STRICTNESS tanh = "0,F" ST #-} {-# STRICTNESS asinh = "0,F" ST #-} {-# STRICTNESS acosh = "0,F" ST #-} {-# STRICTNESS atanh = "0,F" ST #-}
+}

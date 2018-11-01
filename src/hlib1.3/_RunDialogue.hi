@@ -1,0 +1,2 @@
+interface LMLP_RunDialogue where
+__runDialogue :: _LibDialogue._Dialogue -> a

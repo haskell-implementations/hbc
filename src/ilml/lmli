@@ -1,0 +1,19 @@
+#! /bin/sh
+trap : 2
+d=${LMLDIR-/usr/local/lib/lmlc}
+is=""
+ns=""
+fs=""
+for arg in $*
+do
+	case $arg in
+	-i* ) is="$is $arg" ;;
+	-[Hh]* ) fs="$fs $arg" ;;
+	-X* ) fs="$fs $arg" ;;
+	-gc-* ) fs="$fs $arg" ;;
+	-S ) fs="$fs $arg" ;;
+	-s ) ns="-fload-share-lib $ns" ;;
+	*   ) ns="$ns $arg" ;;
+	esac
+done
+$d/bin/lmlp -I $is | $d/bin/lmlcomp $fs -BB - -finteractive $ns

@@ -1,0 +1,4 @@
+interface Numeric__showFloat where {
+{-# IMPORTING Numeric__formatRealFloat #-}
+showFloat :: (Prelude.RealFloat a) => a -> Prelude.ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

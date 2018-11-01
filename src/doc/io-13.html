@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Input/Output</title>
+</head>
+
+<body>
+<h1>Input/Output</h1>
+
+<h3>Binary I/O</h3>
+Some systems (notably Windows 95 and Windows NT) differ in their
+treatment of binary files and text files.  To make the use of binary
+files easier hbc extend the IOMode type with modes for binaryfile.
+The new IOMode type looks like this:
+<pre>
+    data IOMode = ReadMode
+                | WriteMode
+                | AppendMode 
+                | ReadWriteMode
+                | ReadBinaryMode       -- hbc extension
+                | WriteBinaryMode      -- hbc extension
+                | AppendBinaryMode     -- hbc extension
+                | ReadWriteBinaryMode  -- hbc extension
+</pre>
+
+
+Hbc allows calling C directly from Haskell using the IO monad.
+
+<h3>Easy ccall</h3>
+To enable calling of C functions you need to compile with the
+<tt>-fccall</tt> flag and import the <tt>CCall</tt> module.
+This enables the language construct <tt>ccall</tt>.<p>
+Calling C has the following form:
+<pre>
+  ccall cfunction e<sub>1</sub> ... e<sub>n</sub>
+</pre>
+The type of a such an expressions is <tt>(CValue a)=>a</tt> and
+each of the <tt>e<sub>i</sub></tt> must also have this type.
+There is no type checking of the C call so it is the responsiblity of
+the user to ensure that all arguments and return values are used
+properly.
+<p>
+The types <tt>Int, Double, Float, Bool, Char,</tt> and <tt>String</tt>
+are all instances of the <tt>CValue</tt> class.
+<p>
+Example:
+<pre>
+  gammaIO :: Double -> IO Double
+  gammaIO x = ccall lgamma x >>= return . exp
+</pre>
+
+<h3>Gory details</h3>
+You can define new instances of the <tt>CValue</tt> class.  The class
+declaration looks like this.
+<pre>
+class CValue a where
+    toCU :: a -> CUnion
+    fromCU :: CUnion -> a
+</pre>
+The <tt>CUnion</tt> is used to encode the values used during the C
+call.
+<pre>
+  data CUnion = _CUInt Int
+              | _CUDouble Double 
+              | _CUString String 
+              | _CUPointer CPointer
+              | _CUByteVector _ByteVector._ByteVector
+</pre>
+The <tt>CPointer</tt> is used for pointer valued argument/results in C
+calls.  There are some operations available on them:
+<pre>
+  nullCPointer :: CPointer
+  addCPointer :: CPointer -> Int -> CPointer
+</pre>
+There are also two language construct that yield <tt>CPointer</tt>
+values:
+<pre>
+  cFunction <i>cfunctionname</i>
+  cVariable <i>cvariablename</i>
+</pre>
+They both correspond to the addressof, `&', operator in C, but since
+there is no further information about the type of the object you need
+to have two depending on if it is a function or a variable you need
+the address of.
+<p>
+The `ccall' construct does in fact unsuger to an invocation of the
+ccallCU function.
+<pre>
+  ccallCU :: CPointer -> [CUnion] -> CUnion -> IO CUnion
+</pre>
+The first argument is the function to call, the list is the arguments
+to the call, the <tt>CUnion</tt> is just used to indicate the return
+type of the function call.
+
+<p>
+<b>Note</b> To be able to use `_' as the leading character in
+identifiers you need to compile with the <tt>-no-pedantic</tt> flag.
+<p>
+There are a number of C functions available to call for manipulating C
+pointers (very unsafe, of course).
+<pre>
+  Int derefChar (p) char  *p; { return *p; }
+  Int derefShort(p) short *p; { return *p; }
+  Int derefInt  (p) int   *p; { return *p; }
+  Int derefLong (p) long  *p; { return *p; }
+  Int derefUChar (p) unsigned char  *p; { return *p; }
+  Int derefUShort(p) unsigned short *p; { return *p; }
+  Int derefUInt  (p) unsigned int   *p; { return *p; }
+  Int derefULong (p) unsigned long  *p; { return *p; }
+  double derefFloat (p) float *p; { return *p; }
+  double derefDouble (p) double *p; { return *p; }
+  void setChar (p, x) char  *p; Int x; { *p = x; }
+  void setShort(p, x) short *p; Int x; { *p = x; }
+  void setInt  (p, x) int   *p; Int x; { *p = x; }
+  void setLong (p, x) long  *p; Int x; { *p = x; }
+  void setFloat (p, x) float  *p; double x; { *p = x; }
+  void setDouble (p, x) double  *p; double x; { *p = x; }
+  Int identity(x) Int x; { return x; }
+</pre>
+
+<hr>
+To execute an IO action someplace else than at the top level there is
+a function
+<pre>
+  unsafePerformIO :: IO a -> a
+</pre>
+To get access to it you must import the module
+<tt>UnsafePerformIO</tt>.
+<p>
+<b>Using this function can break referential transparency and it is
+generally unsafe.  Use with care, or preferably, not at all.</b>
+
+<hr>
+
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Feb  6 09:45:18 MET 1997
+<!-- hhmts end -->
+</body> </html>

@@ -1,0 +1,3 @@
+interface PreludeX where {
+gcd :: (Integral a) => a -> a -> a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE gcd :: Integer -> Integer -> Integer {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}, Int -> Int -> Int {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+}

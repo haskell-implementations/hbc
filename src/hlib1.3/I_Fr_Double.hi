@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Ratio, Numeric__fromRat #-}
+instance Fractional Double {-# STRICTNESS (/) = "0&1,F" ST #-} {-# STRICTNESS recip = "T,F" ST #-} {-# STRICTNESS fromRational = "T,F" ST #-} {-# STRICTNESS {-:"PfromRational":-} = "0,F" ST #-}
+}

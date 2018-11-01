@@ -1,0 +1,29 @@
+interface PreludeX where {
+{-# IMPORTING IO #-}
+data _LibIO.IO a;
+type StdIO.FilePath = String;
+WriteTextIO.putChar :: Prelude.Char -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+WriteTextIO.putStr :: [Prelude.Char] -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+WriteTextIO.putStrLn :: String -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+WriteTextIO.print :: (Prelude.Show a) => a -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+ReadTextIO.getChar :: _LibIO.IO Prelude.Char   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getLine :: _LibIO.IO String   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getContents :: _LibIO.IO String   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+IO.interact :: ([Prelude.Char] -> [Prelude.Char]) -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+ReadTextIO.readFile :: [Prelude.Char] -> _LibIO.IO [Prelude.Char]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+WriteTextIO.writeFile :: [Prelude.Char] -> [Prelude.Char] -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+WriteTextIO.appendFile :: [Prelude.Char] -> [Prelude.Char] -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readIO :: (Read a) => String -> _LibIO.IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readLn :: (Read a) => _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+_LibIO__fail.fail :: _LibIO.IOError -> _LibIO.IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+MonadicIO.userError :: String -> _LibIO.IOError   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,T" ST #-};
+MonadicIO.catch :: (_LibIO.IO a) -> (_LibIO.IOError -> _LibIO.IO a) -> _LibIO.IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-};
+data _LibIO.IOError;
+instance Prelude.Eq _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Eval (_LibIO.IO a) {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOError {-# DERIVED #-};
+instance Prelude.Functor _LibIO.IO {-# STRICTNESS Prelude.map = "T,F" ST #-};
+instance Monad _LibIO.IO {-# STRICTNESS (>>=) = "0,0" ST #-} {-# STRICTNESS (>>) = "0&1,0&1" ST #-} {-# STRICTNESS return = "T,T" ST #-};
+instance (Prelude.Show a) => Prelude.Show (_LibIO.IO a) {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show _LibIO.IOError {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-}
+}

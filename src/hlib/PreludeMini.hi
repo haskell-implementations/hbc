@@ -1,0 +1,7 @@
+interface PreludeMini where
+
+data Char {-# FLAT 256 #-}
+data {-:"PList"C:-} a = {-:"_[]":-} | a : [a]
+data {-:"P->"C:-} a b
+
+{-:"Pfail":-} :: a -> b {-# ARITY {-:"Pfail":-} = 1 #-}

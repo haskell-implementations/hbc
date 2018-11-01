@@ -1,0 +1,15 @@
+interface Locale where {
+data TimeLocale = TimeLocale { wdays :: [(Prelude.String, Prelude.String)], months :: [(Prelude.String, Prelude.String)], amPm :: (Prelude.String, Prelude.String), dateTimeFmt :: Prelude.String, dateFmt :: Prelude.String, timeFmt :: Prelude.String, time12Fmt :: Prelude.String };
+wdays :: TimeLocale -> [(Prelude.String, Prelude.String)]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+months :: TimeLocale -> [(Prelude.String, Prelude.String)]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+amPm :: TimeLocale -> (Prelude.String, Prelude.String)   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+dateTimeFmt :: TimeLocale -> Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+dateFmt :: TimeLocale -> Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+timeFmt :: TimeLocale -> Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+time12Fmt :: TimeLocale -> Prelude.String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-};
+defaultTimeLocale :: TimeLocale   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+instance Prelude.Eq TimeLocale {-# DERIVED #-};
+instance Prelude.Eval TimeLocale {-# DERIVED #-};
+instance Prelude.Ord TimeLocale {-# DERIVED #-};
+instance Prelude.Show TimeLocale {-# DERIVED #-}
+}

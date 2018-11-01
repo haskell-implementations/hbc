@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Bounded Char {-# STRICTNESS minBound = "T,T" ST #-} {-# STRICTNESS maxBound = "T,T" ST #-}
+}

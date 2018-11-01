@@ -1,0 +1,9 @@
+%{
+#include "include.h"
+%}
+type qual;
+	qgen	: < gqgenpat	: tree;
+		    gqgenexp	: tree; >;
+	qfilter	: < gqfilter	: tree; >;
+	qlet    : < gqbinding   : binding; >;
+end;

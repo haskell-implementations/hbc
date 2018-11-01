@@ -1,0 +1,6 @@
+interface CPUTime where {
+{-# IMPORTING _LibDialogue, _LibIO__process, IO #-}
+getCPUTime :: _LibIO.IO Prelude.Integer   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+cpuTimePrecision :: Prelude.Integer   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+getCPUTimeDouble :: _LibIO.IO Prelude.Double   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

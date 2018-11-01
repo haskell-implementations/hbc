@@ -1,0 +1,3 @@
+interface PreludeX where {
+succ :: (Enum a) => a -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

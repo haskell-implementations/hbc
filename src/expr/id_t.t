@@ -1,0 +1,9 @@
+import type Modinfo = MI String;
+import type Otype = Onotype + Ohastype Ttype (List Int) (Option (List (#3 Id Ttype Finfo)));
+import type Visibility = Vimported + Vexported + Vprivate;
+import type Fixity = Infix Int + InfixL Int + InfixR Int + Nofixity + FPrefix Int + FPostfix Int + Nonfix;
+import type Origname = Noorigname + Orignames Visibility Fixity (Modinfo # String);
+import type Classinfo = clsi Kind CDecl (List (#3 Id Id Ttype)) (List (Id # (List Int))) (List (Id # IDecl)) Int;
+import type Varinfo = var_unknown + var_local Int + var_global Finfo + var_pre Finfo + var_dict Classinfo;
+import type Idinfo = idi_udef + idi_var Varinfo Otype (Option Id) + idi_constr Ttype (#3 Bool (List Int) (List Assert)) (List (#3 Ttype Bool (Option Id))) Int (List Atype) Bool (Option Id) + idi_type Kind Ttype Int Tinfo (List (Id # IDecl)) (Option (List Id)) + idi_view Ttype Id Idinfo + idi_conctype Ttype (List Prod) + idi_syn Kind Ttype Int Ttype + idi_class Classinfo + idi_method (List Int) Int Classinfo + idi_inst IDecl (List Id) Bool + idi_module (List Expid);
+import type Id = mkids String + mkidi String (Option (Modinfo # String)) String (List String) + mkid Int String Idinfo Origname;

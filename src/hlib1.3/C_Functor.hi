@@ -1,0 +1,5 @@
+interface PreludeX where {
+class (Functor :: (* -> *) -> *) a where {
+    map :: (b -> c) -> (a b) -> a c
+    }
+}

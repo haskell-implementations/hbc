@@ -1,0 +1,8 @@
+interface PreludeX where {
+class (Num a) => Fractional a where {
+    (/) :: a -> a -> a;
+    recip :: a -> a;
+    fromRational :: Ratio.Rational -> a;
+    {-:"PfromRational":-} :: (Ratio.Rational, Double) -> a
+    }
+}

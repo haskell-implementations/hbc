@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Show () {-# STRICTNESS showsPrec = "1,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

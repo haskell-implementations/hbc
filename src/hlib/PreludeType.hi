@@ -1,0 +1,14 @@
+interface PreludeType where
+-- Built in types with special syntax.
+data {-:"PList"C:-} a = {-:"_[]":-} | a : [a] 	deriving (Eq, Ord, Binary)
+data {-:"_()"C:-} = {-:"_()":-} 		deriving (Eq, Ord, Enum, Ix, Binary)
+data {-:"P->"C:-} a b
+
+-- Other built in types.
+data Char {-# FLAT 256 #-}
+data Int {-# FLAT 10000 #-}
+data Integer
+data Float
+data Double
+data Bin
+data File

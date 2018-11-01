@@ -1,0 +1,9 @@
+interface PreludeX where {
+class (Fractional a, Real a) => RealFrac a where {
+    properFraction :: (Integral b) => a -> (b, a);
+    truncate :: (Integral c) => a -> c;
+    round :: (Integral d) => a -> d;
+    ceiling :: (Integral e) => a -> e;
+    floor :: (Integral f) => a -> f
+    }
+}

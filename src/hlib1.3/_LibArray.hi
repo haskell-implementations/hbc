@@ -1,0 +1,4 @@
+interface _LibArray where {
+data (Ix.Ix a) => Array a b = MkArray !(a, a) !(LML_array.LArray b);
+instance (Ix.Ix a) => Prelude.Eval (Array a b) {-# DERIVED #-}
+}

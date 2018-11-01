@@ -1,0 +1,3 @@
+interface PreludeX where {
+maximum :: (Ord a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}
+}

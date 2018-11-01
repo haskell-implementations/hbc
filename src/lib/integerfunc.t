@@ -1,0 +1,10 @@
+import _IntegerOr: (_Integer->(_Integer->_Integer)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import _IntegerAnd: (_Integer->(_Integer->_Integer)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import _IntegerSqrt: (_Integer->(_Integer # _Integer)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import _IntegerGcd: (_Integer->(_Integer->_Integer)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import _IntegerPowMod: (_Integer->(_Integer->(_Integer->_Integer))) {# ARITY _ = 3 #}{# STRICTNESS _ = "0&1&2,F" ST #};
+import _Integer2String: (_Int->(_Integer->_String)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import _IntegerDivMod: (_Integer->(_Integer->(_Integer # _Integer))) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import _Integer2IntList: (_Integer->(_List _Int)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import _Integer2Int: (_Integer->_Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import _Int2Integer: (_Int->_Integer) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};

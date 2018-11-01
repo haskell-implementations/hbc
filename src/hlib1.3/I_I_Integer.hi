@@ -1,0 +1,4 @@
+interface PreludeX where {
+{-# IMPORTING Ix #-}
+instance Integral Integer {-# STRICTNESS quot = "0&1,F" ST #-} {-# STRICTNESS rem = "0&1,F" ST #-} {-# STRICTNESS div = "T,F" ST #-} {-# STRICTNESS mod = "T,F" ST #-} {-# STRICTNESS quotRem = "0&1,F" ST #-} {-# STRICTNESS divMod = "T,F" ST #-} {-# STRICTNESS toInteger = "0,0" ST #-} {-# STRICTNESS toInt = "0,F" ST #-}
+}

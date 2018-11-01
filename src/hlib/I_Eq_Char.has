@@ -1,0 +1,5 @@
+module I_Eq_Char where
+instance Eq Char where
+	x == y = {-:"MM.Eq.Char.==":-} x y
+	x /= y = {-:"MM.Eq.Char./=":-} x y
+

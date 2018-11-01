@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Installing HBC</title>
+</head>
+
+<body>
+<h1>Installing HBC</h1>
+
+<ol>
+<li>
+The first step is, of course, to get a copy of the hbc compiler.
+The main ftp site is <a href=
+"ftp://ftp.cs.chalmers.se/pub/haskell/chalmers">
+ftp://ftp.cs.chalmers.se/pub/haskell/chalmers</a>.
+<p>
+The naming structure of the files are like this:<br>
+hbc-<i>version</i>.bin-<i>arch</i>-<i>os</i>.tar.gz<br>
+where
+<ul>
+  <li> <i>version</i> is the version of the compiler, e.g. 0.9999.1.
+  <li> <i>arch</i> is the machine architecture, e.g. i386.
+  <li> <i>os</i> is the operating system, e.g. netbsd.
+</ul>
+If there is no combination that suits your needs you are out of luck,
+but you can always try sending mail to <a href=
+"mailto:hbc@cs.chalmers.se">hbc@cs.chalmers.se</a> and ask for the
+status.
+<p>
+There are code generators for the following architectures available:
+NS32k, M68K, I386, Alpha, ARM, Cray-1, HPPA, MIPS, PowerPC, RT/PC,
+SPARC, and Vax.
+<p>
+<li>
+    Next, unpack the file you have fetched.  Create a directory and
+    do
+    <pre>
+    gunzip < the-file-you-fetched.tgz | tar xf -
+    </pre>
+    <p>
+<li>
+    Then install the compiler.
+    <pre>
+    cd whereever-you-unpacked-it
+    make BIN=platform install
+    </pre>
+    where <i>platform</i> corresponds to the <var>arch-os</var> part
+    of the tar file you unpacked.  This will
+    install the executables in <b>/usr/local/bin</b>, the various other files
+    in <b>/usr/local/lib/lmlc</b> and the man pages in <b>/usr/local/man/man1</b>.
+    <p>
+    If you decide not to install the compiler in /usr/local/lib/lmlc you
+    must set the environment variable HBCDIR to whatever directory you
+    used instead to be able to compile.
+    <p>
+
+<li>
+    Send mail to <a href=
+    "mailto:hbc@cs.chalmers.se">hbc@cs.chalmers.se</a> and say that you have
+    installed a copy.
+    <p>
+<li>
+    Compile Haskell and enjoy(?).
+</ol>
+
+<h2>Running Haskell</h2>
+Here's some advice for those of you that don't have the patience to
+read the manual.
+<p>
+To run the interactive system just type hbi (NOTE: hbi doesn't work
+on all platforms). E.g.
+<pre>
+  dogbert% hbi
+  Welcome to interactive Haskell B. 1.4 version 0.9999.4 Pentium 1997 Feb 12!
+  Loading prelude... 1559 values, 194 types found.
+  Type "help;" to get help.
+  > 1+2;
+  3   
+
+  > let inc x = x+1;;
+  inc :: (Prelude.Num a) => a -> a
+  > inc 6;
+  7
+
+  > asin (2 :+ 0);
+  1.5707963267948966 :+ (-1.3169578969248166)
+
+  > let fac 0 = 1
+  #     fac n = n * fac(n-1)                        
+  # ;
+  fac :: (Prelude.Num a) => a -> a
+  > fac 100;
+  93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+
+  > whatis (+);
+  method (+) :: (Prelude.Num b) => b -> b -> b
+  > import Sort;
+  Loading "/usr/local/lib/lmlc/hbc_library1.3/Sort.o"
+  > whatis Sort;
+  module Sort
+    sortLe :: (b -> b -> Bool) -> [b] -> [b]
+  > nub (sortLe (<=) "the quick brown fox jumps over the lazy dog");
+  " abcdefghijklmnopqrstuvwxyz"
+
+  > quit;
+  Bye
+  dogbert%
+</pre>
+<p>
+The compiler is called hbc.  It has the about the same flags as
+ordinary UNIX compiler.  If the file Main.hs contains
+<pre>
+  main = putStr "ahoy, przygodo\n"
+</pre>
+then it can be compiled and run by
+<pre>
+  dogbert% hbc Main.hs
+  dogbert% a.out | pol2eng
+  hello, world
+  dogbert%
+</pre>
+To avoid having to keep track of dependencies and also
+writing Makefiles you should use hbcmake which figures
+out what has to be done automatically.
+<pre>
+  dogbert% hbcmake Main
+  hbc -c Main.hs
+  hbc -o Main Main.o
+  dogbert% Main
+  ahoy, przygodo
+  dogbert%
+</pre>
+
+<p>
+<h2>Recompiling the compiler</h2>
+This is not necessary to just compile and run programs, but you may
+want to do it to prepare for future upgrades in the form of patches.
+<p>
+The first time you do this you have to do the following steps:
+<ol>
+  <li> Install the binaries as above, get and unpack the sources.
+  <li> <tt>cd src</tt><br>
+  <li> <tt>./configure</tt><br>
+      Answer the questions.<br>
+      You must answer what kind of system you have
+      and what you want to build.
+  <li> <tt>make universe</tt><br>
+      This will take quite a while.  Any warnings from the C
+      compiler may be ignored.
+  <li> If you want to make really sure that the new compiler is
+      capable of recompiling itself, then run the script fixtst.
+      This will recompile twice with successive new versions
+      and compare them.  THIS TAKES A LOT OF TIME!
+  <li> <tt>make install</tt><br>
+      This will build and install the compiler and the libraries.
+      THIS TAKES A LOT OF TIME!
+</ol>
+
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Jan 30 12:41:22 MET 1997
+<!-- hhmts end -->
+</body> </html>

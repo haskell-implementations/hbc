@@ -1,0 +1,4 @@
+interface PreludeX where {
+_mapFst :: (a -> b) -> [(a, c)] -> [(b, c)]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+_readRec :: [(String, String -> [(a -> a, String)])] -> a -> String -> ReadS a   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "3,F" ST #-}
+}

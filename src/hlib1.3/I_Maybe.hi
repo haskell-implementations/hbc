@@ -1,0 +1,8 @@
+interface PreludeX where {
+data Maybe a = Nothing | Just a;
+instance (Eq a) => Eq (Maybe a) {-# DERIVED #-};
+instance Prelude.Eval (Maybe a) {-# DERIVED #-};
+instance (Ord a) => Ord (Maybe a) {-# DERIVED #-};
+instance (Read a) => Read (Maybe a) {-# DERIVED #-};
+instance (Show a) => Show (Maybe a) {-# DERIVED #-}
+}

@@ -1,0 +1,16 @@
+import countocc: (Id->(Texpr->Int)) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import cmpconst: (Texpr->(Texpr->(Texpr->(Texpr->Texpr)))) {# ARITY _ = 4 #}{# STRICTNESS _ = "T,F" ST #};
+import isconstp: (Texpr->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import fixp: ((Texpr # Texpr)->((List Texpr) # Texpr)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import splitup: ((List ((List Texpr) # *a))->(List (List ((List Texpr) # *a)))) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import typeerror: ((List Texpr)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import subfstp: (Texpr->((List ((List Texpr) # Texpr))->(List ((List Texpr) # Texpr)))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import rmstring: (Texpr->Texpr) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import rmas: (Texpr->Texpr) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import overlap: ((List Texpr)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import dropcond: (Texpr->Texpr) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import substas: (Texpr->(((List Texpr) # Texpr)->((List Texpr) # Texpr))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import ispC: (((List Texpr) # *a)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import ispI: (((List Texpr) # *a)->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import gtCs: (((List Texpr) # *a)->(((List Texpr) # *b)->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0,F" ST #};
+import mfail: (*a->(Texpr # *a)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,T" ST #};

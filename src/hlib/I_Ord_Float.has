@@ -1,0 +1,8 @@
+module I_Ord_Float where
+instance Ord Float where
+	x <  y = {-:"MM.Ord.Float.<":-}  x y
+	x <= y = {-:"MM.Ord.Float.<=":-} x y
+	x >  y = {-:"MM.Ord.Float.>":-}  x y
+	x >= y = {-:"MM.Ord.Float.>=":-} x y
+	max x y = if {-:"MM.Ord.Float.>":-} x y then x else y
+	min x y = if {-:"MM.Ord.Float.<":-} x y then x else y

@@ -1,0 +1,4 @@
+module PreludeX where
+instance  Eq Double where
+    	x == y 	= {-:"MM`Prelude.Eq`Prelude.Double`==":-} x y
+    	x /= y 	= {-:"MM`Prelude.Eq`Prelude.Double`/=":-} x y

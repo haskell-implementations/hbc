@@ -1,0 +1,4 @@
+interface Numeric__fromRat where {
+{-# IMPORTING Array, Ratio #-}
+fromRat :: (Prelude.RealFloat a) => Ratio.Rational -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

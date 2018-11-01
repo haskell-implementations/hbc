@@ -1,0 +1,8 @@
+%{
+#include "include.h"
+%}
+type list;
+	lcons	: < lhd	: list;		/* not a list, but we need a pointer here */
+		    ltl : list; >;
+	lnil	: <>;
+end;

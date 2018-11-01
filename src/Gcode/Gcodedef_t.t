@@ -1,0 +1,10 @@
+import type HPinfo == (String # String);
+import type Gstubs == (List Int);
+import type Gcodes == (List Gcodef);
+import type Gcodef == (#3 (Id # Int) (List Gcode) (Option (List Gcode)));
+import type Gvalue = GvInt Int + GvDFloat Double + GvSFloat Double + GvChar Char;
+import type Gcode = PUSH Int + PUSHGLOBAL Id + EVAL Gstubs + LABEL Glabel + JMP Glabel + JFALSE Glabel + JFUN Int + CALLFUN Int Gstubs + UNWIND + ALLOC Int + BCONSTR Gbasicconstr + MKAP String + MKCAP String + MKAPLV Id Int + UPDATE Gbasicconstr Int + UPDATEINDIR Int + MOVE Int + RECBLOCK (List (List Gcode)) + CONSTBLOCK (List Gcode) + UPDTRACE (List Int) + CONSTR HPinfo ConstructorType Int Int + CASE Int (List (#3 Int Int Glabel)) Glabel + SPLIT (List Bool) Int Int + BASICOP Gbasicconstr Gbasicconstr Gbasicop + BIGOP Gbasicconstr Gbasicop + PUSHBASIC Gvalue + PUSHV Int + POP Int + POPV Int + GET Gbasicconstr + GETTAG + GETMETHOD Int + REST Gcodef + FUNEND + SFUNSTART Id Int + RET + JGLOBAL Int Id + CALLGLOBAL Int Id Gstubs + BUPDRET Gbasicconstr Int + CUPDRET ConstructorType Int Int Int + UPDRET Int + JMETHOD Int Int + CALLMETHOD Int Int Gstubs + TEVAL + SCALLFUN Int + SCALLGLOBAL Int Id + JTRUE Glabel + CNIL HPinfo Int + CPAIR HPinfo Int + CTAG HPinfo Int + CVEK HPinfo Int + CBASIC Gvalue + CSTRING (List Char) + SPLITPAIR Bool Bool + SPLITTAG + SPLITVEK (List Bool) Int + AMODE Galloc + ANNOT String + PUSHCFUNCTION Bool String;
+import type Galloc = Aheap + Astack;
+import type Glabel = Label Int + Notalabel + Continue;
+import type Gbasicconstr = Gbint + Gbchar + Gbtag + Gbdfloat + Gbinteger + Gbsfloat + Gbstring + Gbother;
+import type Gbasicop = ADD + SUB + MUL + DIV + MOD + NEG + EQ + NE + LT + GT + LE + GE + CHR + ORD + TAG + AND + OR + XOR + COMPL + LSH + RSH + RSHA + FTOI + ITOF + DFTOSF + SFTODF + INDEX + SQR;

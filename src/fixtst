@@ -1,0 +1,4 @@
+#! /bin/csh -f
+setenv LMLDIR `pwd`
+set path = ($LMLDIR/lmlc $path)
+nice make fixtest >& ferrl &

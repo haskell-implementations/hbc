@@ -1,0 +1,10 @@
+interface PreludeX where {
+data Ordering = LT | EQ | GT;
+instance Ix.Ix Ordering {-# DERIVED #-};
+instance Enum Ordering {-# DERIVED #-};
+instance Eq Ordering {-# DERIVED #-};
+instance Prelude.Eval Ordering {-# DERIVED #-};
+instance Ord Ordering {-# DERIVED #-};
+instance Read Ordering {-# DERIVED #-};
+instance Show Ordering {-# DERIVED #-}
+}

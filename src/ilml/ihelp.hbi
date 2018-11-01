@@ -1,0 +1,42 @@
+		HBI  -- Interactive Haskell B
+Commands:
+    <expr> ;
+	Evaluate and print the expression (more on printing below).
+    let { <decl> } ;
+	Make the bindings in declarator and make them available in
+	the rest of the session.  No evaluation of the bound objects
+	is performed.  The usual offside rule applies here.
+    pat <- exp;
+	Perform the action of type `IO a' specified by exp and
+	bind the result to pat.
+    <topdecl> ;
+	Any top level declaration except <decl>.
+    { <topdecl>; ... } ;
+	As previous, but more than one mutually recursive declarations.
+    load <string> ;
+	Load a file.  The string specifies what should be loaded, it
+	can have three forms:
+	*.hs	load a .hs file.  This must be an ordinary Haskell B module.
+	*.o	load .o and .hi files.  These files must be produced
+		by compiling an ordinary Haskell B module with hbc.
+	*	loads *.hs if it is newer than *.o, otherwise the *.o file.
+    import <id> ;
+	Load a .o file using the HBCINCPATH, used to load library stuff.
+    source <string> ;
+	Read commands from the given file.
+    whatis <ident> ;
+	Give information about the identifier.
+    help ;
+	Print some information about hbi.
+    infix<X> <digit> <opr> ;
+	Make a fixity declaration.
+    quit ;
+	Quit the system.
+
+It is possible to interrupt the evalution of an expression by hitting
+the interrupt key.
+
+Values of type `IO a' are executed, whereafter the result is printed,
+unless it is of type (). Values of other types are executed by
+applying `print' to them.
+

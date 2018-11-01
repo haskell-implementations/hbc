@@ -1,0 +1,5 @@
+interface PreludeX where {
+class (Monad a) => (MonadZero :: (* -> *) -> *) a where {
+    zero :: a b
+    }
+}

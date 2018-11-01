@@ -1,0 +1,46 @@
+* bygga lib_ph.so
+* dlclose 
+* strängkonstanter
+* multiple inclusion vid -fshared
+* flagga för att stänga av import av Lib*
+* import i hbi blir fel om modulnamn /= filnamn
+* lml och delade bibliotek: C_main odefinierad
+-----
+
+* whatis
+
+* better error messages
+
+* overloading ok in let
+
+* let only for bindings
+
+* infix
+
+* help texts
+
+* deriving, instance
+
+* LOADM
+
+* approxRational 87687687686876876876876.1322 0.1
+
+* print instances.
+
+* > fromInteger 6 :: Complex;
+* Fail:Typerec:Error [23] Bad type arity Complex
+
+* show_
+
+* import ListUtil;
+
+* Fel på -fboth ?
+
+load fil fil ...;
+
+* Module_name_is_lost
+
+* OK, Option laddade.
+
+Laddning av .hs kollar inte att slutningsrestriktionerna är ok.
+

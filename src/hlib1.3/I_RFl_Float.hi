@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance RealFloat Float {-# STRICTNESS floatRadix = "T,T" ST #-} {-# STRICTNESS floatDigits = "T,T" ST #-} {-# STRICTNESS floatRange = "T,T" ST #-} {-# STRICTNESS decodeFloat = "0,F" ST #-} {-# STRICTNESS encodeFloat = "0&1,F" ST #-} {-# STRICTNESS exponent = "T,F" ST #-} {-# STRICTNESS significand = "T,F" ST #-} {-# STRICTNESS scaleFloat = "T,F" ST #-} {-# STRICTNESS isNaN = "0,F" ST #-} {-# STRICTNESS isInfinite = "0,F" ST #-} {-# STRICTNESS isDenormalized = "0,F" ST #-} {-# STRICTNESS isNegativeZero = "0,F" ST #-} {-# STRICTNESS isIEEE = "T,T" ST #-}
+}

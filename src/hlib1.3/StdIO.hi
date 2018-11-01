@@ -1,0 +1,55 @@
+interface StdIO where {
+{-# IMPORTING _LibDialogue, StdIO__hClose, StdIO__openFile, _LibIO_all, StdIO__std, MonadicIO, StdIO__hIsEOF, StdIO__data #-}
+data _LibIO.Handle;
+type FilePath = Prelude.String;
+data _LibIO.IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode;
+data StdIO__data.BufferMode = NoBuffering | LineBuffering | BlockBuffering (Prelude.Maybe Prelude.Int);
+data StdIO__data.HandlePosn;
+data StdIO__data.SeekMode = AbsoluteSeek | RelativeSeek | SeekFromEnd;
+StdIO__std.stdin :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+StdIO__std.stdout :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+StdIO__std.stderr :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+StdIO__openFile.openFile :: FilePath -> _LibIO.IOMode -> _LibIO.IO _LibIO.Handle   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+StdIO__openFile.openBinaryFile :: FilePath -> _LibIO.IOMode -> _LibIO.IO _LibIO.Handle   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-};
+StdIO__hClose.hClose :: _LibIO.Handle -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hFileSize :: _LibIO.Handle -> _LibIO.IO Prelude.Integer   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+StdIO__hIsEOF.hIsEOF :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hSetBuffering :: _LibIO.Handle -> StdIO__data.BufferMode -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hFlush :: _LibIO.Handle -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hGetPosn :: _LibIO.Handle -> _LibIO.IO StdIO__data.HandlePosn   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hSetPosn :: _LibIO.Handle -> StdIO__data.HandlePosn -> _LibIO.IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,0&1" ST #-};
+hSeek :: _LibIO.Handle -> StdIO__data.SeekMode -> Prelude.Integer -> _LibIO.IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hIsOpen :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hIsClosed :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hIsReadable :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hIsWritable :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+hIsSeekable :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+instance Ix.Ix StdIO__data.SeekMode {-# DERIVED #-};
+instance Ix.Ix _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Bounded StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Bounded _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Enum StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Enum _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Eq StdIO__data.BufferMode {-# DERIVED #-};
+instance Prelude.Eq StdIO__data.HandlePosn {-# DERIVED #-};
+instance Prelude.Eq StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Eq _LibIO.Handle {-# STRICTNESS (Prelude.==) = "T,F" ST #-} {-# STRICTNESS (Prelude./=) = "T,F" ST #-};
+instance Prelude.Eq _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Eval StdIO__data.BufferMode {-# DERIVED #-};
+instance Prelude.Eval StdIO__data.HandlePosn {-# DERIVED #-};
+instance Prelude.Eval StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Eval _LibIO.Handle {-# DERIVED #-};
+instance Prelude.Eval _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Ord StdIO__data.BufferMode {-# DERIVED #-};
+instance Prelude.Ord StdIO__data.HandlePosn {-# DERIVED #-};
+instance Prelude.Ord StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Ord _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Read StdIO__data.BufferMode {-# DERIVED #-};
+instance Prelude.Read StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Read _LibIO.IOMode {-# DERIVED #-};
+instance Prelude.Show StdIO__data.BufferMode {-# DERIVED #-};
+instance Prelude.Show StdIO__data.HandlePosn {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show StdIO__data.SeekMode {-# DERIVED #-};
+instance Prelude.Show _LibIO.Handle {-# STRICTNESS Prelude.showsPrec = "T,F" ST #-} {-# STRICTNESS Prelude.showList = "T,F" ST #-} {-# STRICTNESS Prelude.showsType = "T,F" ST #-};
+instance Prelude.Show _LibIO.IOMode {-# DERIVED #-}
+}

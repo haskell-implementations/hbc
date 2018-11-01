@@ -1,0 +1,3 @@
+import mscallglobal: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Id->(Int->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))) {# ARITY _ = 5 #}{# STRICTNESS _ = "T,F" ST #};
+import mcallglobal: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Id->(Int->(*a->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))) {# ARITY _ = 7 #}{# STRICTNESS _ = "T,F" ST #};
+import mjglobal: ((#3 (List (List Char)) (List (#3 Int Int Int)) String)->(Int->((List Gcode)->(Id->(Int->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))) {# ARITY _ = 6 #}{# STRICTNESS _ = "T,T" ST #};

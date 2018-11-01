@@ -1,0 +1,5 @@
+interface LMLtermcap where
+_Columns :: Int {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+_Lines :: Int {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+_MoveTo :: (Int->(Int->String)) {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+_Clear :: String {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}

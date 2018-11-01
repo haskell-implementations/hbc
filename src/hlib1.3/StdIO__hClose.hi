@@ -1,0 +1,4 @@
+interface StdIO__hClose where {
+{-# IMPORTING _LibDialogue, _LibIO__process, _LibIO #-}
+hClose :: _LibIO.Handle -> _LibIO.IO ()   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-}
+}

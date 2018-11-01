@@ -1,0 +1,3 @@
+module Seq(seq) where
+import LMLunsafe
+seq x y    = {-:"Pseq":-} x y

@@ -1,0 +1,562 @@
+LML Library Functions:   Thu Jan 14 19:41:21 MET 1993
+
+**	And:		and between all elements in a list.
+**
+**		And [ b1; b2; ... bn ] = b1 & b2 & ... & bn
+
+**	Array_m:	LML-interface to lower level routines
+**
+
+**	Itos:		convert an Integer to a string.
+
+**	Max:		find largest element in a list
+**				fails on empty list
+**
+**		Max [x1; x2; ... xn] = xi where xi >= xj, 1 <= j <= n
+
+**	Min:		find smallest element in a list,
+**				fails on empty list
+**
+**		Min [x1; x2; ... xn] = xi where xi <= xj, 1 <= j <= n
+
+**	Numset:		Data type Set of (non-negative) numbers
+**		
+**			Operations:
+**
+**	NSlisttoset l:	Make a numset from a list of integers. Negative
+**			integers are ignored.
+**	NSempty:	The empty set.
+**	NSsettolist s:	Make a list of integers from a numset, in 
+**			ascending order.
+**	NSsettoblist s:	Make a list of booleans from a numset, one
+**			boolean for each number in 0,1,2, ... .
+**	NSunion a b:	The union of a and b.
+**	NSintsect a b:	The intersection between a and b.
+**	NSsub a b:	Set 'subtraction', a-b.
+**	NSadd n s:	Add the number n to the numset s.
+**	NSmem n s:	Returns true if n is a member of s.
+**	NSissubset a b:	Returns true if a is a subset of b (or equal).
+**
+**	NSupperlim s:	An upperlimit to the biggest number in s.
+**
+
+**	OK:
+
+**	Option:
+
+**	Or:		or between all elements in a list:
+**
+**		Or [ b1; b2; ... bn ] = b1 | b2 | ... | bn 
+
+**	Pconc:		lml part of @
+
+**	Pforce:		
+
+**	Pfrom:		generate lists
+**
+
+**	Ppre:	builtin functions.
+
+**	Psel:		lml part of the selector functions.
+
+**	Pselb:		pattern match utils
+**
+
+**	Sum:		sum all elements in alist.
+**
+**		Sum [ x1; x2; ... xn ] = x1 + x2 + ... + xn
+
+**	Times:		multiply all elements in a list.
+**
+**		Times [ x1; x2; ... xn ] = x1 * x2 * ... * xn
+
+**	abs:		returns absolute value of its argument.
+**
+**		abs x = if x < 0 then -x else x
+
+
+**	all:	does a predicate hold for all elements in a list
+**
+**		all p [ b1; b2; ... bn ] = p b1 & p b2 & ... & p bn
+
+**	allsame:	check if all elements of a list are equal.
+**
+
+**	anysame:	check if any elements of a list are equal.
+**
+
+**	argv:		Program arguments.
+**
+
+**	array:	array handling
+**	
+
+**	assoc:		find a value associated to a key in a (key, value) list.
+**
+**		assoc k [(j1, v1); ... (jn, vn)] = vi,
+**			where i is the smallest number such that k = ji.
+**			Fails if no match.
+
+**	assocdef:	same as assoc but with a default value supplied.
+**
+**		assoc k [(j1, v1); ... (jn, vn)] def =
+**			vi,	where i is the smallest number such that k = ji,
+**			def,	if no such number exists.
+
+**	assocfun:	get value related to i in a (relation, value) list.
+**
+**		assocfun k [ (p1, v1); ... (pn, vn) ] = vi,
+**			where i is the smallest number such that   pi k.
+**			Fails if no match.
+
+**	automat:	Applies a state transition function on a list of
+**			arguments, producing a list of answers.
+**			Works like mapstate but does not return the state.
+**
+**		automat func state arglist
+
+**	bin:		Binary I/) stuff.
+**
+
+**	catch:		catch an error produced by throw.  The first argument
+**			is evaluated and returned if it does not evaluate
+**			to an error.  If it is the second argument is given
+**			the error message as an argument ant that is returned.
+
+**	choplist:	chops up a list into a new list; each chop is made with
+**			f which should return a pair, the chopped part and the
+**			rest of the list.
+**
+**		choplist func list
+
+**	combine:	combines a pair of lists to a list of pairs.
+**
+**		combine ([x1; ... xn], [y1; ... yn]) = [(x1;y1); ... (xn; yn)]
+
+**	conc:		concatenates elements in a list of lists.
+**
+**		conc [ l1; ... ; ln ] = l1 @ ... @ ln
+
+**	concmap:	concatenates lists obtained from f mapped onto a list.
+**
+**		concmap f [x1; ... xn] = f x1 @ ... @ f xn
+
+**	count:		returns a list of the integers from a to b.
+**
+**		count a b = [a, a+1, ... b-1; b]
+
+**	curry:		"curries" a function
+
+**	delay:		delay output
+**			delay <delay> delays output with <delay> milliseconds.
+
+**	dialog:		Haskell I/O.
+**
+
+**	difference:	compute difference between two sets (lists).
+**
+**		difference l1 l2 = [all x such that: x IN l1 AND NOT x IN l2]
+
+**	envp:		Program environment.
+**
+
+
+**	exists:	does a predicate hold for any elements in a list
+**
+**		exists p [ b1; b2; ... bn ] = p b1 | p b2 | ... | p bn
+
+**	fail:		produce a fatal error
+**
+
+**	filter:		extract all the elements of a list for which p holds.
+**
+**		filter p l = [all x such that: x in l AND p x]
+
+**	floatfunc:	Some useful funcs.
+**
+
+**	for:		map f over the list of integers from a to b.
+**
+**		for a b f = [ f a; f(a+1); ... f(b-1); f b]
+
+**	force:		force complete evaluation of the argument and
+**			return it.
+
+**	from:		infinite list of integers starting from n.
+**
+**		from n = n . (n+1) . (n+2) .  ...
+
+**	fst:		first component of a pair.
+
+**	getenv:		get environment variable
+
+**	group:		group a list of items;
+**			given a list of items it returns a list of a list of
+**			items, where the elements in the sublist are "equal"
+**			(according to the predicate 'eq') and are consecutive
+**			items in the list 'l'.
+**
+**		group eq l
+
+**	hd:		hd of a list.
+
+**	head:		get first n elements of a list.
+**
+**		head 3 [2;6;4;7;1] = [2;6;4]
+
+**	hiatonic:	change to hiatonic input mode.
+**			hiatonic <delay>
+**			hiatonic gives a timeout of <delay> milliseconds from when the reads starts.
+**			mhiatonic delays a minimum of <delay>, but if the last read did not
+**			time out whatever time is left over from that is used as delay.
+
+**	index:		Search for the list l1 in the list l2 and return its
+**			starting position.  I.e. l1 = tail (index l1 l2) l2.
+**			If the l2 doesn't contain l1 as a sublist -1
+**			is returned.
+**
+**		index [x; y; z] [a; b; x; y; z] = 2
+
+**	integerfunc:	Some useful funcs.
+**
+
+**	intersect:	compute intersection of two sets (lists).
+**
+**		intersect l1 l2 = [all x such that: x IN l1 AND x IN l2]
+
+**	isalnum:	determine if a character is a letter or digit.
+
+**	isalpha:	determine if a character is a letter.
+
+**	iscntrl:	determine if a character is a control-character.
+
+**	isdigit:	determine if a character is a digit.
+
+**	islower:	determine if a character is a lower-case letter.
+
+**	isprint:	determine if a character is a printing character.
+
+**	ispunct:	determine if a character is a punctuation character.
+
+**	isspace:	determine if a character is "white".
+
+**	isupper:	determine if a character is an upper-case letter.
+
+**	itlist:		iterate a computation over all elements of a list
+**			starting from the tail.
+**
+**		itlist f [x1; x2; ... xm] z = f x1 (f x2 ( ... f xm z)) ... )
+
+**	itos:		convert an integer to a string.
+
+**	itosf:		convert an integer to a string of given minimal length.
+**
+**		n <= length (itosf n i)
+
+**	last:		last element of a list
+**
+
+**	leftadj:	pads a list to a given length with a given object.
+**
+**		leftadj "xxx" 5 'y' = "xxxyy"
+
+**	length:		computes the length of a list.
+
+**	lex:		returns a function that compares lists lexicografically
+**			given a function that compares elements.
+**
+**		lex (\x.\y.x<y) [1;2;2] [1;2;3] = true
+
+**	listrec:	primitive recursion over a list.
+
+**	map:		applies f to each element in a list.
+**
+**		map f l
+
+**	map2:		applies f to pair of elements from two lists.
+**
+
+**	map2filtereq:	Used by the alternative Array.M for filtering out all
+**			elements given an index and the index,value list
+**
+**			map2filtereq i l = map snd (filter ( \(j,v) . i=j ) l)
+
+**	mapfst:		applies f to each first component in a list.
+**
+
+**	mapsnd:		applies f to each second component in a list.
+**
+
+**	mapstate:	hybrid between map and revitlist.
+**			Takes a state transition function, an initial state,
+**			and a list of things.
+**			Returns the last state and the list of results of the
+**			state transitions.
+**			The state transition function, f, should take a state
+**			and an object and should return a pair holding the new
+**			state and the result.
+**			Ignoring the state this is map, ignoring the produced
+**			list it is revitlist.
+**		mapstate (\x.\e.(x+1,(e,x))) 0 ['a'; 'b'; 'c'] =
+**				(3, [('a',0); ('b',1); ('c',2)])
+
+**	max:		take maximum of two values
+
+**	maxint:		biggest integer
+
+**	mem:		test if x is = to any element of a list.
+**
+**		mem x [a; b; c; ... ; z ] =     x = a | x = b | ... | x = z
+
+**	member:		tests if equality predicate eq holds for x and
+**			any element in a list.
+**
+**		member (\x.\y.x=y) 3 [2;3;4;5]	= true
+
+**	min:		take minimum of two values
+
+**	mix:		takes a list and an item and concatenates the elements
+**			in the list with an item between every element.
+**
+**		mix ["2";"hello";"*"] "," gives "2,hello,*"
+
+**	mkset:	remove duplicate items from a list.
+**
+
+**	nameSupply:		generate unique names
+**
+**		initialNameSupply 	is an infinite set (of Int)
+**					[like argv etc, this is not a real constant but a
+**					 value supplied when the program is run]
+**		getName s		returns an element of s
+**		splitNames s		returns two infinite disjoint subsets of s
+**					neither of which contain getName s
+**		This is an efficient implementation of the routines in
+**		chap 9 (by P Hancock) in Peyton Jones
+**		"The implementation of functional programming languages"
+
+**	nil:		The empty list
+**
+
+**	not:		logical not
+**
+
+**	null:		check if a list is empty
+
+**	odd:		returns true if a number is odd
+
+**	partition:	partition a list with a predicate
+**
+
+**	permutations:
+**		Gives a list of all permutations of a given list
+**
+**		permutations [1;2;3] =
+**		  [[1;2;3];[2;1;3];[2;3;1];[1;3;2];[3;1;2];[3;2;1]]
+
+**	pi:		pi
+**
+
+**	progname:	Program name.
+**
+
+**	randlist:	gives an infinite list of pseudo-random numbers,
+**			each number lies within a specified range;
+**			a seed (an odd number) has to be provided.
+**
+**		randlist seed lo hi
+
+**	random:		generate a random number given a seed.
+**
+
+**	reduce:		iterate a computation over all elements of a list
+**			starting from the tail.
+**
+**		reduce f z [x1; x2; ... xm] = f x1 (f x2 ( ... f xm z)) ... )
+
+**	rept:		constructs a list of n duplicates of x.
+**
+
+**	rev:	reverse a list.
+**		SML pre-defined.
+
+**	reverse:	reverse a list.
+
+**	revitlist:	iterate a computation over all elements in a list
+**			starting from the head.
+**
+**		revitlist f [x1;x2; ... xm] z = f xm ( ... (f x2 (f x1 z)) ... )
+
+**	rightadj:	pads a list to a given length with a given object.
+**
+**		rightadj "42" 5 ' ' = "   42"
+
+**	rotate:		rotate a list to the left.
+**
+**		rotate [u;v;x;y;z] 1 = [v;x;y;z;u]
+
+**	scan:
+**	Scan family:	convert a string to a value, return a pair of the
+**			  value and the rest of string.
+**
+**	scan_int st	scan an integer. integers may have one of the forms:
+**			  <unsigned int>
+**			  {+|-|~} <unsigned int>
+**	scan_bool st	scan a boolean. forms:
+**			  true  | TRUE  | True  | tt | TT | t | T
+**			  false | FALSE | False | ff | FF | f | F
+**	scan_char st	scan a char.    forms:
+**			  '<char>'
+**			   <char>
+**	scan_string st	scan a list of chars.  forms:
+**			  " {<char>} "
+**			  <char list>
+**	scan_list f st	scan a list, elements scaned with f. forms:
+**			  nil
+**			  <element> .  <list>
+**			  <element> :: <list>
+**			  <element> :  <list>
+**			  []
+**			  [ <element> {; <element>} ]
+**			  [ <element> {, <element>} ]
+**	scan_pair (f,g) st  scan a pair, components scaned with f and g. forms:
+**			      ( <component> , <component> )
+**			      <component> , <component>
+**
+**			Use include file scan to get these functions.
+**			Example: scan a list of pairs, the pair is a boolean
+**			and an integer:
+**	scan_list (scan_pair (scan_bool, scan_int)) "[(true, 5); (false,-1)]"
+**	  = ([(true, 5); (false,-1)],"")
+
+**	select:		pick n:th element from a list.
+**
+**		select 1 l = hd l
+
+**	seq:		sequentailly evaluate two values and return the second.
+**			The first value is evaluated to WHNF.
+
+**	show:
+**	Show family:	convert a value to a string
+**	show_int i	show an integer
+**	show_bool b	show a boolean
+**	show_char c	show a char
+**	show_string s	show a list of chars
+**	show_list f l	show a list, elements showed with f
+**	show_pair (f,g) p show a pair, components showed with f and g
+**			Example: show a list of pairs, the pair is a boolean
+**			and an integer:
+**	show_list (show_pair (show_bool, show_int)) [(true, 5); (false,-1)] =
+**	"[(true, 5); (false,-1)]"
+
+**	snd:		second component of a pair.
+
+**	sort:		Sort a list
+
+**	space:		returns a list of n spaces.
+
+**	split:		split a list of pairs into a pair of lists.
+
+**	splitat:	split a list at item i,
+**			return a pair, the list of items before i and
+**			the list of items after i, dropping i altogether.
+**
+**		splitat 3 [1;2;3;4;5] = ([1;2],[4;5])
+
+**	stoI:		convert a string to an Integer.
+
+**	stoi:		convert a string to an integer.
+
+**	stoil:		converts a string to an integer list.
+
+**	sublist:	starting with number n, extract m elements from l.
+**
+**		sublist 2 3 [a;b;c;d;e;f] = [b;c;d]
+
+**	subsets:
+**		Gives a list of all subsets of a given set (list)
+**		
+**		subsets [1;2;3] = [[1;2;3];[1;2];[1;3];[1];[2;3];[2];[3];[]]
+
+**	tail:		get all elements beyond the n:th one from a list.
+**
+**		tail 3 [2;6;4;7;1] = [7;1]
+
+**	take:		given a predicate and a list return a pair:
+**			the first member is the initial segment of the list
+**			for which the predicate holds for each element,
+**			the second member is the rest of the list,
+**			beginning with the first element for which the
+**			predicate doesn't hold.
+**
+**		take (\x.x<5) [1;4;2;6;2;5] = ([1;4;2],[6;2;5])
+
+**	takeword:
+**		This function takes a string, and returns a pair of strings,
+**		the first component being the first logical word of the original
+**		string, the second component being the rest of the string.
+**		When extracting a word, the common "all purpose standard" is
+**		followed:
+**		
+**		  1. A sequence of one or more spaces, newlines or tabs are
+**		       skipped over, being considered as a word separator.
+**		  2. A sequence beginning with a letter or '_', followed by zero
+**		       or more letters, digits or '_'s, is considered one word.
+**		  3. A sequence of one or more digits is one word.
+**		  4. All other characters are considered as separate words.
+**		
+**		When no word is found in the string, two empty strings are
+**		returned.
+**		
+**		Ex: takeword "a_b c d" = "a_b"," c d"
+**		    takeword " 35_x a" = "35","_x a"
+**		    takeword "\n\t (* comment *)" = "(","* comment *)"
+**		    takeword "  \n  \t\t " = "",""
+**		    choplist takeword
+**		      "let b1 = pred(x) in\nb1 => x*10.3 | x div 10" =
+**		      ["let"; "b1"; "="; "pred"; "("; "x"; ")"; "in"; "b1"; "=";
+**		       ">"; "x"; "*"; "10"; "."; "3"; "|"; "x"; "div"; "10"; ""]
+
+**	termcap		interface to termcap database
+**	Clear:		string to clear the screen
+**
+**	MoveTo x y:	string to move to coordinate x,y
+
+**	throw:		produce an error (almost bottom), with an
+**			error message attached.  This is almost like fail
+**			but it can be caught by catch.
+
+**	tl:		tail of a list.
+
+**	tofile:		redirect output to a file
+**
+
+**	translit:		do substitutions on a list. Given a list of
+**				pairs of items and a list of items, all items
+**				in second list that are fst components in a pair
+**				in first list are substituted for snd component
+**				in that pair.
+**
+**		translit ['a','A'; 'c','C'] "abcd" gives "AbCd"
+
+**	transpose:	transpose a matrix (like zip in SASL).
+
+**	tsort:		topological sort
+**
+**		tsort G	sorts the graph G.  A graph is a list of nodes, each
+**		node is a pair, a name and a list of names of connected nodes.
+
+**	uncurry:	"uncurries" a function
+
+**	union:		compute union of two sets (lists).
+**
+**		union l1 l2 = [all x such that: x IN l1 OR x IN l2]
+
+**	until:		apply g on x (1 or more times) until f x is true.
+**
+**		until f g x
+
+**	while:		apply g x (0 or more times) while f x is true.
+**
+**		while f g x
+

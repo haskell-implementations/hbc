@@ -1,0 +1,4 @@
+interface PreludeX where {
+undefined :: a   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-};
+_undefined :: String -> Int -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

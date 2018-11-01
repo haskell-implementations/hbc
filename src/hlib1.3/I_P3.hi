@@ -1,0 +1,8 @@
+interface PreludeX where {
+data (a, b, c);
+instance (Ix.Ix a, Ix.Ix b, Ix.Ix c) => Ix.Ix (a, b, c) {-# DERIVED #-};
+instance (Bounded a, Bounded b, Bounded c) => Bounded (a, b, c) {-# DERIVED #-};
+instance (Eq a, Eq b, Eq c) => Eq (a, b, c) {-# DERIVED #-};
+instance Prelude.Eval (a, b, c) {-# DERIVED #-};
+instance (Ord a, Ord b, Ord c) => Ord (a, b, c) {-# DERIVED #-}
+}

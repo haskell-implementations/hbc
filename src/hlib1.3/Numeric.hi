@@ -1,0 +1,18 @@
+interface Numeric where {
+{-# IMPORTING Numeric__formatRealFloat, Numeric__readInt, Array, Ratio, Numeric__readSigned, Char, Numeric__readFloat, Numeric__showSigned, Numeric__showSigned, Numeric__showFloat, Numeric__fromRat #-}
+Numeric__fromRat.fromRat :: (RealFloat a) => Ratio.Rational -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__showSigned.showSigned :: (Prelude.Num a, Prelude.Ord a) => (a -> Prelude.ShowS) -> Int -> a -> Prelude.ShowS   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__showSigned.showInt :: (Prelude.Integral a) => a -> Prelude.ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__readSigned.readSigned :: (Prelude.Num a) => (ReadS a) -> ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__readInt.readInt :: (Prelude.Integral a) => a -> (Prelude.Char -> Bool) -> (Prelude.Char -> Int) -> ReadS a   {-# ARITY _ = 5 #-}{-# STRICTNESS _ = "4,F" ST #-};
+Numeric__readInt.readDec :: (Prelude.Integral a) => ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+Numeric__readInt.readOct :: (Prelude.Integral a) => ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+Numeric__readInt.readHex :: (Prelude.Integral a) => ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+Numeric__formatRealFloat.floatToDigits :: (RealFloat a) => Integer -> a -> ([Int], Int)   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+showEFloat :: (RealFloat a) => (Maybe Int) -> a -> ShowS   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+showFFloat :: (RealFloat a) => (Maybe Int) -> a -> ShowS   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+showGFloat :: (RealFloat a) => (Maybe Int) -> a -> ShowS   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__showFloat.showFloat :: (RealFloat a) => a -> Prelude.ShowS   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+Numeric__readFloat.readFloat :: (RealFloat a) => ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-};
+Numeric__readInt.lexDigits :: ReadS String   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

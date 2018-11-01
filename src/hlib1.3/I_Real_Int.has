@@ -1,0 +1,4 @@
+module PreludeX where
+import Ratio
+instance Real Int where
+	toRational x = {-:"PInt2Integer":-} x % 1

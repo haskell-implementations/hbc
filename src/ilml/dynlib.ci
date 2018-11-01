@@ -1,0 +1,4 @@
+_dlopen 1 dlopen_c
+_dlsym 2 dlsym_c
+_dlclose 1 dlclose_c
+_dlcall 1 dlcall_c

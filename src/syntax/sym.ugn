@@ -1,0 +1,20 @@
+
+%{
+#include "include.h"
+%}
+type sym;
+	antiquote	: < gexpr	: tree; >;
+	gramterm	: < gcharacter  : char; >;
+        gramintterm     : < gcint       : int; > ;
+        gramidterm      : < gcid        : id ; > ;
+        gramsymterm     : < gcsym       : id ; > ;
+	expterm         : < gcharacter2 : char; >;
+        expintterm      : < gcint2      : int ;> ;
+        expidterm       : < gcid2       : id ;> ;
+        expsymterm      : < gcsym2      : id ;> ;
+	nonterminal	: < gtype       : ttype; >;
+	list1           : < gtypel1     : ttype;
+			    gterms1     : list; >;
+	list0           : < gtypel0     : ttype;
+			    gterms0     : list; >;
+end;

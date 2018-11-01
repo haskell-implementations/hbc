@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Release notes</title>
+</head>
+
+<body>
+<h1>Release notes</h1>
+<h2>0.9999.0</h2>
+HBC 0.9999.0 is the first relase of hbc that supports Haskell 1.3.
+It is rather preliminary (as the Haskell 1.3 report is barely
+available), and I expect a new version to appear rather soon
+if there any problems.
+
+<ul>
+  <li> Supports full Haskell 1.3.
+  <li> Extension: Allows local universal and existential quantifications
+   vis data type declarations.
+  <li> Extension: Calling C is possible with a ccall mechanism.
+  <li> Many useful libraries included.
+  <li> The interactive system can now load shared libraries so
+   it works on more platforms again.
+  <li> Code generator for HPPA.
+  <li> And it still compiles Haskell 1.2, of course.  Use the -1.2 flag.
+</ul>
+<p>
+<h2>0.9999.1</h2>
+HBC 0.9999.1 is a bug fix and minor update release.  There are no new
+features.
+<ul>
+  <li>
+      HTML documentation included.
+  <li>
+      Several bug fixes relating to existential and universal
+      quantification.
+  <li>
+      Fix some minor Prelude discrepancies.
+  <li>
+      Update the Haskell library to the <a href="http://haskell.cs.yale.edu/haskell-report/newlib/library.html">latest version</a> (dated July
+      18).
+  <li>
+      Minor changes to make it compile on more platforms.
+  <li>
+      Several minor bug fixes.
+</ul>
+
+<h2>0.9999.2</h2>
+There are two new features in this release:
+<ul>
+  <li>
+      A Windows 95/NT version.  This is the real reason for
+      a new release.  There is only a batch compiler and
+      it uses the CYGWIN32 package.
+  <li>
+      Floating point printing is neater and faster.
+</ul>
+
+<h2>0.9999.3</h2>
+Several minor (but irritating) bugs fixed.<p>
+This is a source only release.
+<ul>
+  <li>
+      Make binaries much smaller by splitting some libraries.
+  <li>
+      Handle newtype with a function RHS correctly.
+  <li>
+      Fix tyvar name capture problem in instance declarations.
+  <li>
+      Fix bug in typechecking of local universal quantification.
+  <li>
+      Even nicer printing of floats.
+  <li>
+      Module Trace is back!
+  <li>
+      State.sameVar works now.
+</ul>
+
+<h2>0.9999.3</h2>
+Several minor (but irritating) bugs fixed.<p>
+This is a source only release.
+<ul>
+  <li>
+      A working fromRational (finally).
+  <li>
+      Some type checker bugs fixed.
+  <li>
+      Internal changes to the State library.
+  <li>
+      Timezone bug fix in Time.
+</ul>
+
+<h2>0.9999.4</h2>
+This release follows the Haskell 1.4 definition.
+<ul>
+  <li>
+      Initial implementation of views, as suggested by
+      Burton, Wadler, et. al.
+  <li>
+      Time zones handled in a more sane way.
+  <li>
+      Yet another bug with local universal quantification and contexts
+      fixed.
+  <li>
+      Allow a subset of the constructors/methods to be exported.
+      Subset import is not yet implemented.
+  <li>
+      Expand list comprehension syntax to monads.
+  <li>
+      Update libraries to official version.
+  <li>
+      formatCalendarTime function similar to strftime(3) added to Time
+      module.
+  <li>
+      Rudimentary Locale module added.
+  <li>
+      Deriving of Read now works for labelled fields.
+  <li>
+      The environment variable HBCDIR should now work.
+  <li>
+      The interactive system attempts to build shared objects
+      ``.so'' from object files automatically.
+  <li>
+      Add module for catenable lists (i.e. O(1) append).
+  <li>
+      Add binary file modes.
+  <li>
+      Several minor bugs fixed.
+</ul>
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Thu Feb  6 10:47:53 MET 1997
+<!-- hhmts end -->
+</body> </html>

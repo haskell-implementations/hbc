@@ -1,0 +1,569 @@
+#! /bin/sh
+# Configuration script for LML/Haskell B
+n="-n"
+c=""
+#echo=/bin/echo
+echo=echo
+# Until `read' works in bash on cygwin32 we have to fudge it.
+dummyread=':'
+if [ "X`$echo $n`" = "X-n" ] ; then n=""; c="\c"; fi
+$echo "Configuration of LML/Haskell B."
+$echo "Please answer these questions, the default answer is within []."
+#
+x_linkflags=''
+x_h12='no'		# 'yes', 'no'
+x_exe=''		# normally no suffix for executables
+x_extra=''
+x_mtarget=''		# m_80386, ...
+x_static=''		# '', '-Bstatic'
+x_ilml='[a-z]*.o'	# 'Dummy.o', '[a-z]*.o'
+x_system='-DSUNOS4'	# '', '-DSYSV', '-DSUNOS4'
+x_haskell='HASKELL'	# '', 'HASKELL'
+x_heapprof=''		# '', 'HEAPPROF'
+x_timeprof=''		# '', 'TIMEPROF'
+x_cc='gcc'
+x_lib='/usr/local/lib/lmlc'
+x_bin='/usr/local/bin'
+x_man='/usr/local/man/man1'
+lifdef='/usr/local/lib/lmlc'
+if [ -r config.status ] ; then
+	$echo "There is an old config.status file."
+	$echo $n "Take defaults from this [y]? " $c
+	read ans
+	case "$ans" in
+	[nN]*)
+		;;
+	*)
+		. ./config.status
+		;;
+	esac
+	if [ "$x_system" = "-D__CYGWIN32__" ]; then
+		dummyread='read dummy'
+		$dummyread
+	fi
+fi
+stop=0
+while [ $stop -eq 0 ]; do
+	$echo $n "Target architecture [$x_mtarget]? " $c
+	read ans
+	$dummyread
+	if [ -z "$ans" ] ; then ans="$x_mtarget"; fi
+	stop=1
+	ans=`echo "$ans" | tr A-Z a-z`
+	case "$ans" in
+	m_80386 | 386 | 486 | i386 | i486 | 586 | pentium )
+		x_mtarget=m_80386
+		if [ "$x_system" = "-D__386BSD__" ] ; then def=386bsd
+		elif [ "$x_system" = "-D__NetBSD__" ] ; then def=netbsd
+		elif [ "$x_system" = "-D__FreeBSD__=2" ] ; then def=freebsd
+		elif [ "$x_system" = "-Dlinux" ] ; then def=linux
+		elif [ "$x_system" = "-DDYNIX" ] ; then def=dynix
+		elif [ "$x_system" = "-DSOLARIS" ] ; then def=solaris
+		elif [ "$x_system" = "-D__CYGWIN32__" ] ; then def=cygwin32
+		else def=''; fi
+		$echo $n "What operating system are you running [$def]? " $c
+		read ans
+		$dummyread
+		if [ -z "$ans" ] ; then ans=$def; fi
+		case "$ans" in
+		386bsd | linux | dynix | netbsd | solaris | freebsd | cygwin32)
+			;;
+		* )
+			$echo "Use one of 386bsd, linux, dynix, netbsd, freebsd, solaris, or cygwin32"
+			exit 1
+			;;
+		esac
+		sysname=$ans
+		;;
+	m_sparc | sparc )
+		x_mtarget=m_sparc
+		if [ "$x_system" = "-DSUNOS4" ] ; then def=n; else def=y; fi
+		$echo $n "Are you running Solaris 2.x [$def]? " $c
+		read ans
+		if [ -z "$ans" ] ; then ans=$def; fi
+		case "$ans" in
+		[yY]*)
+			sysname=solaris
+			;;
+		*)
+			sysname=sunos4
+			;;
+		esac
+		;;
+	m_68000 | 68000 | m68000 | m68k | 68k | 68020 | 68030 | 68040 )
+		x_mtarget=m_68000
+		if [ "$x_system" = "-DSUNOS4" ] ; then def=sunos4
+		elif [ "$x_system" = "-DSUNOS3" ] ; then def=sunos3
+		elif [ "$x_system" = "-D__NetBSD__" ] ; then def=netbsd
+		else def=''; fi
+                $echo $n "What operating system are you running [$def]? " $c
+		read ans
+		if [ -z "$ans" ] ; then ans=$def; fi
+		case "$ans" in
+		sunos4 | sunos3 | netbsd)
+			sysname=$ans
+			;;
+		*)
+			$echo "Use one of sunos3, sunos4, netbsd"
+			exit 1
+			;;
+		esac
+		;;
+	m_vax | vax )
+		x_mtarget=m_vax
+		sysname=bsd4x
+		;;
+	m_mips | mips )
+		x_mtarget=m_mips
+		if [ "$x_system" = "-Dultrix" ] ; then def=ultrix; else def=irix; fi
+		$echo $n "Are you running ultrix or irix [$def]? " $c
+		read ans
+		if [ -z "$ans" ] ; then ans=$def; fi
+		case "$ans" in
+		ultrix)
+			sysname=ultrix
+			;;
+		irix)
+			sysname=irix
+			;;
+		*)
+			echo "You must run either ultrix or irix, sorry."
+			exit 1
+			;;
+		esac
+		;;
+	m_rs6000 | m_power | m_powerpc | rs6000 | power | powerpc )
+		x_mtarget=m_rs6000
+		sysname=aix
+		;;
+	m_alpha | alpha )
+		x_mtarget=m_alpha
+		sysname=osf
+		;;
+	m_hppa | hppa | pa )
+		x_mtarget=m_hppa
+		sysname=hpux
+		;;
+	* )
+		$echo "Unknown target.  Use m_80386, m_sparc, m_68000, m_vax, m_rs6000, m_hppa, or m_mips."
+		stop=0
+		;;
+	esac
+done
+
+$echo $n "What C compiler do you want to use (may include extra flags) [$x_cc]? " $c
+read ans
+$dummyread
+if [ "$ans" ] ; then x_cc="$ans"; fi
+
+if [ "$x_cc" = "gcc" ] ; then x_gcclink=-DGCCLINK; else x_gcclink=''; fi
+
+$echo "Target machine: $x_mtarget, target OS: $sysname, C compiler: '$x_cc'"
+
+$echo '/lib/cpp $*' > bin/mycpp
+$echo 'grep -s "$@"' > bin/mygreps
+$echo "$x_cc"' $*' > bin/mycc
+$echo 'sh ../bin/myld -r -o $*' > bin/joinobj
+$echo '/bin/ld $*' > bin/myld
+$echo 'ranlib $*' > bin/myranlib
+$echo 'as $*' > bin/myas
+$echo 'yacc $*' > bin/myyacc
+$echo 'lex $*' > bin/mylex
+$echo '' > bin/buildshlib
+y_static="$x_static"
+x_static=''
+isys='../bin/myld -T 0 -r -o $*'
+x_iaout=''
+x_iaoutobjs=''
+x_idynlib=''
+x_idynliblinks=''
+x_idynlibobjs=''
+case $sysname in
+cygwin32)
+	x_system='-D__CYGWIN32__'
+	x_exe='.exe'
+	isys=''
+	$echo 'rm -f $1; ar cr $*' > bin/joinobj
+	$echo '/usr/bin/cpp -traditional -\$ $*' > bin/mycpp
+	$echo '/usr/bin/ld $*' > bin/myld
+	$echo '/usr/bin/as $*' > bin/myas
+	$echo 'grep -q "$@"' > bin/mygreps
+	$echo 'bison -y $*' > bin/myyacc
+	$echo 'flex -l $*' > bin/mylex
+	;;
+386bsd)
+	x_system='-D__386BSD__'
+	$echo '/usr/libexec/cpp -traditional -\$ $*' > bin/mycpp
+	;;
+linux)
+	x_system='-Dlinux'
+	$echo '/lib/cpp -traditional -\$ $*' > bin/mycpp
+	$echo '/usr/bin/ld $*' > bin/myld
+	$echo 'grep -q "$@"' > bin/mygreps
+	if [ -z "$y_static" ] ; then def=n; else def=y; fi
+	$echo $n "Do you want the binaries statically linked [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[yY]*)
+		x_static='-static'	
+		;;
+	*)
+		x_static=''
+		;;
+	esac
+	isys='noop'
+	$echo 'shift; ld -shared -o $*' > bin/buildshlib
+        x_idynliblinks=-ldl 
+	x_idynlib=-DI_DYNLIB
+	x_linkflags=-K-rdynamic
+	;;
+dynix)
+	x_system='-DDYNIX'
+	;;
+solaris)
+	x_system='-DSOLARIS'
+	$echo '/usr/ccs/bin/ld $*' > bin/myld
+	$echo '/usr/ccs/lib/cpp $*' > bin/mycpp
+	$echo 'grep "$@" >/dev/null' > bin/mygreps
+	$echo '' > bin/myranlib
+	$echo "$x_cc -I/usr/ucbinclude"' $*' > bin/mycc
+	$echo '/usr/ccs/bin/as $*' > bin/myas
+	if [ -z "$y_static" ] ; then def=n; else def=y; fi
+	$echo "With static linking, you cannot load shared libraries"
+	$echo "in the interactive system."
+	$echo $n "Do you want the binaries statically linked [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[yY]*)
+		# not with GCC x_static='-Bstatic'	
+		x_static='-static'	
+		if [ $x_cc = cc ] ; then x_static='-Bstatic'; fi
+		;;
+	*)
+		x_static=''
+		;;
+	esac
+	$echo 'shift; ld -G -o $*' > bin/buildshlib
+	x_idynlib=-DI_DYNLIB
+	if [ -z "$x_static" ] ; then x_idynliblinks=-ldl ; fi
+	isys='noop'
+	#isys='gld -Ttext 0 -r -oformat a.out-sunos-big -o $*'
+	;;
+sunos4)
+	x_system='-DSUNOS4'
+	if [ -z "$y_static" ] ; then def=n; else def=y; fi
+	$echo $n "Do you want the binaries statically linked [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[yY]*)
+		# not with GCC x_static='-Bstatic'	
+		x_static='-static'	
+		if [ $x_cc = cc ] ; then x_static='-Bstatic'; fi
+		;;
+	*)
+		x_static=''
+		;;
+	esac
+	# yacc doesn't have enough states
+	$echo 'bison -y $*' > bin/myyacc
+	$echo '/bin/grep -s "$@"' > bin/mygreps
+	;;
+sunos3)
+	x_system='-DSUNOS3'
+	;;
+aix)
+	x_system='-D_AIX'
+	$echo 'grep -q "$@"' > bin/mygreps
+	$echo '/usr/ccs/lib/cpp $*' > bin/mycpp
+	isys=''
+	;;
+bsd4x)
+	x_system='-DBSD4'
+	;;
+ultrix)
+	x_system='-Dultrix'
+	;;
+hpux)
+	x_system='-DHPUX'
+	$echo 'grep -q "$@"' > bin/mygreps
+	$echo 'yacc -Nm25000 -Ns5000 $*' > bin/myyacc
+	$echo "$x_cc"' -w2 $*' > bin/mycc
+	$echo '' > bin/myranlib
+	isys=''
+	;;
+irix)
+	x_system='-DIRIX'
+	$echo '' > bin/myranlib
+	$echo 'grep "$@" >/dev/null' > bin/mygreps
+	$echo 'as -w $*' > bin/myas
+	;;
+netbsd | freebsd)
+	if [ $sysname = freebsd ] ; then
+	    x_system='-D__FreeBSD__=2'
+	else
+	    x_system='-D__NetBSD__'
+	fi
+	$echo '/usr/libexec/cpp -traditional -\$ $*' > bin/mycpp
+	$echo 'grep -q "$@"' > bin/mygreps
+	$echo '/usr/bin/ld $*' > bin/myld
+	if [ -z "$y_static" ] ; then def=n; else def=y; fi
+	$echo "With static linking, you cannot load shared libraries"
+	$echo "in the interactive system."
+	$echo $n "Do you want the binaries statically linked [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[yY]*)
+		x_static='-static'	
+		;;
+	*)
+		x_static=''
+		;;
+	esac
+# ld screams a lot about our object files
+	$echo 'shift; ld -Bshareable -o $* 2>&1 | (grep -v "text relocation" || true)' > bin/buildshlib
+	x_idynlib=-DI_DYNLIB
+	;;
+osf)
+	if [ "$x_cc" = cc ] ; then
+		$echo 'if [ "$1" = "-static" ] ; then shift; fi' > bin/mycc
+		$echo 'cc $*' >> bin/mycc
+	fi
+	x_system='-DOSF'
+	$echo 'grep -q "$@"' > bin/mygreps
+	if [ -z "$y_static" ] ; then def=n; else def=y; fi
+	$echo $n "Do you want the binaries statically linked [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[yY]*)
+		x_static='-static'	
+		;;
+	*)
+		x_static=''
+		;;
+	esac
+	cat > bin/buildshlib << 'EOF'
+sofile=../lib/so_locations
+if [ ! -w $sofile ] ; then cp /usr/shlib/so_locations $sofile; chmod +w $sofile; fi
+dir=$1
+name=$2
+shift 2
+/bin/ld -expect_unresolved '*' -shared -update_registry $sofile -all -soname $dir/$name -o $name $*
+EOF
+	x_idynlib=-DI_DYNLIB
+	isys='noop'
+	;;
+*)
+	$echo Unknown system $sysname.
+	exit 1
+	;;
+esac
+
+if [ -z "$x_haskell" ] ; then def=n; else def=y; fi
+$echo $n "Do you want Haskell [$def]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans=$def; fi
+case "$ans" in
+[nN]*)
+	x_haskell=''
+	;;
+*)
+	x_haskell='HASKELL'
+	;;
+esac
+
+if [ ! -z "$x_haskell" ]; then
+  if [ "$x_h12" = "yes" ]; then def=y; else def=n; fi
+  $echo $n "Do you want Haskell 1.2 (obsolete) [$def]? " $c
+  read ans
+  $dummyread
+  if  [ -z "$ans" ]; then ans=$def; fi
+  case "$ans" in
+  [nN]*)
+	  x_h12=no
+	  ;;
+  *)
+	  x_h12=yes
+	  ;;
+  esac
+fi
+
+if [ -z "$isys" ]
+then
+	$echo "Sorry, you cannot run the interactive version on this platform."
+	x_ilml='Dummy.o'
+else
+	if [ "$x_ilml" = "Dummy.o" ] ; then def=n; else def=y; fi
+	$echo $n "Do you want the interactive system [$def]? " $c
+	read ans
+	if [ -z "$ans" ] ; then ans=$def; fi
+	case "$ans" in
+	[nN]*)
+		x_ilml='Dummy.o'
+		x_idynlib=''
+		x_idynliblinks=''
+		x_lmlx=''
+		;;
+	*)
+		x_ilml='[a-z]*.o'
+		if [ ! "$isys" = "noop" ]
+		then 	x_iaout=-DI_AOUT
+			x_iaoutobjs="loadmodule.o load.o loadc.o getgp.o"
+		fi
+		if [ ! -z "$x_idynlib" ]
+		then	if [ ! -z "$x_static" ]
+			then 	dynl=Dynlib_stupid.o
+		 	else	dynl=Dynlib_c.o; fi
+			x_ilml="$x_ilml ilml/$dynl"
+			x_idynlibobjs="dynlib.o $dynl"
+		fi
+		if [ -z "$x_lmlx" ]; then def=n; else def=y; fi
+		$echo $n "Do you want the Fudget (X-windows) version of hbi [$def]? " $c
+		read ans
+		if [ -z "$ans" ] ; then ans=$def; fi
+		case "$ans" in
+		[nN]*)
+			x_lmlx=''
+			;;
+		*)
+			x_lmlx='-lmlx -i/usr/local/lib/lmlc/lmlx'
+			;;
+		esac
+	esac
+fi
+
+if  [ "$isys" = "noop" ] ; then isys='touch $1'; fi
+$echo "$isys" > bin/mkiprel
+
+chmod +x bin/mycpp bin/mygreps bin/mycc bin/myld bin/myranlib bin/buildshlib bin/mkiprel bin/myas bin/myyacc bin/mylex bin/joinobj
+
+#$echo 'If you want any extra flags to the compiler add them here.'
+#def="$x_extra"
+#$echo $n "Extra compiler flags [$def]? " $c
+#read ans
+#if [ -z "$ans" ] ; then ans=$def; fi
+#x_extra="$ans"
+x_extra=""
+
+$echo 'Compiling library code for profiling takes a lot of time.'
+if [ -z "$x_heapprof" ] ; then def=n; else def=y; fi
+$echo $n "Do you want heap profiling [$def]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans=$def; fi
+case "$ans" in
+[yY]*)
+	x_heapprof='HEAPPROF'
+	;;
+*)
+	x_heapprof=''
+esac
+if [ -z "$x_timeprof" ] ; then def=n; else def=y; fi
+$echo $n "Do you want time profiling [$def]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans=$def; fi
+case "$ans" in
+[yY]*)
+	x_timeprof='TIMEPROF'
+	;;
+*)
+	x_timeprof=''
+esac
+$echo $n "Where do you want the runnable binaries installed [$x_bin]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans="$x_bin"; fi
+x_bin="$ans"
+$echo $n "Where do you want the libraries installed [$x_lib]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans="$x_lib"; fi
+x_lib="$ans"
+$echo $n "Where do you want the (unformatted) man pages installed [$x_man]? " $c
+read ans
+$dummyread
+if [ -z "$ans" ] ; then ans="$x_man"; fi
+x_man="$ans"
+
+cat << eof > config.status
+x_h12='$x_h12'
+x_mtarget='$x_mtarget'
+x_static='$x_static'
+x_system='$x_system'
+x_ilml='$x_ilml'
+x_haskell='$x_haskell'
+x_heapprof='$x_heapprof'
+x_timeprof='$x_timeprof'
+x_bin='$x_bin'
+x_lib='$x_lib'
+x_man='$x_man'
+x_extra='$x_extra'
+x_cc='$x_cc'
+x_lmlx='$x_lmlx'
+eof
+
+if [ "$x_ilml" = "Dummy.o" ] ; then
+	x_dilml=Dummy.o 
+	x_iinst='noinstall'
+	x_ihaskell='noinstall'
+else 
+	x_dilml='' 
+	x_iinst='install ${HASKELL}'
+	x_ihaskell='haskell'
+fi
+if [ -n "$x_haskell" ] ; then x_haskell='${'"$x_haskell}"; fi
+if [ -n "$x_heapprof" ] ; then x_heapprof='${'"$x_heapprof}"; fi
+if [ -n "$x_timeprof" ] ; then x_timeprof='${'"$x_timeprof}"; fi
+cat << eof > mk.sed
+s/XX_LINKFLAGS/$x_linkflags/
+s/XX_H12/$x_h12/
+s/XX_EXE/$x_exe/
+s/XX_MTARGET/$x_mtarget/
+s/XX_STATIC/$x_static/
+s/XX_SYSTEM/$x_system/
+s'XX_ILML'$x_ilml'
+s/XX_DILML/$x_dilml/
+s/XX_IINST/$x_iinst/
+s/XX_HASKELL/$x_haskell/
+s/XX_IHASKELL/$x_ihaskell/
+s/XX_HEAPPROF/$x_heapprof/
+s/XX_TIMEPROF/$x_timeprof/
+s'XX_LMLX'$x_lmlx'
+s'XX_BIN'$x_bin'
+s'XX_LIB'$x_lib'
+s'XX_MAN'$x_man'
+s'XX_EXTRA'$x_extra'
+s'XX_IDEFS'$x_iaout $x_idynlib'
+s'XX_IEXTRA_OJBS'$x_iaoutobjs $x_idynlibobjs'
+s'XX_ILINKS'$x_idynliblinks'
+s/XX_GCCLINK/$x_gcclink/
+eof
+cat << eof > bin/edlib
+#! /bin/sh -e
+sed -e "s%XX_LIB%$x_lib%" < \$1 > \$2
+chmod +x \$2
+eof
+chmod +x bin/edlib
+
+touch Makefile
+mv Makefile Makefile.bak
+$echo '# THIS FILE IS PRODUCED FROM Makefile.in' > Makefile
+sed -f mk.sed Makefile.in >> Makefile
+sed -f mk.sed bin/asm.in > bin/asm
+chmod +x bin/asm
+rm mk.sed
+
+$echo ' '
+$echo 'Configuration complete.  Now do'
+$echo '    make universe'
+$echo 'and wait for a long time.  If it completes without errors do'
+$echo '    make install'
+$echo 'to install the new compiler.  This step also takes a long time.'
+$echo ' '
+$echo '  Good luck!'

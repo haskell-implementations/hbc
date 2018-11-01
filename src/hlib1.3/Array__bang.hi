@@ -1,0 +1,5 @@
+interface Array__bang where {
+{-# IMPORTING _LibArray, Ix #-}
+infixl 9 !;
+(!) :: (Ix.Ix a) => (_LibArray.Array a b) -> a -> b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE (!) :: (_LibArray.Array (Prelude.Int, Prelude.Int) c) -> (Prelude.Int, Prelude.Int) -> c {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-}, (_LibArray.Array Prelude.Int c) -> Prelude.Int -> c {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+}

@@ -1,0 +1,3 @@
+module Force(force) where
+import LMLforce
+force x = {-:"Pforce":-} x

@@ -1,0 +1,141 @@
+.TH HBC 1 local
+.SH NAME
+hbc \- a compiler for Haskell B.
+.SH SYNOPSIS
+.B hbc
+[ option ] files
+.SH DESCRIPTION
+The syntax of
+.I hbc
+programs is described in the Haskell report.
+.PP
+.I Hbc
+accepts several types of arguments:
+.br
+Arguments whose names end in `.hs' or `.has' are taken to be Haskell programs,
+names ending in `.lhs' are taken to be literate scripts,
+and `.o' are object files.
+.PP
+The following options are interpreted by 
+.I hbc
+.TP 10
+.B \-1.2
+Compile Haskell 1.2 instead of Haskell 1.3.
+.TP
+.B \-c
+Suppress the loading phase and force an object file to be produced.
+.TP
+.BI \-o " output"
+Name the output file
+.IR output .
+.TP
+.BI \-i "path"
+Prepend
+.I path
+to the include path.  If
+.I path
+is empty the whole include path is emptied.  An include path should be a colon
+separated list of directories.
+.TP
+.B \-p
+Emit code that enables profiling.
+Use prof to get the profiling statistics.
+.TP
+.B \-pg
+Emit code that enables profiling.
+Use gprof to get the profiling statistics.
+.TP
+.B \-ph
+Emit code that enables heap profiling.
+Additional flags (see below) are needed when the program is run.
+Use hp2ps to get a PostScript file.
+.TP
+.B \-S
+Produce an `.s' assembler file.
+.TP
+.B \-T
+Emit code to enable tracing.
+.TP
+.B \-t
+don't do type checking.
+.TP
+.B \-cpp
+run the C preprocessor before compilation.
+.TP
+.B \-no-pedantic
+turn on most of the Haskell B. extensions.
+.TP
+.B \-noflags
+do not decode runtime flags.
+.TP
+.B \-v
+be verbose.
+.PP
+When the program is run it interprets the following flags:
+.br
+.TP 10
+.BI \-H size
+set the heapsize to
+.IR size .
+Default is 4 Mbyte.
+.TP
+.B \-B
+makes the bell sound at each garbage collection.
+.TP
+.B \-T
+turn on interactive program tracing.
+.TP
+\fB\-g[{g1,...}]\fP
+Heap profiling by
+.I module group.
+.TP
+\fB\-p[{p1,...}]\fP
+Heap profiling by
+.I producer
+(function).
+.TP
+\fB\-m[{m1,...}]\fP
+Heap profiling by
+.I module.
+.TP
+\fB\-c[{c1,...}]\fP
+Heap profiling by
+.I construction.
+.TP
+\fB\-t[{t1,...}]\fP
+Heap profiling by
+.I type.
+.PP
+For further information about heap profiling read the HBC manual.
+There may be more flags (they multiply).
+.SH ENVIRONMENT
+The environment variable HBCDIR is used to find the place to look for the
+various files used by the compiler.  The default value is /usr/local/lib/lmlc.
+The environment variable LMLHEAP is used to determine the default heap size.
+The environment variable can contain additional arguments to a program.
+.SH FILES
+.TP 25
+.B $HBCDIR/bin/unlit
+literate script preprocessor.
+.TP
+.B $HBCDIR/bin/curryp
+the parser program.
+.TP
+.B $HBCDIR/bin/lmlcomp
+the compiler.
+.TP
+.B $HBCDIR/hlib/lib.a
+the library functions.
+.TP
+.B $HBCDIR/hlib/*.p
+interface files.
+.TP
+.B $HBCDIR/hlib/runtime.o
+the runtime system.
+.SH DIAGNOSTICS
+Bad for syntax errors.
+Even worse for other errors.
+.SH "SEE ALSO"
+hbi(1), hbcmake(1), hp2ps(1), http://www.cs.chalmers.se/~augustss/hbc/hbc.html
+.SH BUGS
+Bug, what's that?

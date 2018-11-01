@@ -1,0 +1,6 @@
+interface _BV_Inst where {
+{-# IMPORTING _ByteVector #-}
+instance Eq _ByteVector._ByteVector {-# STRICTNESS (==) = "T,F" ST #-} {-# STRICTNESS (/=) = "T,F" ST #-};
+instance Ord _ByteVector._ByteVector {-# STRICTNESS (<) = "T,F" ST #-} {-# STRICTNESS (<=) = "T,F" ST #-} {-# STRICTNESS (>=) = "T,F" ST #-} {-# STRICTNESS (>) = "T,F" ST #-} {-# STRICTNESS max = "T,F" ST #-} {-# STRICTNESS min = "T,F" ST #-} {-# STRICTNESS compare = "T,F" ST #-};
+instance Show _ByteVector._ByteVector {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}

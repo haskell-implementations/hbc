@@ -1,0 +1,125 @@
+.TH LMLC 1 local
+.SH NAME
+lmlc \- a compiler for LML (Lazy ML)
+.SH SYNOPSIS
+.B lmlc
+[ option ] files
+.SH DESCRIPTION
+The syntax of
+.I lmlc
+programs is described elsewhere.
+.PP
+.I Lmlc
+accepts several types of arguments:
+.br
+Arguments whose names end in `.m' are taken to be lmlc programs,
+`.o' are object files.
+Names ending in `.lm' are taken to be literate scripts.
+The C preprocessor is used on all `.m' and `.lm' files.
+.PP
+The following options are interpreted by 
+.I lmlc
+.TP 10
+.B \-c
+Suppress the loading phase and force an object file to be produced.
+.TP
+.BI \-o " output"
+Name the output file
+.IR output .
+.TP
+.B \-p
+Emit code that enables profiling.
+Use prof to get the profiling statistics.
+.TP
+.B \-pg
+Emit code that enables profiling.
+Use gprof to get the profiling statistics.
+.TP
+.B \-ph
+Emit code that enables heap profiling.
+Additional flags (see below) are needed when the program is run.
+Use hp2ps to get a PostScript file.
+.TP
+.B \-S
+Produce an `.s' assembler file.
+.TP
+.B \-T
+Emit code to enable tracing.
+.TP
+.B \-t
+don't do type checking.
+.TP
+.B \-G
+just produce the G-code.
+.PP
+When the program is run it interprets the following flags:
+.br
+.TP 10
+.BI \-H size
+set the heapsize to
+.IR size .
+Default is 4 Mbyte.
+.TP
+.B \-B
+makes the bell sound at each garbage collection.
+.TP
+.B \-T
+turn on interactive program tracing.
+.TP
+\fB\-g[{g1,...}]\fP
+Heap profiling by
+.I module group.
+.TP
+\fB\-p[{p1,...}]\fP
+Heap profiling by
+.I producer
+(function).
+.TP
+\fB\-m[{m1,...}]\fP
+Heap profiling by
+.I module.
+.TP
+\fB\-c[{c1,...}]\fP
+Heap profiling by
+.I construction.
+.TP
+\fB\-t[{t1,...}]\fP
+Heap profiling by
+.I type.
+.PP
+For further information about heap profiling read the LML manual.
+There may be more flags (they multiply).
+.SH ENVIRONMENT
+The environment variable LMLDIR is used to find the place to look for the
+various files used by the compiler.  The default value is /usr/local/lib/lmlc.
+The environment variable LMLHEAP is used to determine the default heap size.
+The environment variable can contain additional arguments to a program.
+.SH FILES
+.TP 25
+.B $LMLDIR/bin/unlit
+literate script preprocessor.
+.TP
+.B $LMLDIR/bin/lmlp
+the parser program.
+.TP
+.B $LMLDIR/bin/lmlcomp
+the compiler.
+.TP
+.B $LMLDIR/lib/include/*
+some type include files.
+.TP
+.B $LMLDIR/lib/lib.a
+the library functions.
+.TP
+.B $LMLDIR/lib/parsed/*
+parsed include files.
+.TP
+.B $LMLDIR/runtime.o
+the runtime system.
+.SH DIAGNOSTICS
+Bad for syntax errors.
+Even worse for other errors.
+.SH "SEE ALSO"
+lmli(1), lmlmake(1), hp2ps(1)
+.SH BUGS
+Bug, what's that?

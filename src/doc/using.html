@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Using the hbc compiler</title>
+</head>
+
+<body>
+<h1>Using the hbc compiler</h1>
+
+The hbc command can be used to compile a module or link compiled
+module together.
+
+<h3>On names, files, and modules</h3>
+The Haskell report does not specify how Haskell modules, files etc.
+should be treated by the compilation system.  Hbc takes a very simple
+approach, each file should contain exactly one module and the name of
+the file should be the same as the module name with the extension
+``.hs'' added.  When such a file is compiled by hbc an interface file
+and an object file are produced.  The interface file has the same name
+as the source file, but with the extension ``.hi'' instead of ``.hs'',
+the object file has the ``.o'' extension.  If the file extension is
+``.lhs'' the module is assumed to be on ``literate'' form and is
+compiled accordingly.
+<p>
+
+When compiling an ``<tt>import</tt>'' declaration the compiler needs to
+consult the interface file for the imported module.  To find the
+interface file the compiler looks for the module name extended with
+``.hi'' in the <em>include path</em>.  The include path is a colon
+separated list of directories that are searched in order for the
+imported files.  The include path can be set in several ways.
+The default value is ``<tt>.:$HBCDIR/hbc_library</tt>'', where
+<tt>$HBCDIR</tt> is the value of the <tt>HBCDIR</tt> environment variable (which
+defaults to <tt>/usr/local/lib/lmlc</tt> if not set).
+If the environment variable <tt>HBCINCPATH</tt> is set this will be taken
+as the value of the include path instead.
+After this initial value of the include path has been established it
+can also be altered by the ``-i'' flag on the command line.  Just 
+``-i'' flag will empty the include path.
+A ``-i<i>path</i>'' will prepend <i>path</i> to the include path.
+<p>
+
+The include path is also used during linking.  All files named
+``lib.a'' (or ``lib_p.a'' or ``lib_ph.a'' if the ``-p'' respective ``-ph''
+flags have been used)
+in the directories in the include path will be given to the
+linker.  This means that a directory in the include path should
+contain (at least) a number of interface files, and the corresponding
+object files in an archive called ``lib.a''.
+<p>
+
+The interactive system uses the same mechanism for its <tt>import</tt> command.
+But for this to work properly the directories in the include path
+should also contain the object files for each of the interface files,
+since hbi cannot (yet) use archives.
+
+<h3>Example</h3>
+If the file ``Main.hs'' contains
+<pre>
+  main = putStr (hello "world" ++ "\n")
+
+  hello s = "hello, " ++ s
+</pre>
+then it can be compiled with the command
+<pre>
+  hbc Main.hs -o hello
+</pre>
+This gives an executable file called ``hello''.
+
+
+
+<hr>
+<address></address>
+<!-- hhmts start -->
+Last modified: Sun Jul 21 01:15:37 MET DST 1996
+<!-- hhmts end -->
+</body> </html>

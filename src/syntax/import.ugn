@@ -1,0 +1,28 @@
+%{
+#include "include.h"
+%}
+type impstuff;
+	import	: < gimodid	: id;			/* module id */
+		    giimps	: list;			/* impid, imports */
+		    gifixes	: list;			/* impstuff=ifix, fixities */
+		    gients	: list;			/* impid, entities */
+		    gispec	: impstuff;		/* impstuff=ispec */
+		    girename	: list;			/* impstuff=irename, renaminings */
+		    g3qual	: int;			/* qualified flag */
+		    g3as	: list;	>;		/* really optional as name */
+	ispec	: < giexpose	: int;
+		    giids	: list; >;
+	irename	: < girensrc	: id;
+		    girendst	: id; >;
+	ifix	: < gifixids	: list;
+		    gifixass	: int;
+		    gifixprec	: int; >;
+	inone	: < >;
+	isome	: < gisome	: list; >;
+	interface: <giimodid	: id;			/* module id */
+		    giiimps	: list;			/* impid, imports */
+		    giifixes	: list;			/* impstuff=ifix, fixities */
+		    giients	: list; >;		/* impid, entities */
+	itypinfo: < gincon	: int;
+		    giflat	: int; >;
+end;

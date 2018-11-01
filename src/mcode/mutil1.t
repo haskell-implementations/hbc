@@ -1,0 +1,13 @@
+import negmop: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import invmop: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import isccsf: (Conditioncode->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import isccdf: (Conditioncode->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import ccsf: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import sfcc: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import ccdf: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import dfcc: (Conditioncode->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import mccop: (Conditioncode->(#3 Bool Bool Bool)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import mopcc: ((#3 Bool Bool Bool)->Conditioncode) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import ccrev: ((#3 *a *b *c)->(#3 *c *b *a)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import ccneg: ((#3 Bool Bool Bool)->(#3 Bool Bool Bool)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import ccop: (Gbasicop->(#3 Bool Bool Bool)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};

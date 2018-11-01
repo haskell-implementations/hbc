@@ -1,0 +1,3 @@
+interface Numeric__readSigned where {
+readSigned :: (Prelude.Num a) => (Prelude.ReadS a) -> Prelude.ReadS a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

@@ -1,0 +1,24 @@
+interface Prelude_LML_Float where
+{-
+    {-:"Dexp":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dlog":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dsqrt":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dsin":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dcos":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dtan":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dasin":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dacos":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Datan":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dsinh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dcosh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dtanh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dasinh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dacosh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Datanh":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Ddecode":-} :: Float -> (Integer,Int)	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dencode":-} :: Integer -> Int -> Float	{-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+    {-:"Dfloor":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+    {-:"Dceil":-} :: Float -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+-}
+{-:"DDouble2Float":-} :: Double -> Float	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DFloat2Double":-} :: Float -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}

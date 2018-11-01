@@ -1,0 +1,3 @@
+interface PreludeX where {
+instance Eq Integer {-# STRICTNESS (==) = "0&1,F" ST #-} {-# STRICTNESS (/=) = "0&1,F" ST #-}
+}

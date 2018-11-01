@@ -1,0 +1,4 @@
+interface Char__showLitChar where {
+{-# IMPORTING Char #-}
+showLitChar :: Prelude.Char -> Prelude.ShowS   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+}

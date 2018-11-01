@@ -1,0 +1,12 @@
+import NSupperlim: (Numset->Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import NSissubset: (Numset->(Numset->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSmem: (Int->(Numset->Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSadd: (Int->(Numset->Numset)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSsub: (Numset->(Numset->Numset)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSintsect: (Numset->(Numset->Numset)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSunion: (Numset->(Numset->Numset)) {# ARITY _ = 2 #}{# STRICTNESS _ = "T,F" ST #};
+import NSsettoblist: (Numset->(List Bool)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import NSsettolist: (Numset->(List Int)) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import NSlisttoset: ((List Int)->Numset) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import NSisempty: (Numset->Bool) {# ARITY _ = 1 #}{# STRICTNESS _ = "T,F" ST #};
+import NSempty: Numset {# ARITY _ = 0 #}{# STRICTNESS _ = "T,F" ST #};

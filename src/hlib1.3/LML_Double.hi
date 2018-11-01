@@ -1,0 +1,32 @@
+interface LML_Double where
+{-:"Dexp":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dlog":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dsqrt":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dsin":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dcos":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dtan":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dasin":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dacos":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Datan":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dsinh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dcosh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dtanh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dasinh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dacosh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Datanh":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Ddecode":-} :: Double -> (Integer,Int)	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dencode":-} :: Integer -> Int -> Double	{-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Dfloor":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dceil":-} :: Double -> Double	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DisNaN":-} :: Double -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DisInfinity":-} :: Double -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DisDenormalized":-} :: Double -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DisNegativeZero":-} :: Double -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+
+
+{-:"Dfdecode":-} :: Float -> (Integer,Int)	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"Dfencode":-} :: Integer -> Int -> Float	{-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"DfisNaN":-} :: Float -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DfisInfinity":-} :: Float -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DfisDenormalized":-} :: Float -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}
+{-:"DfisNegativeZero":-} :: Float -> Bool	{-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}

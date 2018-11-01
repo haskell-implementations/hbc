@@ -1,0 +1,10 @@
+import initTree234: (Tree234 *a) {# ARITY _ = 0 #}{# STRICTNESS _ = "T,T" ST #};
+import treeAdd: ((*a->(*a->*a))->((*a->(*a->((Tree234 *a)->((Tree234 *a)->((Tree234 *a)->(Tree234 *a))))))->(*a->((Tree234 *a)->(Tree234 *a))))) {# ARITY _ = 4 #}{# STRICTNESS _ = "3,F" ST #};
+import treeSearch: (*a->((*b->*c)->((*b->(*a->(*c->(*a->*a))))->((Tree234 *b)->*a)))) {# ARITY _ = 4 #}{# STRICTNESS _ = "3,F" ST #};
+import treeUpdate: ((*a->*a)->((*a->((Tree234 *a)->((Tree234 *a)->((Tree234 *a)->(Tree234 *a)))))->((Tree234 *a)->(Tree234 *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,F" ST #};
+import treeList: ((Tree234 *a)->(List *a)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,F" ST #};
+import treeMapList: ((*a->(List *b))->((Tree234 *a)->(List *b))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};
+import treeFromList: ((*a->(*a->*a))->((*a->(*a->((Tree234 *a)->((Tree234 *a)->((Tree234 *a)->(Tree234 *a))))))->((List *a)->(Tree234 *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,F" ST #};
+import treeRebuild: ((*a->(*a->*a))->((*a->(*a->((Tree234 *a)->((Tree234 *a)->((Tree234 *a)->(Tree234 *a))))))->((Tree234 *a)->(Tree234 *a)))) {# ARITY _ = 3 #}{# STRICTNESS _ = "2,F" ST #};
+import treeCombine: ((*a->(*a->*a))->((*a->(*a->((Tree234 *a)->((Tree234 *a)->((Tree234 *a)->(Tree234 *a))))))->((Tree234 *a)->((Tree234 *a)->(Tree234 *a))))) {# ARITY _ = 4 #}{# STRICTNESS _ = "2&3,F" ST #};
+import treeMap: ((*a->*b)->((Tree234 *a)->(Tree234 *b))) {# ARITY _ = 2 #}{# STRICTNESS _ = "1,F" ST #};

@@ -1,0 +1,3 @@
+interface PreludeX where {
+filter :: (MonadZero b) => (a -> Bool) -> (b a) -> b a   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-}{-# SPECIALIZE filter :: (b -> Bool) -> [b] -> [b] {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-} #-}
+}

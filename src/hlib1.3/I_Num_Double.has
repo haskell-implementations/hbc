@@ -1,0 +1,11 @@
+module PreludeX where
+instance Num Double where
+	x + y = {-:"MM`Prelude.Num`Prelude.Double`+":-} x y
+	x - y = {-:"MM`Prelude.Num`Prelude.Double`-":-} x y
+	x * y = {-:"MM`Prelude.Num`Prelude.Double`*":-} x y
+	negate x = {-:"MM`Prelude.Num`Prelude.Double`negate":-} x
+	abs x = if {-:"MM`Prelude.Ord`Prelude.Double`<":-} x 0.0 then {-:"MM`Prelude.Num`Prelude.Double`negate":-} x else x
+	signum x = if {-:"MM`Prelude.Ord`Prelude.Double`<":-} x 0.0 then {-:"MM`Prelude.Num`Prelude.Double`negate":-} 1.0 else if {-:"MM`Prelude.Ord`Prelude.Double`>":-} x 0.0 then 1.0 else 0.0
+        fromInt x = {-:"MM`Prelude.Num`Prelude.Double`fromInt":-} x
+	fromInteger x = encodeFloat x 0
+	{-:"PfromInteger":-} x = case x{-# NOEVAL #-} of { (_,_,d) -> d{-# NOEVAL #-} }

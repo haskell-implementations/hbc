@@ -1,0 +1,132 @@
+module -- mprint
+-- print mcode
+#include "mcodedef_t.t"
+#include "Wuse.t"
+export mprint, pamode, prstk, prWuse, prWuses;
+rec
+    preg n		= 'r'.itos n
+and pamode Vp		= "Vp"
+||  pamode (Vind n)	= itos n@"(Vp)"
+||  pamode (Vrel n)	= '$'.itos n@"(Vp)"
+||  pamode pushV	= "Vpush"
+||  pamode popV		= "Vpop"
+||  pamode Sp		= "Sp"
+||  pamode (Sind n)	= itos n@"(Sp)"
+||  pamode (Srel n)	= '$'.itos n@"(Sp)"
+||  pamode pushS	= "Spush"
+||  pamode popS		= "Spop"
+||  pamode (reg n)	= preg n
+||  pamode (regind n m)	= itos m@"("@preg n@")"
+||  pamode (regrel n m)	= '$'.itos m@"("@preg n@")"
+||  pamode hp		= "Hp"
+||  pamode (hpind n)	= itos n@"(Hp)"
+||  pamode (hprel n)	= '$'.itos n@"(Hp)"
+||  pamode tohp		= "toH"
+||  pamode (glob s)	= s
+||  pamode (idlit s)	= '$'.s
+||  pamode (retaddr s)	= '#'.s
+||  pamode (const n)	= '$'.itos n
+||  pamode (fconst n)	= '$'.fmtf ".16e" n
+
+and ptag oeval		= "oeval"
+||  ptag ounwind	= "ounwind"
+||  ptag ojfun		= "ojfun"
+||  ptag ogettag	= "ogettag"
+||  ptag (onumtag n)    = itos n
+and pcc eq		= "eq"
+||  pcc ne		= "ne"
+||  pcc lt		= "lt"
+||  pcc gt		= "gt"
+||  pcc le		= "le"
+||  pcc ge		= "ge"
+||  pcc ltstack		= "lts"
+||  pcc ltheap		= "lth"
+||  pcc gtstack		= "gts"
+||  pcc geheap		= "geh"
+||  pcc dfeq		= "dfeq"
+||  pcc dfne		= "dfne"
+||  pcc dflt		= "dflt"
+||  pcc dfgt		= "dfgt"
+||  pcc dfle		= "dfle"
+||  pcc dfge		= "dfge"
+||  pcc sfeq		= "sfeq"
+||  pcc sfne		= "sfne"
+||  pcc sflt		= "sflt"
+||  pcc sfgt		= "sfgt"
+||  pcc sfle		= "sfle"
+||  pcc sfge		= "sfge"
+and pop dfadd		= "dfadd"
+||  pop dfsub		= "dfsub"
+||  pop dfmul		= "dfmul"
+||  pop dfdiv		= "dfdiv"
+||  pop dfneg		= "dfneg"
+||  pop sfadd		= "sfadd"
+||  pop sfsub		= "sfsub"
+||  pop sfmul		= "sfmul"
+||  pop sfdiv		= "sfdiv"
+||  pop sfneg		= "sfneg"
+||  pop add		= "add"
+||  pop sub		= "sub"
+||  pop mul		= "mul"
+||  pop div		= "div"
+||  pop mod		= "mod"
+||  pop neg		= "neg"
+||  pop btand		= "and"
+||  pop btor		= "or"
+||  pop btxor		= "xor"
+||  pop btcompl		= "compl"
+||  pop btlsh		= "lsh"
+||  pop btrsh		= "rsh"
+||  pop btrsha		= "rsha"
+||  pop dftoi		= "dftoi"
+||  pop itodf		= "itodf"
+||  pop sftoi		= "sftoi"
+||  pop itosf		= "itosf"
+||  pop sftodf		= "sftodf"
+||  pop dftosf		= "dftosf"
+
+and mp (Mmove a1 a2)	= conc ["\tmove\t";pamode a1;",";pamode a2]
+||  mp (Mmovedf a1 a2)	= conc ["\tmovedf\t";pamode a1;",";pamode a2]
+||  mp (Mmovesf a1 a2)	= conc ["\tmovesf\t";pamode a1;",";pamode a2]
+||  mp (Madda a1 a2)	= conc ["\tadda\t";pamode a1;",";pamode a2]
+||  mp (Mcall s)	= "\tcall\t"@s
+||  mp (Mjumpf s)	= "\tjumpf\t"@s
+||  mp (Mjump s)	= "\tjump\t"@s
+||  mp (Mjumpind a)	= "\tjumpind\t"@pamode a
+||  mp (Mcallind a)	= "\tcallind\t"@pamode a
+||  mp (Mcase a l h m ls _)= conc ["\tcase\t"; pamode a; ","; itos l; ","; itos h; ","; itos m; " "] @ concmap (\l.","@l) ls
+||  mp (Mboolcc cc a) = conc ["\tboolcc\t"; pcc cc; ","; pamode a]
+||  mp Mreturn		= "\treturn"
+||  mp (Mcalltag t n)	= conc ["\tcall\t";ptag t;"(";preg n;")"]
+||  mp (Mjumptag t n)	= conc ["\tjump\t";ptag t;"(";preg n;")"]
+||  mp (Mjcond cc s)	= conc ["\tj";pcc cc;"\t";s]
+||  mp (Mlabel s)	= s@":"
+||  mp (Mcompare a1 a2)	= conc ["\tcomp\t";pamode a1;",";pamode a2]
+||  mp (Mcomparesf a1 a2)= conc ["\tcompsf\t";pamode a1;",";pamode a2]
+||  mp (Mcomparedf a1 a2)= conc ["\tcompdf\t";pamode a1;",";pamode a2]
+||  mp (Mop2 p a1 a2)	= conc ["\t";pop p;"2\t";pamode a1;",";pamode a2]
+--||  mp (Mop3 p a1 a2 a3)= conc ["\t";pop p;"3\t";pamode a1;",";pamode a2;",";pamode a3]
+||  mp (Mop3 p a1 a2 a3)= conc ["\t";pop p;"\t";pamode a1;",";pamode a2;",";pamode a3]
+
+||  mp Mnoop		= "\t.noop"
+||  mp Mdata		= "\t.data"
+||  mp Mtext		= "\t.text"
+||  mp (Mword a)	= "\t.word\t"@pamode a
+||  mp (Mstring s)	= "\t.string\t\""@s@"\""
+||  mp (Msfloat s)	= "\t.sfloat\t"@s
+||  mp (Mdfloat s)	= "\t.dfloat\t"@s
+||  mp (Mexport s)	= "\t.export\t"@s
+||  mp (Mfunbegin s n)	= "\t.funbegin\t"@s@" "@itos n
+||  mp Mfunend		= "\t.funend"
+
+||  mp Malign		= "\t.malign"
+||  mp (Mcom s)		= '#'.' '.s
+||  mp (Masm s l)	= "\t.asm\t\""@s@"\","@mix (map pamode l) ","
+
+and mprint l		= concmap (\m.mp m@"\n") l
+and prstk n S = show_list pamode (head n S)
+and prWuse Wpush = "Wpush"
+||  prWuse (Wreg r) = "Wreg "@itos r
+||  prWuse Wuse = "Wuse"
+and prWuses n l = show_list prWuse (head n l)
+end

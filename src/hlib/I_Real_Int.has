@@ -1,0 +1,3 @@
+module I_Real_Int where
+instance Real Int where
+	toRational x = {-:"PInt2Integer":-} x % 1

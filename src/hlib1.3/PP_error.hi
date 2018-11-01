@@ -1,0 +1,3 @@
+interface PreludeX where {
+error :: String -> a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

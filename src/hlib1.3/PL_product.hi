@@ -1,0 +1,3 @@
+interface PreludeX where {
+product :: (Num a) => [a] -> a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "1,F" ST #-}{-# SPECIALIZE product :: [Float] -> Float {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Double] -> Double {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Integer] -> Integer {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-}, [Int] -> Int {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,F" ST #-} #-}
+}

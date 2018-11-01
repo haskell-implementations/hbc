@@ -1,0 +1,15 @@
+#! /bin/csh -f
+set a = "$<"
+set tmp = addsign.tmp$$
+while ("$a" != "")
+	set id = `echo "$a" | sed 's/ .*//'`
+	echo "1;/^$id/i" >> $tmp
+	echo "$a" >> $tmp
+	echo . >> $tmp
+	set a = "$<"
+end
+echo w >> $tmp
+echo q >> $tmp
+cp $1 $1.bak
+ex - $1 < $tmp
+rm $tmp

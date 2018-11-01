@@ -1,0 +1,10 @@
+import longToBytes:    Int->  List Char->List Char {# ARITY _ = 2 #}{# STRICTNESS _ = "0,0" ST #};
+import intToBytes:    Int->  List Char->List Char {# ARITY _ = 2 #}{# STRICTNESS _ = "0,0" ST #};
+import shortToBytes:  Int->  List Char->List Char {# ARITY _ = 2 #}{# STRICTNESS _ = "0,0" ST #};
+import floatToBytes:  Float->List Char->List Char {# ARITY _ = 2 #}{# STRICTNESS _ = "0,0" ST #};
+import doubleToBytes: Double->List Char->List Char {# ARITY _ = 2 #}{# STRICTNESS _ = "0,0" ST #};
+import bytesToLong:    List Char->(Int #   (List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import bytesToInt:    List Char->(Int #   (List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import bytesToShort:  List Char->(Int #   (List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import bytesToFloat:  List Char->(Float # (List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import bytesToDouble: List Char->(Double # (List Char)) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};

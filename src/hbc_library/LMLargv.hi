@@ -1,0 +1,2 @@
+interface LMLargv where
+argv :: [String]

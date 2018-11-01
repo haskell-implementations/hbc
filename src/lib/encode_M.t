@@ -1,0 +1,10 @@
+import Dencode:_Integer -> _Int -> _Double {# ARITY _ = 2 #} {# STRICTNESS _ = "0&1,F" ST #};
+import Dfencode:_Integer -> _Int -> _Float {# ARITY _ = 2 #} {# STRICTNESS _ = "0&1,F" ST #};
+import DisNaN: _Double -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DfisNaN: _Float -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DisInfinity: _Double -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DfisInfinity: _Float -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DisDenormalized: _Double -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DfisDenormalized: _Float -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DisNegativeZero: _Double -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};
+import DfisNegativeZero: _Float -> _Bool {# ARITY _ = 1 #} {# STRICTNESS _ = "0,F" ST #};

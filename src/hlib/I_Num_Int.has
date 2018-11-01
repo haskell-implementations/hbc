@@ -1,0 +1,11 @@
+module I_Num_Int where
+instance Num Int where
+	x + y = {-:"MM.Num.Int.+":-} x y
+	x - y = {-:"MM.Num.Int.-":-} x y
+	x * y = {-:"MM.Num.Int.*":-} x y
+	negate x = {-:"MM.Num.Int.negate":-} x
+	abs x = if {-:"MM.Ord.Int.<":-} x {-:#0:-} then {-:"MM.Num.Int.negate":-} x else x
+	signum x = if {-:"MM.Ord.Int.<":-} x {-:#0:-} then {-:#-1:-} else if {-:"MM.Ord.Int.>":-} x {-:#0:-} then {-:#1:-} else {-:#0:-}
+	fromInteger x = {-:"MM.Num.Int.fromInteger":-} x
+	fromInt x = x
+	{-:"PfromInteger":-} x = case x{-# NOEVAL #-} of { (_,i,_) -> i{-# NOEVAL #-} }

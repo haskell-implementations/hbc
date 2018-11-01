@@ -1,0 +1,9 @@
+module LazyArray(lazyArray) where
+import LML_array
+#define lmlarray {-:"Parray":-}
+
+import P_Array_data
+
+lazyArray b@(l,u) ivs =
+	let hi = index b u
+	in  MkArray b (lmlarray 0 hi id [(index b i, v) | i := v <- ivs])

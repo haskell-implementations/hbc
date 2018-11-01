@@ -1,0 +1,3 @@
+module I_Real_Integer where
+instance Real Integer where
+	toRational x = x % 1

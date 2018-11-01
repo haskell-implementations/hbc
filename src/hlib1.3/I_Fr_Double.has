@@ -1,0 +1,19 @@
+module PreludeX where
+import Ratio
+import Numeric__fromRat
+instance Fractional Double where
+	x / y	= {-:"MM`Prelude.Fractional`Prelude.Double`/":-} x y
+
+{-
+--SLOW
+	fromRational x	=  x'
+        	where x'    = f e
+	              f e   = if e' == e then y else f e'
+        	              where y      = encodeFloat (round (x * (1%b)^^e)) e
+                	            (_,e') = decodeFloat y
+	              (_,e) = decodeFloat (fromInteger (numerator x) `asTypeOf` x'
+        	                                / fromInteger (denominator x))
+	              b     = floatRadix x'
+-}
+	fromRational x  =  fromRat x
+        {-:"PfromRational":-} x = case x{-# NOEVAL #-} of { (_,d) -> d{-# NOEVAL #-} }

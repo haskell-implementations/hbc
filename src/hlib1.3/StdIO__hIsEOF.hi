@@ -1,0 +1,5 @@
+interface StdIO__hIsEOF where {
+{-# IMPORTING _LibDialogue, _LibIO__process, StdIO__std, _LibIO #-}
+hIsEOF :: _LibIO.Handle -> _LibIO.IO Prelude.Bool   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "0,0" ST #-};
+isEOF :: _LibIO.IO Prelude.Bool   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

@@ -1,0 +1,8 @@
+%{
+#include "include.h"
+%}
+type atype;
+	atc	: < gatcid	: id;
+	            gatcctx     : list;
+		    gatctypel	: list; >;
+end;

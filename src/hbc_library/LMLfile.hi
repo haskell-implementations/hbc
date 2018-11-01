@@ -1,0 +1,9 @@
+interface LMLfile where
+TOSTDOUT :: Char
+TOSTDERR :: Char
+TOFILE :: Char
+TOFILEA :: Char
+CCBREAK :: Char
+CCOOKED :: Char
+CUNBUFF :: Char
+CFLUSH :: Char

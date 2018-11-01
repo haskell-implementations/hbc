@@ -1,0 +1,7 @@
+interface PreludeX where {
+data (a, b);
+instance (Bounded a, Bounded b) => Bounded (a, b) {-# DERIVED #-};
+instance (Eq a, Eq b) => Eq (a, b) {-# DERIVED #-};
+instance Prelude.Eval (a, b) {-# DERIVED #-};
+instance (Ord a, Ord b) => Ord (a, b) {-# DERIVED #-}
+}

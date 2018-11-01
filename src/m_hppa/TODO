@@ -1,0 +1,22 @@
+Undvik 3 instr load/store
+* varf|r ingen comib i nfib.s?
+* impl. boolcc (COMCLR)
+* impl. btcompl (UADDCM)
+* impl. case
+* impl. variabelt skift (VSHD?)
+* impl. (millikod?) mul/div/mod
+* impl. mer flyttal
+* anv{nd Canonr
+* undvik fp0-3
+* testa branch
+dela inte double ld av konstant.
+* autoinc/dec på vp
+* Varför inte jump i nfib-main?
+* bl/b för lokala hopp.
+---
+anv{nd ADDIBT f|r loopar
+anv{nd BB om hopp efter maskning med 1<<k
+anv{nd SH3ADD & SH2ADD
+justera hp(&co) "on-the-fly"
+lite instr. sched. (l}na fr}n sparc?)
+Mnoop

@@ -1,0 +1,2 @@
+interface LMLgensym where
+__gensym :: () -> Int {-# ARITY _ = 1 #-}

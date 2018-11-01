@@ -1,0 +1,12 @@
+module IntegerMisc(integerPowMod, integerToString, integerGcd, integerAnd, integerOr, integerSqrt, integerToIntList) where
+import LMLintegerMisc
+
+--@@ Useful functions on Integer.
+
+integerPowMod val exp mod = {-:"PIntegerPowMod":-} val exp mod
+integerToString base val  = {-:"PInteger2String":-} base val
+integerGcd x y            = {-:"PIntegerGcd":-} x y
+integerAnd x y            = {-:"PIntegerAnd":-} x y
+integerOr x y             = {-:"PIntegerOr":-} x y
+integerSqrt x             = {-:"PIntegerSqrt":-} x    -- returns (sqrt x, remainder)
+integerToIntList x	  = {-:"PInteger2IntList":-} x

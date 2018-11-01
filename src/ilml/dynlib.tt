@@ -1,0 +1,12 @@
+#ifdef I_DYNLIB
+import dlopen  : List Char -> OK (List Char) Handle {# ARITY dlopen = 1 #};
+import dlsym   : Handle -> List Char -> OK (List Char) Univ {# ARITY dlsym = 2 #};
+import dlclose : Handle -> OK (List Char) {# ARITY dlclose = 1 #};
+import dlcall  : Univ -> *a {# ARITY dlcall = 1 #};
+#else
+#  define ERR (fail "no dynlib routines")
+#  define dlopen ERR
+#  define dlsym ERR
+#  define dlclose ERR
+#  define dlcall ERR
+#endif

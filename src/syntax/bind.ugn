@@ -1,0 +1,36 @@
+%{
+#include "include.h"
+%}
+type binding;
+	tbind	: < gtbindid	: ttype;
+		    gtbindc	: list;
+		    gtbindd	: list; >;
+	pbind	: < gpbindl	: list; >;
+	gbind   : < gtcbindid	: ttype;		/* for conctypes */
+		    gtcbindc	: list; >;
+	abind	: < gabindfst	: binding;
+		    gabindsnd	: binding; >;
+	rbind	: < grbind	: binding; >;
+	lbind   : < glbindfst   : binding;
+		    glbindsnd   : binding; >;
+	ebind	: < gebindid	: ttype;
+		    gebindt	: ttype; >;
+	ibind	: < gitype	: ttype;
+		    gibindb	: binding; >;
+	cbind	: < gcbindt	: ttype;
+		    gcbindb	: binding; >;
+	nbind	: < >;
+	ubind	: < guids	: list; >;
+	sbind	: < gbsids	: list;
+		    gbstype	: ttype; >;
+        specbind: < gspecid     : id;
+                    gspectypes  : list; >;
+	specinstbind: < gspecinst: ttype; >;
+	xbind	: < gxbindid	: ttype;
+		    gxbindc	: list;
+		    gxbindd	: list; >;
+	vbind   : < gvbindid    : ttype;
+                    gvbindt     : ttype;
+                    gvbindc     : list;
+                    gvbindb     : binding; >;
+end;

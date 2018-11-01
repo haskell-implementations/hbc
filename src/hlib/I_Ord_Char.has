@@ -1,0 +1,9 @@
+module I_Ord_Char where
+instance Ord Char where
+	x <  y = {-:"MM.Ord.Char.<":-}  x y
+	x <= y = {-:"MM.Ord.Char.<=":-} x y
+	x >  y = {-:"MM.Ord.Char.>":-}  x y
+	x >= y = {-:"MM.Ord.Char.>=":-} x y
+	max x y = if {-:"MM.Ord.Char.>":-} x y then x else y
+	min x y = if {-:"MM.Ord.Char.<":-} x y then x else y
+

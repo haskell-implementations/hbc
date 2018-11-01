@@ -1,0 +1,6 @@
+interface StdIO__std where {
+{-# IMPORTING _LibIO_all #-}
+stdin :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+stdout :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-};
+stderr :: _LibIO.Handle   {-# ARITY _ = 0 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

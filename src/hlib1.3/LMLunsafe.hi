@@ -1,0 +1,10 @@
+interface LMLunsafe where
+data Ref a
+{-:"Pref":-}    :: a -> Ref a
+{-:"Passign":-} :: Ref a -> a -> ()
+{-:"Pderef":-}  :: Ref a -> a
+{-:"Peqref":-}  :: Ref a -> Ref a -> Bool
+-- {-:"Pseq":-}    :: a -> b -> b		 {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-}
+{-:"Peqptr":-}  :: a -> b -> Bool
+{-:"Pforce":-}  :: a -> a
+instance Eval (Ref a)

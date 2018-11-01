@@ -1,0 +1,10 @@
+import Pord: (_Char->_Int) {# ARITY _ = 1 #}{# STRICTNESS _ = "0,0" ST #};
+import Plei: (_Int->(_Int->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,0&1" ST #};
+import Plti: (_Int->(_Int->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,0&1" ST #};
+import Peqi: (_Int->(_Int->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,0&1" ST #};
+import Pbigge: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import Pbiggt: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import Pbigle: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import Pbiglt: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import Pbigne: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};
+import Pbigeq: (*a->(*a->_Bool)) {# ARITY _ = 2 #}{# STRICTNESS _ = "0&1,F" ST #};

@@ -1,0 +1,25 @@
+TODO
+
+Document hbcmakehbc.
+
+
+Minor bugs to fix:
+
+lmlmk is not aware of the -o option, so checks the date of the wrong executable.
+
+When several paths refer to the same source file, this file is compiled
+only once, but the .o and .t file should still be accessible via all paths.
+
+Fix problems with comments in LMLFLAGS defs in Makefiles
+Fix potential problems with the precence of tab chars in source files
+
+The out-of-date test for executable files test all object files. This is
+quite unneccesary.
+
+Enhancements:
+
+Depencency graph cache, to avoid scanning source files that haven't changed
+since the last recompilation.
+
+Merge hbcmake and lmlmake into one program that also handles a user extensible
+set of file types, in a way similar to make(1).

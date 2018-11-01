@@ -1,0 +1,2 @@
+import mcbasicupdate: ((#3 (List (List Char)) (List (#3 Int Int Int)) (List Char))->(Int->(Int->((List Gcode)->(Gvalue->(Int->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int))))))))) {# ARITY _ = 8 #}{# STRICTNESS _ = "T,T" ST #};
+import mcbasic: ((#3 (List (List Char)) (List (#3 Int Int Int)) (List Char))->(Int->(Int->((List Gcode)->(Gvalue->((List Addrmode)->((List Addrmode)->(#5 (List Mcode) (List (List Char)) (List Wuseinfo) (List Wuseinfo) Int)))))))) {# ARITY _ = 7 #}{# STRICTNESS _ = "T,F" ST #};

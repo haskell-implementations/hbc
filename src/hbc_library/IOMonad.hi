@@ -1,0 +1,41 @@
+interface IOMonad where {
+infixr 9 `thenIO`;
+infixr 9 `thenIO_`;
+type IO a = (a -> Dialogue) -> Dialogue;
+data IoResult a = IoSucc a | IoFail IOError;
+type IOE a = IO (IoResult a);
+returnIO :: a -> IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+thenIO :: (IO a) -> (a -> IO b) -> IO b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+thenIO_ :: (IO a) -> (IO b) -> IO b   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+ioToDialogue :: (IO a) -> Dialogue   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readFileIOE :: String -> IOE String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+writeFileIOE :: String -> String -> IOE ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+appendFileIOE :: String -> String -> IOE ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+deleteFileIOE :: String -> IOE ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+statusFileIOE :: String -> IOE String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readChanIOE :: String -> IOE String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+appendChanIOE :: String -> String -> IOE ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+statusChanIOE :: String -> IOE String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+echoIOE :: Bool -> IOE ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getArgsIOE :: IOE [String]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getEnvIOE :: String -> IOE String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+setEnvIOE :: String -> String -> IOE ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readFileIO :: String -> IO String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+writeFileIO :: String -> String -> IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+appendFileIO :: String -> String -> IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+deleteFileIO :: String -> IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+statusFileIO :: String -> IO String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+readChanIO :: String -> IO String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+appendChanIO :: String -> String -> IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+statusChanIO :: String -> IO String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+echoIO :: Bool -> IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getArgsIO :: IO [String]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+getEnvIO :: String -> IO String   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+setEnvIO :: String -> String -> IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+exitIO :: IOError -> IO a   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-};
+printIO :: (Text a) => a -> IO ()   {-# ARITY _ = 3 #-}{-# STRICTNESS _ = "T,F" ST #-};
+printsIO :: (Text a) => a -> String -> IO ()   {-# ARITY _ = 4 #-}{-# STRICTNESS _ = "T,F" ST #-};
+interactIO :: (String -> String) -> IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+runIO :: (String -> String) -> IO ()   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,F" ST #-};
+doneIO :: IO a   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "T,T" ST #-}
+}

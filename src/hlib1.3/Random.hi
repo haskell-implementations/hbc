@@ -1,0 +1,5 @@
+interface Random where {
+{-# IMPORTING Time, CPUTime #-}
+random :: (Prelude.Integer, Prelude.Integer) -> Prelude.Integer -> [Prelude.Integer]   {-# ARITY _ = 2 #-}{-# STRICTNESS _ = "0&1,F" ST #-};
+randomIO :: (Prelude.Integer, Prelude.Integer) -> _LibIO.IO [Prelude.Integer]   {-# ARITY _ = 1 #-}{-# STRICTNESS _ = "T,F" ST #-}
+}

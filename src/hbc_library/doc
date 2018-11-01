@@ -1,0 +1,253 @@
+The hbc library contains the following modules and functions:
+
+* module Either
+    binary sum data type
+	data Either a b = Left a | Right b
+    constructor Left typically used for errors
+
+* module Option
+    type for success or failure
+	data Option a = None | Some a
+	thenO :: Option a -> (a -> Option b) -> Option b	apply a function that may fail
+
+* module IO
+    LML style I/O functions
+	openFile :: String -> Either String String	returns error message or contents of file
+	getFile :: String -> String			returns file contens or fails
+	getEnvi :: String -> Option String		maybe value of an environment variable
+	statFile :: String -> Either String [Int]	returns error message or (incomprehensible) file information
+	openDirectory :: String -> Either String [String]	returns error message or a list of all files in the directory
+	progArgs :: [String]				the arguments to the executing program
+	progName :: String				name of the executing program
+
+* module ListUtil
+    Various useful functions involving lists that are missing from the Prelude
+	assoc :: (Eq c) => (a -> b) -> b -> [(c, a)] -> c -> b
+		assoc f d l k looks for k in the association list l, if it is found f is applied to the value, otherwise d is returned
+	concatMap :: (a -> [b]) -> [a] -> [b]
+		flattening map (LMLs concmap)
+	unfoldr :: (a -> (b, a)) -> (a -> Bool) -> a -> [b]
+		unfoldr f p x repeatedly applies f to x until (p x) holds. (f x) should give a list element and a new x
+	mapAccuml :: (a -> b -> (a, c)) -> a -> [b] -> (a, [c])
+		mapAccuml f s l  maps f over l, but also threads the state s though (LMLs mapstate)
+	union :: (Eq a) => [a] -> [a] -> [a]
+		unions of two lists
+	intersection :: (Eq a) => [a] -> [a] -> [a]
+		intersection of two lists
+	chopList :: ([a] -> (b, [a])) -> [a] -> [b]
+		LMLs choplist
+	assocDef :: (Eq a) => [(a, b)] -> b -> a -> b
+		LMLs assocdef
+	lookup :: (Eq a) => [(a, b)] -> a -> Option b
+		lookup l k looks for the key k in the association list l and returns an optional value
+	rept :: (Integral a) => a -> b -> [b]
+		repeat an element a certain number of times
+	tails :: [a] -> [[a]]
+		return all the tails of a list
+	groupEq :: (a->a->Bool) -> [a] -> [[a]]
+		group list elements according to an equality predicate
+	group :: (Eq a) => [a] -> [[a]]
+		group according to ==
+	readListLazily :: (Text a) => String -> [a]
+		read a list in a lazy fashion
+
+* module Pretty
+    John Hughes pretty printing library.	
+	type Context = (Bool, Int, Int, Int)
+	type IText = Context -> [String]
+	text :: String -> IText				just text
+	(~.) :: IText -> IText -> IText			horizontal composition
+	(^.) :: IText -> IText -> IText			vertical composition
+	separate :: [IText] -> IText			separate by spaces
+	nest :: Int -> IText -> IText			indent
+	pretty :: Int -> Int -> IText -> String		format it
+
+* module QSort
+    Sort function using quicksort.
+	sortLe :: (a -> a -> Bool) -> [a] -> [a]	sort le l  sorts l with le as less than predicate
+	sort :: (Ord a) => [a] -> [a]			sort l  sorts l using the Ord class
+
+* module Random
+    Random numbers.
+	randomInts :: Int -> Int -> [Int]		given two seeds gives a list of random Int
+	randomDoubles :: Int -> Int -> [Double]		given two seeds gives a list of random Double with uniform distr in (0,1)
+	normalrandomDoubles :: Int -> Int -> [Double]	given two seeds gives a list of random Double with mean 0 and variance 1
+
+* module RunDialogue
+    Test run programs of type Dialogue.
+    Only a few Requests are implemented, unfortunately not ReadChannel.
+	run :: Dialogue -> String			just run the program, showing the output
+	runTrace :: Dialogue -> String			run the program, showing each Request and Response
+
+* module Termcap
+    Terminal independant screen handling.
+	noColumns :: Int				number of columns on screen
+	noLines :: Int					number of lines on screen
+	clear :: String					string to clear the screen
+	moveTo :: Int -> Int -> String			moveTo x y  gives the string to move to coordinate x y
+
+* module Trace
+    Simple tracing.
+	trace :: String -> a -> a			trace x y  prints x and returns y
+
+* module UnsafeDirty
+    Don't use it!!
+
+* module Miranda
+    Functions found in the Miranda(tm) library.
+
+* module Printf
+    C printf style formatting.  Handles same types as printf in C, but requires the arguments
+    to be tagged.  Useful for formatting of floating point values.
+	data UPrintf = UChar Char | UString String | UInt Int | UInteger Integer | UFloat Float | UDouble Double
+	printf :: String -> [UPrintf] -> String		convert arguments in the list according to the formatting string
+
+* module Word
+    Bit manipulation
+	class Bits a where
+	    bitAnd :: a -> a -> a			bitwise and
+	    bitOr :: a -> a -> a			bitwise or
+	    bitXor :: a -> a -> a			bitwise xor
+	    bitCompl :: a -> a				bitwise negation
+	    bitRsh :: a -> Int -> a			bitwise right shift
+	    bitLsh :: a -> Int -> a			bitwise left shift
+	    bitSwap :: a -> a				swap word halves
+	    bit0 :: a					word with least significant bit set
+	    bitSize :: a -> Int				number of bits in a word
+	data Byte					8  bit quantity
+	data Short					16 bit quantity
+	data Word					32 bit quantity
+	instance Bits Byte, Bits Short, Bits Word
+	instance Eq Byte, Eq Short, Eq Word
+	instance Ord Byte, Ord Short, Ord Word
+	instance Text Byte, Text Short, Text Word
+	instance Num Byte, Num Short, Num Word
+	wordToShorts :: Word -> [Short]			convert a Word to two Short
+	wordToBytes :: Word -> [Byte]			convert a Word to four Byte
+	bytesToString :: [Byte] -> String		convert a list of Byte to a String (bit by bit)
+	wordToInt :: Word -> Int			convert a Word to Int
+	shortToInt :: Short -> Int			convert a Short to Int
+	byteToInt :: Byte -> Int			convert a Byte to Int
+
+
+* module Time
+    Manipulate time values (a Double with seconds since 1970 UTC).
+	--               year mon  day  hour min  sec  dec-sec  weekday
+	data Time = Time Int  Int  Int  Int  Int  Int  Double  Int
+	dblToTime :: Double -> Time			convert a Double to a Time
+	timeToDbl :: Time -> Double			convert a Time to a Double
+	timeToString :: Time -> String			convert a Time to a readable String
+
+* module Hash
+    Hashing functions.
+	class Hashable a where
+	    hash :: a -> Int				hash a value, return an Int
+	instances for a Prelude types
+	hashToMax :: (Hashable a) => Int -> a -> Int	hash into interval [0..x-1]
+
+* module IntegerMisc
+    Various functions on Integer implemented in C.
+	integerPowMod :: Integer->Integer->Integer->Integer integerPowMod x y z == x^y `mod` z
+	integerToString :: Int->Integer->String		converts the Integer to a string in the given base
+	integerGcd :: Integer->Integer->Integer		computes the GCD of two numbers
+
+* module NameSupply
+    Functions to generate unique names (Int).
+	type Name = Int
+	initialNameSupply :: NameSupply			the initial name supply (may be different every time the program is run)
+	splitNameSupply :: NameSupply -> (NameSupply,NameSupply)	split the namesupply into two
+	getName :: NameSupply -> Name			get the name associated with a name supply
+
+
+* module Parse
+    Higher order functions to make parsers.  A (Parser a b) takes a list of a
+    and returns a list of possible parsings of this string.  A parsing
+    consists of a b value, and a list of remaining as.
+	type Parser a b = [a] -> [(b, [a])]		the type of a parser
+	(+.+) :: Parser a b -> Parser a c -> Parser a (b, c)
+		Sequential combination of two parsers, keeping the result of both.
+	(..+) :: Parser a b -> Parser a c -> Parser a c   
+		Sequential combination of two parsers, keeping the result of the second.
+	(+..) :: Parser a b -> Parser a c -> Parser a b   
+		Sequential combination of two parsers, keeping the result of the first.
+	(|||) :: Parser a b -> Parser a b -> Parser a b   
+		Alternative combination.
+	(||!) :: Parser a b -> Parser a b -> Parser a b   
+		Commited alternative, i.e. only try the second if the first fails.
+	(>>) :: Parser a b -> (b -> c) -> Parser a c   
+		Semantic action.
+	(>>>) :: (Parser a (b, c)) -> (b -> c -> d) -> Parser a d   
+		Semantic action with a curried function.
+	lit :: (Eq a) => a -> Parser a a   
+		Recognize a literal token.
+	litp :: (a -> Bool) -> Parser a a   
+		Recognize a token by a predicate.
+	many :: Parser a b -> Parser a [b]
+		Repetition (Kleene *).
+	empty :: Parser a ()
+		Succeed with any input.
+	fail :: Parser a b
+		Always fails
+	sepBy1 :: Parser a b -> (Parser a c) -> Parser a [b]   
+		Non-empty sequence of items separeted by something.
+	sepBy :: Parser a b -> (Parser a c) -> Parser a [b]   
+		Sequence of items separeted by something.
+	count :: Parser a b -> Int -> Parser a [b]   
+		Sequence of N items.
+	parse :: Parser a b -> [a] -> b   
+		Check that a single parsing exists and return the value.
+	simpleLex :: String -> [String]   
+		Simple lexical analyzer.
+
+
+* module Native
+    Functions to convert the primitive types Int, Float, and Double to their
+    native representation as a list of bytes (Char).  If such a list is 
+    read/written to a file it will have the same format as when, e.g., C
+    read/writes then same kind of data.
+
+	type Bytes = [Char]
+		A byte stream is just a list of characters.
+	class Native a where
+	    showBytes     :: a -> Bytes -> Bytes
+		prepend the representation of an item the a byte stream
+	    listShowBytes :: [a] -> Bytes -> Bytes
+	 	prepend the representation of a list of items to a stream
+		(may be more efficient than repeating showBytes).
+	    readBytes     :: Bytes -> Maybe (a, Bytes)
+		get an item from the stream and return the rest, or fail if the
+		stream is to short.
+	    listReadBytes :: Int -> Bytes -> Maybe ([a], Bytes)
+		read n items from a stream (may be more efficient than repeating
+		readBytes).
+	instance Native Int
+	instance Native Float
+	instance Native Double
+	instance (Native a, Native b) => Native (a,b)
+		juxtapostition of the two items
+	instance (Native a, Native b, Native c) => Native (a,b, c)
+		juxtapostition of the three items
+	instance (Native a) => Native [a]
+		an item count in an Int followed by the items
+
+	shortIntToBytes :: Int -> Bytes -> Bytes
+		Convert an Int to what corresponds to a short in C.
+	bytesToShortInt :: Bytes -> Maybe (Int, Bytes)
+		Get a short from a byte stream and convert to an Int.
+
+	showB :: (Native a) => a -> Bytes
+		Simple interface to showBytes.
+	readB :: (Native a) => Bytes -> a
+		Simple interface to readBytes.
+
+* module Number
+    Simple numbers that belong to all numeric classes and behave like
+    a naive user would expect (except that printing is still ugly).
+    Use 'default Number' to get it everywhere.
+
+	data Number
+	    The type itself.
+	instance ...
+	    All reasonable instances.
+	isInteger :: Number -> Bool
+	    Test if a Number is an integer.

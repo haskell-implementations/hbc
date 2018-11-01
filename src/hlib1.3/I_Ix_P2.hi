@@ -1,0 +1,14 @@
+interface PreludeX where {
+{-# IMPORTING Ix #-}
+data (a, b);
+instance (Ix.Ix a, Ix.Ix b) => Ix.Ix (a, b) {-# DERIVED #-};
+instance Ix.Ix (Int, Int) {-# STRICTNESS range = "0,F" ST #-} {-# STRICTNESS index = "0&1,F" ST #-} {-# STRICTNESS inRange = "0&1,F" ST #-};
+instance (Ix.Ix a, Ix.Ix b) => Ix.Ix (a, b) {-# DERIVED #-};
+instance Ix.Ix (Int, Int) {-# STRICTNESS Prelude.range = "T,F" ST #-} {-# STRICTNESS Prelude.index = "T,F" ST #-} {-# STRICTNESS Prelude.inRange = "T,F" ST #-};
+instance (Prelude.Bounded a, Prelude.Bounded b) => Prelude.Bounded (a, b) {-# DERIVED #-};
+instance (Prelude.Eq a, Prelude.Eq b) => Prelude.Eq (a, b) {-# DERIVED #-};
+instance Prelude.Eval (a, b) {-# DERIVED #-};
+instance (Prelude.Ord a, Prelude.Ord b) => Prelude.Ord (a, b) {-# DERIVED #-};
+instance (Prelude.Read a, Prelude.Read b) => Prelude.Read (a, b) {-# DERIVED #-};
+instance (Prelude.Show a, Prelude.Show b) => Prelude.Show (a, b) {-# DERIVED #-}
+}

@@ -1,0 +1,38 @@
+mfile=Makefile
+src="$*"
+for i in $src; do \
+	( grep '^#[ 	]*include[ 	]*"' $i | sed -n \
+		-e 's/[^"]*"\([^"]*\)".*/\1/' \
+		-e H -e '$g' -e '$s/\n/ /g' \
+		-e '$s/.*/'$i': &/' -e '$s/\.m:/.o:/p' \
+		>> /tmp/makedep$$); done
+objs=`for i in $src; do \
+	( (grep '^#[ 	]*include[ 	]*"' $i; echo "$i") | sed \
+		-e 's/[^"]*"\([^"]*\)".*/\1/' \
+		-e '/\.t\.h/d' \
+		-e "s/$/ $i/" \
+		-e 's/\.m/.o/g' \
+		-e 's/\.[ht]/.o/' \
+		); done | tsort `
+echo $src | sed -e 's/\.m/.o/g' >/tmp/maked$$
+oo=""
+for o in $objs; do
+	if (../bin/mygreps -w $o /tmp/maked$$) then
+		oo="$oo $o"
+	fi
+done
+cp $mfile $mfile.bak
+ex - $mfile <<eof
+/OBJS.*=/c
+OBJS = $oo
+.
+/^# DO NOT DELETE THIS LINE/+2,\$d
+\$r /tmp/makedep$$
+w
+q
+eof
+rm -f /tmp/makedep$$ /tmp/maked$$
+echo '# DEPENDENCIES MUST END AT END OF FILE' >> $mfile
+echo '# IF YOU PUT STUFF HERE IT WILL GO AWAY' >> $mfile
+diff $mfile.bak $mfile
+exit 0

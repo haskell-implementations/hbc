@@ -1,0 +1,4 @@
+interface _XI_Xtypes where {
+{-# IMPORTING _XStuff #-}
+instance Show Xtypes.Display {-# STRICTNESS showsPrec = "T,F" ST #-} {-# STRICTNESS showList = "T,F" ST #-} {-# STRICTNESS showsType = "T,F" ST #-}
+}
